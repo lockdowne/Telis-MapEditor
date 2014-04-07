@@ -181,9 +181,8 @@ namespace MapEditor.Presenters
         {
            // map = fileNewPresenter.GetNewMap(); 
             tilesetPresenter.LoadForm();
-            layerPresenter.LoadForm();
             AddMainPresenter(fileNewPresenter.MapName, new XnaRenderView(), fileNewPresenter.TilesetPath, fileNewPresenter.TileWidth, fileNewPresenter.TileHeight, fileNewPresenter.MapWidth, fileNewPresenter.MapHeight);
-            //tilesetPresenter.AddPresenter(fileNewPresenter.MapName, new XnaRenderView(), fileNewPresenter.TilesetPath, fileNewPresenter.TileWidth, fileNewPresenter.TileHeight);
+            tilesetPresenter.AddPresenter(fileNewPresenter.MapName, new XnaRenderView(), fileNewPresenter.TilesetPath, fileNewPresenter.TileWidth, fileNewPresenter.TileHeight);
         }
 
         
@@ -202,18 +201,14 @@ namespace MapEditor.Presenters
                 return;
 
             view.AddView(name, renderView);
-            
 
-            IMainRenderPresenter presenter = new MainRenderPresenter(renderView);            
-            //presenter.AddTileset(tilesetPath, tileWidth, tileHeight);
-            //presenter.AddLayer();
+            IMainRenderPresenter presenter = new MainRenderPresenter(renderView);
+            presenter.InitializeMap(tilesetPath, tileWidth, tileHeight, mapWidth, mapHeight);
+           // presenter.AddLayer(mapWidth, mapHeight);
             //presenter.SetMapDimesions(mapWidth, mapHeight);
             //presenter.SetTileDimensions(tileWidth, tileHeight);
 
             MainPresenters.Add(name, presenter);
-
-            CurrentMainPresenter.AddTileset(tilesetPath, tileWidth, tileHeight, tilesetPresenter);
-            CurrentMainPresenter.AddLayer(mapWidth, mapHeight);
         }
 
         #endregion

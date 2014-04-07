@@ -84,11 +84,9 @@ namespace MapEditor.UI
 
         public void AddView(string name, IXnaRenderView renderer)
         {
-            /*closableTabControl1.TabPages.Add(name);
-            closableTabControl1.TabPages[closableTabControl1.TabPages.Count].Controls.Add((Control)renderer);*/
-
             Control view = (Control)renderer;
             view.Name = name;
+            view.Dock = DockStyle.Fill;
 
             TabPage tab = new TabPage(name);
             tab.Name = name;

@@ -21,11 +21,19 @@ namespace MapEditor.Core
 
 
 
+            // TESTING
+            LayerView layer = new LayerView();
+            layer.Show();
+            // END TESTING
+
+
+            
+
             IMainView view = new MainView();
             MainPresenter presenter = new MainPresenter(view);
             Application.Run((MainView)view);
 
-          
+            
         }
     }
 }

@@ -44,9 +44,7 @@ namespace MapEditor.UI
 
         protected override void Initialize()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            this.Dock = DockStyle.Fill;
+            spriteBatch = new SpriteBatch(GraphicsDevice);           
 
             if (OnInitialize != null)
                 this.OnInitialize();

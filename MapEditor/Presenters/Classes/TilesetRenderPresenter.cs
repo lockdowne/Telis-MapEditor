@@ -86,14 +86,7 @@ namespace MapEditor.Presenters
                 Zoom = 1f,
             };
 
-             
-                      
-        }
-        
-        void view_OnInitialize()
-        {
-            // TODO: FIX THIS SHIET
-           using (MemoryStream memoryStream = new MemoryStream())
+            using (MemoryStream memoryStream = new MemoryStream())
             {
                 System.Drawing.Bitmap bitmap = MapEditor.Properties.Resources.Pixel;
 
@@ -102,7 +95,13 @@ namespace MapEditor.Presenters
                 memoryStream.Seek(0, SeekOrigin.Begin);
 
                 pixel = Texture2D.FromStream(view.GetGraphicsDevice, memoryStream);  
-            }
+            }       
+                      
+        }
+        
+        void view_OnInitialize()
+        {
+            // TODO: FIX THIS SHIET
         }
         
         void view_OnDraw(SpriteBatch spriteBatch)

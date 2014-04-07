@@ -88,6 +88,8 @@ namespace MapEditor.Presenters
             tileBrushes = new TileBrushCollection();
 
             commandManager = new CommandManager();
+
+
             
         }
         
@@ -177,10 +179,12 @@ namespace MapEditor.Presenters
 
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.CameraTransformation);
 
-            int tileWidth = Tilesets.FirstOrDefault().TileWidth;
-            int tileHeight = Tilesets.FirstOrDefault().TileHeight;
-            int mapWidth = Layers.FirstOrDefault().MapWidth;
-            int mapHeight = Layers.FirstOrDefault().MapHeight;
+
+
+            int tileWidth = (Tilesets.FirstOrDefault() == null) ? 0 : Tilesets.FirstOrDefault().TileWidth;
+            int tileHeight = (Tilesets.FirstOrDefault() == null) ? 0 : Tilesets.FirstOrDefault().TileHeight;
+            int mapWidth = (Layers.FirstOrDefault() == null) ? 0 : Layers.FirstOrDefault().MapWidth;
+            int mapHeight = (Layers.FirstOrDefault() == null) ? 0 : Layers.FirstOrDefault().MapHeight;
 
             // Draw only viewport
             int left = (int)Math.Floor(camera.Position.X / tileWidth);
@@ -235,17 +239,7 @@ namespace MapEditor.Presenters
             spriteBatch.End();
         }
 
-        public void RemoveTileset()
-        {
-
-        }
-
-        public void AddTileset(string texturePath, int tileWidth, int tileHeight, ITilesetPresenter tilesetPresenter)
-        {
-            commandManager.ExecuteAddTilesetCommand(texturePath, tileWidth, tileHeight, this, tilesetPresenter);
-        }
-
-        public void AddTilesetImage(string texturePath, int tileWidth, int tileHeight)
+        public void InitializeMap(string texturePath, int tileWidth, int tileHeight, int mapWidth, int mapHeight)
         {
             Texture2D texture;
 
@@ -254,13 +248,28 @@ namespace MapEditor.Presenters
                 texture = Texture2D.FromStream(view.GetGraphicsDevice, fileStream);
             }
 
+            // TODO: Ensure only one instance of texture is instantiated
             Tilesets.Add(new Tileset()
-            {
-                Texture = texture,
-                TileHeight = tileHeight,
-                TileWidth = tileWidth,
-            });
+                {
+                    Texture = texture,
+                    TexturePath = texturePath,
+                    TileWidth = tileWidth,
+                    TileHeight = tileHeight,
+                });
+
+            Layers.Add(new Layer(mapWidth, mapHeight));
         }
+
+        public void RemoveTileset()
+        {
+
+        }
+
+        public void AddTileset(string texturePath, int tileWidth, int tileHeight)
+        {
+            
+        }
+
 
         public void AddLayer()
         {

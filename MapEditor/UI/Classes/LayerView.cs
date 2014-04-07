@@ -185,16 +185,6 @@ namespace MapEditor.UI
                 RemoveLayerItem(sender, e);
         }
 
-        public void ShowForm()
-        {
-            this.Show();
-        }
-
-        public void CloseForm()
-        {
-            this.Close();
-        }
-
        
     }
 }

@@ -38,17 +38,17 @@ namespace MapEditor.Presenters
             if (Presenters.ContainsKey(name))
                 return;
 
-           // view.AddView(name, renderView);
+            view.AddView(name, renderView);
 
             ITilesetRenderPresenter presenter = new TilesetRenderPresenter(renderView);
-            //presenter.LoadTexture(tilesetPath);
+            presenter.LoadTexture(tilesetPath);
             presenter.SetTileDimesions(tileWidth, tileHeight);
             presenter.SendTileBrushValues += (values) => { if (SendTileBrushValues != null) SendTileBrushValues(values); };
 
             Presenters.Add(name, presenter);            
         }
 
-        public void RemovePresenter()
+        public void RemovePresenter(ITilesetRenderPresenter presenter)
         {
 
         }

@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MapEditor.Models;
-using MapEditor.Presenters;
-using MapEditor.UI;
 
 namespace MapEditor.Core.Commands
 {
@@ -53,22 +50,18 @@ namespace MapEditor.Core.Commands
             RedoCommands.Clear();
         }
 
-        public void ExecuteAddTilesetCommand(string texturePath, int tileWidth, int tileHeight, IMainRenderPresenter mapPresenter, ITilesetPresenter tilesetPresenter)
+        public void ExecuteAddTilesetCommand()
         {
-            ICommand command = new MapAddTilesetCommand(texturePath, tileWidth, tileHeight, mapPresenter, tilesetPresenter);
-            command.Execute();
-
-            UndoCommands.Push(command);
-            RedoCommands.Clear(); 
+            //ICommand command = new MapAddTilesetCommand(
         }
 
-        public void ExecuteLayerAddCommand(List<Layer> layers, int width, int height, CheckedListBox listBox)
+        public void ExecuteLayerAddCommand(List<Layer> layers, int width, int height)
         {
-            ICommand command = new LayerAddCommand(layers, width, height, listBox);
+            /*ICommand command = new LayerAddCommand(layers, width, height);
             command.Execute();
 
             UndoCommands.Push(command);
-            RedoCommands.Clear();
+            RedoCommands.Clear();*/
         }
 
         public void ExecuteLayerRemoveCommand(List<Layer> layers, int index)

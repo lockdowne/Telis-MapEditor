@@ -7,6 +7,5 @@ namespace MapEditor.Presenters
 {
     interface ILayerPresenter
     {
-        void LoadForm();
     }
 }

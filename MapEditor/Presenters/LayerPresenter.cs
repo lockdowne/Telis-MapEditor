@@ -6,7 +6,7 @@ using MapEditor.UI;
 
 namespace MapEditor.Presenters
 {
-    public class LayerPresenter : ILayerPresenter
+    public class LayerPresenter
     {
         private readonly ILayerView view;    
     
@@ -32,8 +32,6 @@ namespace MapEditor.Presenters
         {
             if (OnRemoveLayer != null)
                 OnRemoveLayer(sender, e);
-
-            
         }
 
         void view_MoveLayerUp(object sender, EventArgs e)
@@ -52,11 +50,6 @@ namespace MapEditor.Presenters
         {
             if (OnAddLayer != null)
                 OnAddLayer(sender, e);
-        }
-
-        public void LoadForm()
-        {
-            view.ShowForm();
         }
     }
 }
