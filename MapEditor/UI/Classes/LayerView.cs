@@ -17,6 +17,7 @@ namespace MapEditor.UI
         public event EventHandler RemoveLayerItem;
         public event EventHandler AddLayerItem;
         public event EventHandler LayerItemChecked;
+        public event EventHandler LayerIndexChanged;
 
         /// <summary>
         /// Required designer variable.
@@ -136,6 +137,7 @@ namespace MapEditor.UI
             this.checkedListBox1.Size = new System.Drawing.Size(284, 236);
             this.checkedListBox1.TabIndex = 1;
             this.checkedListBox1.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBox1_ItemCheck);
+            this.checkedListBox1.SelectedIndexChanged += new EventHandler(checkedListBox1_SelectedIndexChanged);
             // 
             // LayerView
             // 
@@ -154,7 +156,10 @@ namespace MapEditor.UI
         }
 
        
-        #endregion
+       
+        #endregion 
+        
+    
 
         public void ShowForm(IMainView parent)
         {
@@ -166,7 +171,12 @@ namespace MapEditor.UI
             this.Close();
         }
 
-        
+        void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (LayerIndexChanged != null)
+                LayerIndexChanged(sender, e);
+        }
+
         private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             if (LayerItemChecked != null)

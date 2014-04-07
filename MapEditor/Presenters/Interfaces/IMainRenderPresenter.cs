@@ -10,6 +10,9 @@ namespace MapEditor.Presenters
     {
         int[,] TileBrushValues { get; set; }
 
+        int LayerIndex {  get; set; }
+        int TilesetIndex { get; set; }
+
         void InitializeMap(string texturePath, int tileWidth, int tileHeight, int mapWidth, int mapHeight, CheckedListBox checkedListBox);
         void AddTileset(string path, int tileWidth, int tileHeight);
         void RemoveTileset();

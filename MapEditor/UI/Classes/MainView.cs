@@ -109,6 +109,8 @@ namespace MapEditor.UI
 
         private void InitializeComponent()
         {
+            this.WindowState = FormWindowState.Maximized;
+
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();

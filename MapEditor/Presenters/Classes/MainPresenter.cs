@@ -65,6 +65,8 @@ namespace MapEditor.Presenters
             layerView.MoveLayerUp += new EventHandler(layerView_MoveLayerUp);
             layerView.RemoveLayerItem += new EventHandler(layerView_RemoveLayerItem);
             layerView.LayerItemChecked += new EventHandler(layerView_LayerItemChecked);
+            layerView.LayerIndexChanged += new EventHandler(layerView_LayerIndexChanged);
+            
 
             fileNewPresenter = new FileNewPresenter(new FileNewView());
             tilesetPresenter = new TilesetPresenter(new TilesetView());
@@ -88,9 +90,16 @@ namespace MapEditor.Presenters
         }
 
         
+        
         #endregion
 
         #region Events
+        
+        void layerView_LayerIndexChanged(object sender, EventArgs e)
+        {
+            Console.WriteLine(layerView.CheckedListBox.SelectedIndex);
+            CurrentMainPresenter.LayerIndex = layerView.CheckedListBox.SelectedIndex;
+        }
         
         void layerView_LayerItemChecked(object sender, EventArgs e)
         {
@@ -194,6 +203,8 @@ namespace MapEditor.Presenters
 
             AddMainPresenter(fileNewPresenter.MapName, new XnaRenderView(), fileNewPresenter.TilesetPath, fileNewPresenter.TileWidth, fileNewPresenter.TileHeight, fileNewPresenter.MapWidth, fileNewPresenter.MapHeight);
             tilesetPresenter.AddPresenter(fileNewPresenter.MapName, new XnaRenderView(), fileNewPresenter.TilesetPath, fileNewPresenter.TileWidth, fileNewPresenter.TileHeight);
+
+            layerView.CheckedListBox.SelectedIndex = 0;
         }
 
         

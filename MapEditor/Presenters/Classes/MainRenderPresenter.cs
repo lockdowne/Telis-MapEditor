@@ -44,7 +44,7 @@ namespace MapEditor.Presenters
 
         public int[,] TileBrushValues { get; set; }
 
-        public int LayerIndex { get; set; }
+        public int LayerIndex {  get; set; }
         public int TilesetIndex { get; set; }
 
         public Rectangle SelectionBox
@@ -140,6 +140,7 @@ namespace MapEditor.Presenters
             {
                 isMouseLeftPressed = false;
 
+                // TODO: Layers.Count > 0
                 commandManager.ExecuteEditDrawCommand(Layers[LayerIndex], tileBrushes.TileBrushes);
 
                 tileBrushes.ClearBrushes();
@@ -157,6 +158,8 @@ namespace MapEditor.Presenters
                 isMouseLeftPressed = true;
 
                 // TODO: Be sure tilebrush brush data is never null
+                //       Check if there is a layer selected, or if layers exist
+
 
                 currentMousePosition = PixelsToCoordinate(InvertCameraMatrix(e.Location));
 
@@ -264,6 +267,7 @@ namespace MapEditor.Presenters
             this.tileHeight = tileHeight;
 
             checkedListBox.Items.Add("Layer" + checkedListBox.Items.Count, true);
+            //checkedListBox.SelectedIndex++;
         }
 
         public void RemoveTileset()

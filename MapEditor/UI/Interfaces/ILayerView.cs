@@ -13,6 +13,7 @@ namespace MapEditor.UI
         event EventHandler RemoveLayerItem;
         event EventHandler AddLayerItem;
         event EventHandler LayerItemChecked;
+        event EventHandler LayerIndexChanged;
 
         CheckedListBox CheckedListBox { get; }
 
