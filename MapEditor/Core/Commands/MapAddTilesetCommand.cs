@@ -3,61 +3,55 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MapEditor.Core.Controls;
 using MapEditor.Models;
+using MapEditor.Presenters;
+using MapEditor.UI;
 
 namespace MapEditor.Core.Commands
 {
     public class MapAddTilesetCommand : ICommand
     {
-        private List<Tileset> currentTilesets;
+        private IMainRenderPresenter mapPresenter;
+        private ITilesetView tilesetView;
+        private ITilesetPresenter tilesetPresenter;
 
-        private Tileset currentTileset;
+        private string texturePath;
 
-        private string path;
+        private int tileWidth;
+        private int tileHeight;
 
-        private int width;
-        private int height;
-
-        private GraphicsDevice graphics;
-
-        public MapAddTilesetCommand(List<Tileset> tilesets, string texturePath, int tileWidth, int tileHeight, GraphicsDevice graphicsDevice, ClosableTabControl tabControl)
+        public MapAddTilesetCommand(string texturePath, int tileWidth, int tileHeight, IMainRenderPresenter mapPresenter, ITilesetView tilesetView, ITilesetPresenter tilesetPresenter)
         {
-            currentTilesets = tilesets;
+            this.mapPresenter = mapPresenter;
+            this.tilesetView = tilesetView;
+            this.tilesetPresenter = tilesetPresenter;
 
-            path = texturePath;
+            this.texturePath = texturePath;
 
-            width = tileWidth;
-            height = tileHeight;
-
-            graphics = graphicsDevice;
+            this.tileWidth = tileWidth;
+            this.tileHeight = tileHeight;
         }
 
         public void Execute()
         {
-            Texture2D texture;
+            string name = Path.GetFileName(texturePath);
 
-            using (FileStream fileStream = new FileStream(path, FileMode.Open))
-            {
-                texture = Texture2D.FromStream(graphics, fileStream);
-            }
+            IXnaRenderView view = new XnaRenderView();
 
-            currentTileset = new Tileset()
-            {
-                Texture = texture,
-                TexturePath = path,
-                TileWidth = width,
-                TileHeight = height,
-            };
+            mapPresenter.AddTileset(texturePath, tileWidth, tileHeight);
 
-            currentTilesets.Add(currentTileset);
+            tilesetView.AddView(name, view);
+
+            tilesetPresenter.AddPresenter(name.Split('.').FirstOrDefault(), view, texturePath, tileWidth, tileHeight);
         }
 
         public void UnExecute()
         {
-            currentTilesets.Remove(currentTileset);
+           
         }
     }
 }

@@ -235,35 +235,27 @@ namespace MapEditor.Presenters
             spriteBatch.End();
         }
 
-        /*public void AddTileset(string path, int tileWidth, int tileHeight)
-        {
-            Texture2D texture;
-
-            using (FileStream fileStream = new FileStream(path, FileMode.Open))
-            {
-                texture = Texture2D.FromStream(view.GetGraphicsDevice, fileStream);
-            }
-
-            // TODO: Ensure only one instance of texture is instantiated
-            Tilesets.Add(new Tileset()
-                {
-                    Texture = texture,
-                    TexturePath = path,
-                    TileWidth = tileWidth,
-                    TileHeight = tileHeight,
-                });
-        }*/
-
         public void RemoveTileset()
         {
 
         }
 
-        public void AddTileset()
+        public void AddTileset(string texturePath, int tileWidth, int tileHeight)
         {
-            
-        }
+            Texture2D texture;
 
+            using (FileStream fileStream = new FileStream(texturePath, FileMode.Open))
+            {
+                texture = Texture2D.FromStream(view.GetGraphicsDevice, fileStream);
+            }
+
+            Tilesets.Add(new Tileset()
+            {
+                Texture = texture,
+                TileHeight = tileHeight,
+                TileWidth = tileWidth,
+            });
+        }
 
         public void AddLayer()
         {

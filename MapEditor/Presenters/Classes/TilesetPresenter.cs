@@ -38,7 +38,7 @@ namespace MapEditor.Presenters
             if (Presenters.ContainsKey(name))
                 return;
 
-            view.AddView(name, renderView);
+           // view.AddView(name, renderView);
 
             ITilesetRenderPresenter presenter = new TilesetRenderPresenter(renderView);
             presenter.LoadTexture(tilesetPath);
@@ -48,7 +48,7 @@ namespace MapEditor.Presenters
             Presenters.Add(name, presenter);            
         }
 
-        public void RemovePresenter(ITilesetRenderPresenter presenter)
+        public void RemovePresenter()
         {
 
         }
