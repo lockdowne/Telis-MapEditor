@@ -101,7 +101,6 @@
     <Compile Include="Models\TileBrushCollection.cs" />
     <Compile Include="Models\Tileset.cs" />
     <Compile Include="Presenters\Classes\FileNewPresenter.cs" />
-    <Compile Include="Presenters\ILayerPresenter.cs" />
     <Compile Include="Presenters\Interfaces\IFileNewPresenter.cs" />
     <Compile Include="Presenters\Interfaces\IMainRenderPresenter.cs" />
     <Compile Include="Presenters\Interfaces\ITilesetPresenter.cs" />
@@ -110,7 +109,6 @@
     <Compile Include="Presenters\Classes\MainRenderPresenter.cs" />
     <Compile Include="Presenters\Classes\TilesetPresenter.cs" />
     <Compile Include="Presenters\Classes\TilesetRenderPresenter.cs" />
-    <Compile Include="Presenters\LayerPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\Classes\FileNewView.cs">
       <SubType>Form</SubType>

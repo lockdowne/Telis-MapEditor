@@ -13,7 +13,7 @@ namespace MapEditor.Presenters
         ITilesetRenderPresenter CurrentPresenter { get; }
 
         void AddPresenter(string name, IXnaRenderView renderView, string path, int tileWidth, int tileHeight);
-        void LoadForm();
+        void LoadForm(IMainView parent);
         
         
     }

@@ -14,5 +14,8 @@ namespace MapEditor.UI
         event EventHandler AddLayerItem;
 
         CheckedListBox CheckedListBox { get; }
+
+        void ShowForm(IMainView parent);
+        void CloseForm();
     }
 }

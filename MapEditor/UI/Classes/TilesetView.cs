@@ -27,8 +27,6 @@ namespace MapEditor.UI
         public TilesetView()
         {
             InitializeComponent();
-
-
         }        
 
         /// <summary>
@@ -95,9 +93,9 @@ namespace MapEditor.UI
             closableTabControl1.TabPages.Add(tab);
         }
 
-        public void ShowForm()
+        public void ShowForm(IMainView view)
         {
-            Show();
+            Show((Form)view);
         }
 
         public void CloseForm()

@@ -159,6 +159,17 @@ namespace MapEditor.UI
 
         #endregion
 
+        public void ShowForm(IMainView parent)
+        {
+            this.Show((Form)parent);
+        }
+
+        public void CloseForm()
+        {
+            this.Close();
+        }
+
+        
        
 
         private void toolStripMoveUp_Click(object sender, EventArgs e)

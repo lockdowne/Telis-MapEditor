@@ -18,12 +18,13 @@ namespace MapEditor.Presenters
         #region Fields
 
         private readonly IMainView view;
+        private readonly ILayerView layerView;
 
         private Dictionary<string, IMainRenderPresenter> MainPresenters = new Dictionary<string, IMainRenderPresenter>();
 
         private FileNewPresenter fileNewPresenter;
         private TilesetPresenter tilesetPresenter;
-        private LayerPresenter layerPresenter;
+        
 
         #endregion
 
@@ -38,7 +39,7 @@ namespace MapEditor.Presenters
 
         #region Initialize
 
-        public MainPresenter(IMainView view)
+        public MainPresenter(IMainView view, ILayerView layerView)
         {
             this.view = view;
 
@@ -58,18 +59,19 @@ namespace MapEditor.Presenters
             view.MapOffset += new EventHandler(view_MapOffset);
             view.MapResize += new EventHandler(view_MapResize);
 
+            layerView.AddLayerItem += new EventHandler(layerView_AddLayerItem);
+            layerView.MoveLayerDown += new EventHandler(layerView_MoveLayerDown);
+            layerView.MoveLayerUp += new EventHandler(layerView_MoveLayerUp);
+            layerView.RemoveLayerItem += new EventHandler(layerView_RemoveLayerItem);
+
             fileNewPresenter = new FileNewPresenter(new FileNewView());
             tilesetPresenter = new TilesetPresenter(new TilesetView());
-            layerPresenter = new LayerPresenter(new LayerView());
 
             fileNewPresenter.Confirmed += fileNewPresenter_Confirmed;            
 
             tilesetPresenter.SendTileBrushValues += (brush) => CurrentMainPresenter.TileBrushValues = brush;
 
-            layerPresenter.OnAddLayer += new EventHandler(layerPresenter_OnAddLayer);
-            layerPresenter.OnLowerLayer += new EventHandler(layerPresenter_OnLowerLayer);
-            layerPresenter.OnRaiseLayer += new EventHandler(layerPresenter_OnRaiseLayer);
-            layerPresenter.OnRemoveLayer += new EventHandler(layerPresenter_OnRemoveLayer);
+         
 
 
             // TEST
@@ -83,25 +85,26 @@ namespace MapEditor.Presenters
             ((MainView)view).Controls.Add((System.Windows.Forms.Control)v); */
         }
 
-        void layerPresenter_OnRemoveLayer(object sender, EventArgs e)
+        void layerView_RemoveLayerItem(object sender, EventArgs e)
         {
-         
+            throw new NotImplementedException();
         }
 
-        void layerPresenter_OnRaiseLayer(object sender, EventArgs e)
+        void layerView_MoveLayerUp(object sender, EventArgs e)
         {
-            
+            throw new NotImplementedException();
         }
 
-        void layerPresenter_OnLowerLayer(object sender, EventArgs e)
+        void layerView_MoveLayerDown(object sender, EventArgs e)
         {
-            
+            throw new NotImplementedException();
         }
 
-        void layerPresenter_OnAddLayer(object sender, EventArgs e)
+        void layerView_AddLayerItem(object sender, EventArgs e)
         {
-            CurrentMainPresenter.AddLayer();
+            throw new NotImplementedException();
         }
+
 
         #endregion
 
@@ -180,7 +183,7 @@ namespace MapEditor.Presenters
         void fileNewPresenter_Confirmed()
         {
            // map = fileNewPresenter.GetNewMap(); 
-            tilesetPresenter.LoadForm();
+            tilesetPresenter.LoadForm(view);
             AddMainPresenter(fileNewPresenter.MapName, new XnaRenderView(), fileNewPresenter.TilesetPath, fileNewPresenter.TileWidth, fileNewPresenter.TileHeight, fileNewPresenter.MapWidth, fileNewPresenter.MapHeight);
             tilesetPresenter.AddPresenter(fileNewPresenter.MapName, new XnaRenderView(), fileNewPresenter.TilesetPath, fileNewPresenter.TileWidth, fileNewPresenter.TileHeight);
         }

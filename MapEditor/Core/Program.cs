@@ -19,18 +19,9 @@ namespace MapEditor.Core
             Application.SetCompatibleTextRenderingDefault(false);
 
 
-
-
-            // TESTING
-            LayerView layer = new LayerView();
-            layer.Show();
-            // END TESTING
-
-
-            
-
             IMainView view = new MainView();
-            MainPresenter presenter = new MainPresenter(view);
+            
+            MainPresenter presenter = new MainPresenter(view, new LayerView());
             Application.Run((MainView)view);
 
             

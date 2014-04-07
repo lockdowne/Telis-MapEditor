@@ -53,9 +53,9 @@ namespace MapEditor.Presenters
 
         }
 
-        public void LoadForm()
+        public void LoadForm(IMainView parent)
         {
-            view.ShowForm();
+            view.ShowForm(parent);
         }
     }
 }

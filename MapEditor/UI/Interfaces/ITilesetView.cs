@@ -12,7 +12,7 @@ namespace MapEditor.UI
 
         IXnaRenderView GetCurrentView { get; }
 
-        void ShowForm();
+        void ShowForm(IMainView view);
         void CloseForm();
     }
 }
