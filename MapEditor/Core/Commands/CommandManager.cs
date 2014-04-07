@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MapEditor.Models;
@@ -55,13 +56,13 @@ namespace MapEditor.Core.Commands
             //ICommand command = new MapAddTilesetCommand(
         }
 
-        public void ExecuteLayerAddCommand(List<Layer> layers, int width, int height)
+        public void ExecuteLayerAddCommand(List<Layer> layers, int width, int height, CheckedListBox checkedListBox)
         {
-            /*ICommand command = new LayerAddCommand(layers, width, height);
+            ICommand command = new LayerAddCommand(layers, width, height, checkedListBox);
             command.Execute();
 
             UndoCommands.Push(command);
-            RedoCommands.Clear();*/
+            RedoCommands.Clear();
         }
 
         public void ExecuteLayerRemoveCommand(List<Layer> layers, int index)

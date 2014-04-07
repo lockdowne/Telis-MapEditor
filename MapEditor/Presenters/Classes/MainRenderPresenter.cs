@@ -27,6 +27,11 @@ namespace MapEditor.Presenters
         private bool isMouseLeftPressed;
         private bool isMouseRightPressed;
 
+        private int mapWidth;
+        private int mapHeight;
+        private int tileWidth;
+        private int tileHeight;
+
         private Texture2D pixel;
 
         private TileBrushCollection tileBrushes;
@@ -180,12 +185,6 @@ namespace MapEditor.Presenters
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.CameraTransformation);
 
 
-
-            int tileWidth = (Tilesets.FirstOrDefault() == null) ? 0 : Tilesets.FirstOrDefault().TileWidth;
-            int tileHeight = (Tilesets.FirstOrDefault() == null) ? 0 : Tilesets.FirstOrDefault().TileHeight;
-            int mapWidth = (Layers.FirstOrDefault() == null) ? 0 : Layers.FirstOrDefault().MapWidth;
-            int mapHeight = (Layers.FirstOrDefault() == null) ? 0 : Layers.FirstOrDefault().MapHeight;
-
             // Draw only viewport
             int left = (int)Math.Floor(camera.Position.X / tileWidth);
             int right = tileWidth + left + spriteBatch.GraphicsDevice.Viewport.Width / tileWidth;
@@ -239,7 +238,7 @@ namespace MapEditor.Presenters
             spriteBatch.End();
         }
 
-        public void InitializeMap(string texturePath, int tileWidth, int tileHeight, int mapWidth, int mapHeight)
+        public void InitializeMap(string texturePath, int tileWidth, int tileHeight, int mapWidth, int mapHeight, CheckedListBox checkedListBox)
         {
             Texture2D texture;
 
@@ -258,6 +257,13 @@ namespace MapEditor.Presenters
                 });
 
             Layers.Add(new Layer(mapWidth, mapHeight));
+
+            this.mapWidth = mapWidth;
+            this.mapHeight = mapHeight;
+            this.tileWidth = tileWidth;
+            this.tileHeight = tileHeight;
+
+            checkedListBox.Items.Add("Layer" + checkedListBox.Items.Count, true);
         }
 
         public void RemoveTileset()
@@ -269,19 +275,9 @@ namespace MapEditor.Presenters
         {
             
         }
-
-
-        public void AddLayer()
+        public void AddLayer(CheckedListBox checkedListBox)
         {
-            int mapWidth = Layers.FirstOrDefault().MapWidth;
-            int mapHeight = Layers.FirstOrDefault().MapHeight;
-
-            commandManager.ExecuteLayerAddCommand(Layers, mapWidth, mapHeight);
-        }
-
-        public void AddLayer(int width, int height)
-        {
-            commandManager.ExecuteLayerAddCommand(Layers, width, height);
+            commandManager.ExecuteLayerAddCommand(Layers, mapWidth, mapHeight, checkedListBox);
         }
 
         public void RemoveLayer()

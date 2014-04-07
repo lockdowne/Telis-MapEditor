@@ -42,6 +42,7 @@ namespace MapEditor.Presenters
         public MainPresenter(IMainView view, ILayerView layerView)
         {
             this.view = view;
+            this.layerView = layerView;
 
             view.FileNew += new EventHandler(FileNew);
             view.LayerAdd += new EventHandler(view_LayerAdd);
@@ -63,6 +64,7 @@ namespace MapEditor.Presenters
             layerView.MoveLayerDown += new EventHandler(layerView_MoveLayerDown);
             layerView.MoveLayerUp += new EventHandler(layerView_MoveLayerUp);
             layerView.RemoveLayerItem += new EventHandler(layerView_RemoveLayerItem);
+            layerView.LayerItemChecked += new EventHandler(layerView_LayerItemChecked);
 
             fileNewPresenter = new FileNewPresenter(new FileNewView());
             tilesetPresenter = new TilesetPresenter(new TilesetView());
@@ -85,6 +87,16 @@ namespace MapEditor.Presenters
             ((MainView)view).Controls.Add((System.Windows.Forms.Control)v); */
         }
 
+        
+        #endregion
+
+        #region Events
+        
+        void layerView_LayerItemChecked(object sender, EventArgs e)
+        {
+           
+        }        
+        
         void layerView_RemoveLayerItem(object sender, EventArgs e)
         {
             throw new NotImplementedException();
@@ -102,13 +114,8 @@ namespace MapEditor.Presenters
 
         void layerView_AddLayerItem(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            CurrentMainPresenter.AddLayer(layerView.CheckedListBox);
         }
-
-
-        #endregion
-
-        #region Events
 
         void view_MapResize(object sender, EventArgs e)
         {
@@ -177,13 +184,14 @@ namespace MapEditor.Presenters
 
         void view_LayerAdd(object sender, EventArgs e)
         {
-            CurrentMainPresenter.AddLayer();
+            
         }
 
         void fileNewPresenter_Confirmed()
-        {
-           // map = fileNewPresenter.GetNewMap(); 
+        {          
             tilesetPresenter.LoadForm(view);
+            layerView.ShowForm(view);
+
             AddMainPresenter(fileNewPresenter.MapName, new XnaRenderView(), fileNewPresenter.TilesetPath, fileNewPresenter.TileWidth, fileNewPresenter.TileHeight, fileNewPresenter.MapWidth, fileNewPresenter.MapHeight);
             tilesetPresenter.AddPresenter(fileNewPresenter.MapName, new XnaRenderView(), fileNewPresenter.TilesetPath, fileNewPresenter.TileWidth, fileNewPresenter.TileHeight);
         }
@@ -206,7 +214,7 @@ namespace MapEditor.Presenters
             view.AddView(name, renderView);
 
             IMainRenderPresenter presenter = new MainRenderPresenter(renderView);
-            presenter.InitializeMap(tilesetPath, tileWidth, tileHeight, mapWidth, mapHeight);
+            presenter.InitializeMap(tilesetPath, tileWidth, tileHeight, mapWidth, mapHeight, layerView.CheckedListBox);
            // presenter.AddLayer(mapWidth, mapHeight);
             //presenter.SetMapDimesions(mapWidth, mapHeight);
             //presenter.SetTileDimensions(tileWidth, tileHeight);

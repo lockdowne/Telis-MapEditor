@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace MapEditor.Presenters
 {
@@ -9,11 +10,10 @@ namespace MapEditor.Presenters
     {
         int[,] TileBrushValues { get; set; }
 
-        void InitializeMap(string texturePath, int tileWidth, int tileHeight, int mapWidth, int mapHeight);
+        void InitializeMap(string texturePath, int tileWidth, int tileHeight, int mapWidth, int mapHeight, CheckedListBox checkedListBox);
         void AddTileset(string path, int tileWidth, int tileHeight);
         void RemoveTileset();
-        void AddLayer();
-        void AddLayer(int width, int height);
+        void AddLayer(CheckedListBox checkedListBox);
         void RemoveLayer();
         void SetLayerVisibility();        
     }

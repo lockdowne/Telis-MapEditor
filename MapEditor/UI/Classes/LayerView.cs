@@ -131,15 +131,11 @@ namespace MapEditor.UI
             // 
             this.checkedListBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Items.AddRange(new object[] {
-            "bullshiet 1",
-            "bullshiet 2",
-            "bullshiet 3",
-            "bullshiet 4"});
             this.checkedListBox1.Location = new System.Drawing.Point(0, 0);
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(284, 236);
             this.checkedListBox1.TabIndex = 1;
+            this.checkedListBox1.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBox1_ItemCheck);
             // 
             // LayerView
             // 
@@ -157,6 +153,7 @@ namespace MapEditor.UI
 
         }
 
+       
         #endregion
 
         public void ShowForm(IMainView parent)
@@ -170,7 +167,12 @@ namespace MapEditor.UI
         }
 
         
-       
+        private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            if (LayerItemChecked != null)
+                LayerItemChecked(sender, e);
+        }
+
 
         private void toolStripMoveUp_Click(object sender, EventArgs e)
         {
