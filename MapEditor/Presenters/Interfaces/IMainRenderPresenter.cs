@@ -14,7 +14,7 @@ namespace MapEditor.Presenters
         void AddTileset(string path, int tileWidth, int tileHeight);
         void RemoveTileset();
         void AddLayer(CheckedListBox checkedListBox);
-        void RemoveLayer();
+        void RemoveLayer(CheckedListBox checkedListBox);
         void SetLayerVisibility();        
     }
 }

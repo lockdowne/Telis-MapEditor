@@ -29,7 +29,7 @@ namespace MapEditor.Presenters
         #endregion
 
         #region Properties
-
+        
         public IMainRenderPresenter CurrentMainPresenter
         {
             get { return MainPresenters[view.GetCurrentView.KeyName]; }
@@ -99,7 +99,7 @@ namespace MapEditor.Presenters
         
         void layerView_RemoveLayerItem(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            CurrentMainPresenter.RemoveLayer(layerView.CheckedListBox);
         }
 
         void layerView_MoveLayerUp(object sender, EventArgs e)
@@ -134,7 +134,7 @@ namespace MapEditor.Presenters
 
         void view_LayerRemove(object sender, EventArgs e)
         {
-            CurrentMainPresenter.RemoveLayer();
+            //CurrentMainPresenter.RemoveLayer(layerView.CheckedListBox);
         }
 
         void view_LayerRaise(object sender, EventArgs e)

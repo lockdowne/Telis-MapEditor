@@ -280,9 +280,9 @@ namespace MapEditor.Presenters
             commandManager.ExecuteLayerAddCommand(Layers, mapWidth, mapHeight, checkedListBox);
         }
 
-        public void RemoveLayer()
+        public void RemoveLayer(CheckedListBox checkedListBox)
         {
-            commandManager.ExecuteLayerRemoveCommand(Layers, LayerIndex);
+            commandManager.ExecuteLayerRemoveCommand(Layers, LayerIndex, checkedListBox);
         }
 
         public void CloneLayer()

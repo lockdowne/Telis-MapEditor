@@ -65,13 +65,13 @@ namespace MapEditor.Core.Commands
             RedoCommands.Clear();
         }
 
-        public void ExecuteLayerRemoveCommand(List<Layer> layers, int index)
+        public void ExecuteLayerRemoveCommand(List<Layer> layers, int index, CheckedListBox checkedListBox)
         {
-            /*ICommand command = new LayerRemoveCommand(layers, index);
+            ICommand command = new LayerRemoveCommand(layers, index, checkedListBox);
             command.Execute();
 
             UndoCommands.Push(command);
-            RedoCommands.Clear();*/
+            RedoCommands.Clear();
         }
 
         public void ExecuteLayerVisibility(Layer layer)
