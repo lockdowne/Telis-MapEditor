@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MapEditor.Core.Commands;
+using MapEditor.Core.PaintTools;
 using MapEditor.UI;
 using MapEditor.Models;
 
@@ -21,21 +22,13 @@ namespace MapEditor.Presenters
         private Vector2 cameraPosition;
         private Vector2 currentMousePosition;
         private Vector2 previousMousePosition;
-        private Vector2? beginSelectionBox;
-        private Vector2? endSelectionBox;
-
-        private bool isMouseLeftPressed;
-        private bool isMouseRightPressed;
 
         private int mapWidth;
         private int mapHeight;
         private int tileWidth;
         private int tileHeight;
 
-        private Texture2D pixel;
-
-        private TileBrushCollection tileBrushes;
-        
+        private Texture2D pixel;        
 
         public List<Tileset> Tilesets = new List<Tileset>();
         public List<Layer> Layers = new List<Layer>();
@@ -47,17 +40,22 @@ namespace MapEditor.Presenters
         public int LayerIndex {  get; set; }
         public int TilesetIndex { get; set; }
 
+        public Vector2? BeginSelectionBox { get; set; }
+        public Vector2? EndSelectionBox { get; set; }
+
+        public IPaintTool paintTool;
+
         public Rectangle SelectionBox
         {
             get
             {
-                if (beginSelectionBox == null || endSelectionBox == null)
+                if (BeginSelectionBox == null || EndSelectionBox == null)
                     return Rectangle.Empty;
 
-                return new Rectangle((int)Math.Min(beginSelectionBox.Value.X, endSelectionBox.Value.X),
-                   (int)Math.Min(beginSelectionBox.Value.Y, endSelectionBox.Value.Y),
-                   (int)Math.Abs(beginSelectionBox.Value.X - endSelectionBox.Value.X),
-                   (int)Math.Abs(beginSelectionBox.Value.Y - endSelectionBox.Value.Y));
+                return new Rectangle((int)Math.Min(BeginSelectionBox.Value.X, EndSelectionBox.Value.X),
+                   (int)Math.Min(BeginSelectionBox.Value.Y, EndSelectionBox.Value.Y),
+                   (int)Math.Abs(BeginSelectionBox.Value.X - EndSelectionBox.Value.X),
+                   (int)Math.Abs(BeginSelectionBox.Value.Y - EndSelectionBox.Value.Y));
             }
         }
 
@@ -90,90 +88,24 @@ namespace MapEditor.Presenters
                 pixel = Texture2D.FromStream(view.GetGraphicsDevice, memoryStream);
             }
 
-            tileBrushes = new TileBrushCollection();
-
             commandManager = new CommandManager();
 
-
-            
+            paintTool = new DrawPaintTool(this);
         }
         
         void view_OnXnaMove(object sender, MouseEventArgs e)
         {
-            if (isMouseLeftPressed)
-            {
-                previousMousePosition = currentMousePosition;
-                currentMousePosition = PixelsToCoordinate(InvertCameraMatrix(e.Location));
-
-                if (currentMousePosition != previousMousePosition)
-                {
-                    if (TileBrushValues != null)
-                    {
-                        tileBrushes.AddTileBrush(new TileBrush()
-                        {
-                            Brush = TileBrushValues,
-                            Position = currentMousePosition,
-                        });
-                    }
-                }
-            }
-            else
-            {
-                currentMousePosition = PixelsToCoordinate(InvertCameraMatrix(e.Location));
-
-                tileBrushes.ClearBrushes();
-                if (TileBrushValues != null)
-                {
-                    tileBrushes.AddTileBrush(new TileBrush()
-                    {
-                        Brush = TileBrushValues,
-                        Position = currentMousePosition,
-                    });
-                }
-            }
-
+            paintTool.OnMouseMove(sender, e);
         }
 
         void view_OnXnaUp(object sender, MouseEventArgs e)
         {
-            if (isMouseLeftPressed)
-            {
-                isMouseLeftPressed = false;
-
-                // TODO: Layers.Count > 0
-                commandManager.ExecuteEditDrawCommand(Layers[LayerIndex], tileBrushes.TileBrushes);
-
-                tileBrushes.ClearBrushes();
-            }
+            paintTool.OnMouseUp(sender, e);
         }
        
         void view_OnXnaDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
-            {
-                commandManager.Undo();
-            }
-            if (e.Button == MouseButtons.Left)
-            {
-                isMouseLeftPressed = true;
-
-                // TODO: Be sure tilebrush brush data is never null
-                //       Check if there is a layer selected, or if layers exist
-
-
-                currentMousePosition = PixelsToCoordinate(InvertCameraMatrix(e.Location));
-
-                tileBrushes.ClearBrushes();
-
-                if (TileBrushValues != null)
-                {
-                    tileBrushes.AddTileBrush(new TileBrush()
-                    {
-                        Brush = TileBrushValues,
-                        Position = currentMousePosition,
-                    });
-                }
-            }
+            paintTool.OnMouseDown(sender, e);
         }
 
         void view_OnInitialize()
@@ -235,8 +167,8 @@ namespace MapEditor.Presenters
                 }
             }
 
-            if (tileBrushes != null)
-                tileBrushes.Draw(spriteBatch, Tilesets[TilesetIndex]);
+            if (paintTool != null)
+                paintTool.Draw(spriteBatch, Tilesets[TilesetIndex]);
 
             spriteBatch.End();
         }
@@ -312,7 +244,18 @@ namespace MapEditor.Presenters
 
         public void SetLayerVisibility(bool isVisible)
         {
+            if (Layers.Count <= 0)
+                return;
+
             commandManager.ExecuteLayerVisibility(Layers[LayerIndex], isVisible);
+        }
+
+        public void DrawTileBrushes(TileBrushCollection tileBrushes)
+        {
+            if (Layers.Count <= 0)
+                return;
+
+            commandManager.ExecuteEditDrawCommand(Layers[LayerIndex], tileBrushes.TileBrushes); 
         }
 
         public void OffsetMap(int offsetX, int offsetY)
@@ -340,7 +283,7 @@ namespace MapEditor.Presenters
 
         }
 
-        private Vector2 SnapToGrid(Vector2 position)
+        public Vector2 SnapToGrid(Vector2 position)
         {
             int tileWidth = Tilesets.FirstOrDefault().TileWidth;
             int tileHeight = Tilesets.FirstOrDefault().TileHeight;
@@ -351,7 +294,7 @@ namespace MapEditor.Presenters
             return new Vector2(x * tileWidth, y * tileHeight);
         }
 
-        private Vector2 CoordinateToPixels(int x, int y)
+        public Vector2 CoordinateToPixels(int x, int y)
         {
             int tileWidth = Tilesets.FirstOrDefault().TileWidth;
             int tileHeight = Tilesets.FirstOrDefault().TileHeight;
@@ -359,7 +302,7 @@ namespace MapEditor.Presenters
             return new Vector2(x * tileWidth, y * tileHeight);
         }
 
-        private Vector2 PixelsToCoordinate(Vector2 position)
+        public Vector2 PixelsToCoordinate(Vector2 position)
         {
             int tileWidth = Tilesets.FirstOrDefault().TileWidth;
             int tileHeight = Tilesets.FirstOrDefault().TileHeight;
@@ -367,7 +310,7 @@ namespace MapEditor.Presenters
             return new Vector2((int)position.X / tileWidth, (int)position.Y / tileHeight);
         }
 
-        private Vector2 InvertCameraMatrix(System.Drawing.Point point)
+        public Vector2 InvertCameraMatrix(System.Drawing.Point point)
         {
             return Vector2.Transform(new Vector2(point.X, point.Y), Matrix.Invert(camera.CameraTransformation));
         }
