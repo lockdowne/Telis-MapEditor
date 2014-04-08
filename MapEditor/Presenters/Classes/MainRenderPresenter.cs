@@ -294,9 +294,9 @@ namespace MapEditor.Presenters
             commandManager.ExecuteLayerClone(Layers, LayerIndex);
         }
 
-        public void SetLayerVisibility()
+        public void SetLayerVisibility(bool isVisible)
         {
-            commandManager.ExecuteLayerVisibility(Layers[LayerIndex]);
+            commandManager.ExecuteLayerVisibility(Layers[LayerIndex], isVisible);
         }
 
         public void OffsetMap(int offsetX, int offsetY)

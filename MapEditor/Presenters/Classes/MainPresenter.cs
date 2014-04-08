@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MapEditor.Core.Controls;
@@ -94,16 +95,22 @@ namespace MapEditor.Presenters
         #endregion
 
         #region Events
-        
+
         void layerView_LayerIndexChanged(object sender, EventArgs e)
         {
+            // TODO: Need work around for rapid clicks and registering event 
             Console.WriteLine(layerView.CheckedListBox.SelectedIndex);
             CurrentMainPresenter.LayerIndex = layerView.CheckedListBox.SelectedIndex;
+
+            if (layerView.CheckedListBox.GetItemChecked(CurrentMainPresenter.LayerIndex))
+                CurrentMainPresenter.SetLayerVisibility(true);
+            else
+                CurrentMainPresenter.SetLayerVisibility(false);
         }
         
         void layerView_LayerItemChecked(object sender, EventArgs e)
         {
-           
+            //CurrentMainPresenter.SetLayerVisibility();
         }        
         
         void layerView_RemoveLayerItem(object sender, EventArgs e)
@@ -138,7 +145,7 @@ namespace MapEditor.Presenters
 
         void view_LayerVisibility(object sender, EventArgs e)
         {
-            CurrentMainPresenter.SetLayerVisibility();
+            //CurrentMainPresenter.SetLayerVisibility();
         }
 
         void view_LayerRemove(object sender, EventArgs e)

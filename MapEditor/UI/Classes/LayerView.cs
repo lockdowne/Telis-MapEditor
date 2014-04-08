@@ -173,6 +173,7 @@ namespace MapEditor.UI
 
         void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+           
             if (LayerIndexChanged != null)
                 LayerIndexChanged(sender, e);
         }

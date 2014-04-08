@@ -8,21 +8,25 @@ namespace MapEditor.Core.Commands
 {
     public class LayerVisibilityCommand : ICommand
     {
-        private Layer currentLayer;
+        private Layer layer;
 
-        public LayerVisibilityCommand(Layer layer)
+        private bool isVisisble;
+
+        public LayerVisibilityCommand(Layer layer, bool isVisible)
         {
-            currentLayer = layer;
+            this.layer = layer;
+
+            this.isVisisble = isVisible;
         }
 
         public void Execute()
         {
-            currentLayer.IsVisible = !currentLayer.IsVisible;
+            layer.IsVisible = isVisisble;
         }
 
         public void UnExecute()
         {
-            currentLayer.IsVisible = !currentLayer.IsVisible;
+            layer.IsVisible = !isVisisble;
         }
 
     }

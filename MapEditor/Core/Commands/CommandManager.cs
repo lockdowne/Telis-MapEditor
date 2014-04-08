@@ -74,18 +74,28 @@ namespace MapEditor.Core.Commands
             RedoCommands.Clear();
         }
 
-        public void ExecuteLayerVisibility(Layer layer)
+        public void ExecuteLayerVisibility(Layer layer, bool isVisible)
         {
-            ICommand command = new LayerVisibilityCommand(layer);
+            ICommand command = new LayerVisibilityCommand(layer, isVisible);
+            command.Execute();
+
+            // This command does not have the need to be undoed
+            //UndoCommands.Push(command);
+            //RedoCommands.Clear();
+        }
+
+        public void ExecuteLayerClone(List<Layer> layers, int index)
+        {
+            ICommand command = new LayerCloneCommand(layers, index);
             command.Execute();
 
             UndoCommands.Push(command);
             RedoCommands.Clear();
         }
 
-        public void ExecuteLayerClone(List<Layer> layers, int index)
+        public void ExecuteLayerRaise(List<Layer> layers, int index, CheckedListBox checkedListBox)
         {
-            ICommand command = new LayerCloneCommand(layers, index);
+            ICommand command = new LayerRaiseCommand(layers, index, checkedListBox);
             command.Execute();
 
             UndoCommands.Push(command);
