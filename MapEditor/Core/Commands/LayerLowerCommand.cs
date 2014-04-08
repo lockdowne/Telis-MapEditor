@@ -7,7 +7,7 @@ using MapEditor.Models;
 
 namespace MapEditor.Core.Commands
 {
-    public class LayerLowerCommand
+    public class LayerLowerCommand : ICommand
     {
         private List<Layer> currentLayers;
 

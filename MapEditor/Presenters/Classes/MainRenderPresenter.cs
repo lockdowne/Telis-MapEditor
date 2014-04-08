@@ -294,6 +294,22 @@ namespace MapEditor.Presenters
             commandManager.ExecuteLayerClone(Layers, LayerIndex);
         }
 
+        public void RaiseLayer(CheckedListBox checkedListBox)
+        {
+            if (LayerIndex <= 0)
+                return;
+
+            commandManager.ExecuteLayerRaise(Layers, LayerIndex, checkedListBox);
+        }
+
+        public void LowerLayer(CheckedListBox checkedListBox)
+        {
+            if (LayerIndex >= Layers.Count - 1)
+                return;
+
+            commandManager.ExecuteLayerLower(Layers, LayerIndex, checkedListBox);
+        }
+
         public void SetLayerVisibility(bool isVisible)
         {
             commandManager.ExecuteLayerVisibility(Layers[LayerIndex], isVisible);

@@ -98,14 +98,18 @@ namespace MapEditor.Presenters
 
         void layerView_LayerIndexChanged(object sender, EventArgs e)
         {
-            // TODO: Need work around for rapid clicks and registering event 
+            // TODO: Need work around for rapid clicks and registering event, may seem buggy with different intervals between mouse clicks
+
             Console.WriteLine(layerView.CheckedListBox.SelectedIndex);
             CurrentMainPresenter.LayerIndex = layerView.CheckedListBox.SelectedIndex;
 
-            if (layerView.CheckedListBox.GetItemChecked(CurrentMainPresenter.LayerIndex))
-                CurrentMainPresenter.SetLayerVisibility(true);
-            else
-                CurrentMainPresenter.SetLayerVisibility(false);
+            if (CurrentMainPresenter.LayerIndex != -1)
+            {
+                if (layerView.CheckedListBox.GetItemChecked(CurrentMainPresenter.LayerIndex))
+                    CurrentMainPresenter.SetLayerVisibility(true);
+                else
+                    CurrentMainPresenter.SetLayerVisibility(false);
+            }
         }
         
         void layerView_LayerItemChecked(object sender, EventArgs e)
@@ -120,12 +124,12 @@ namespace MapEditor.Presenters
 
         void layerView_MoveLayerUp(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            CurrentMainPresenter.RaiseLayer(layerView.CheckedListBox);
         }
 
         void layerView_MoveLayerDown(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            CurrentMainPresenter.LowerLayer(layerView.CheckedListBox);
         }
 
         void layerView_AddLayerItem(object sender, EventArgs e)

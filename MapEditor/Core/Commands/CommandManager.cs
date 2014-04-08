@@ -98,9 +98,19 @@ namespace MapEditor.Core.Commands
             ICommand command = new LayerRaiseCommand(layers, index, checkedListBox);
             command.Execute();
 
-            UndoCommands.Push(command);
-            RedoCommands.Clear();
+            /*UndoCommands.Push(command);
+            RedoCommands.Clear();*/
         }
+
+        public void ExecuteLayerLower(List<Layer> layers, int index, CheckedListBox checkedListBox)
+        {
+            ICommand command = new LayerLowerCommand(layers, index, checkedListBox);
+            command.Execute();
+
+            /*UndoCommands.Push(command);
+             RedoCommands.Clear();*/
+        }
+
 
         public void ExecuteMapOffset(List<Layer> layers, int offsetX, int offsetY)
         {
