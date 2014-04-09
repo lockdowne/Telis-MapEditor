@@ -98,9 +98,9 @@ namespace MapEditor.Core.PaintTools
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, Tileset tileset)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            tileBrushes.Draw(spriteBatch, tileset);
+            tileBrushes.Draw(spriteBatch, presenter.Tilesets[presenter.TilesetIndex]);
         }
     }
 }

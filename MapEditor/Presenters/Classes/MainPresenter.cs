@@ -176,7 +176,7 @@ namespace MapEditor.Presenters
 
         void view_EditSelect(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            CurrentMainPresenter.SetPaintTool(PaintTool.Select);
         }
 
         void view_EditRemove(object sender, EventArgs e)

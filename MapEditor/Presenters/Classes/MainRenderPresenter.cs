@@ -24,12 +24,8 @@ namespace MapEditor.Presenters
         private Vector2 currentMousePosition;
         private Vector2 previousMousePosition;
 
-        private int mapWidth;
-        private int mapHeight;
-        private int tileWidth;
-        private int tileHeight;
 
-        private Texture2D pixel;        
+        public Texture2D Pixel { get; set; }       
 
         public List<Tileset> Tilesets = new List<Tileset>();
         public List<Layer> Layers = new List<Layer>();
@@ -41,12 +37,20 @@ namespace MapEditor.Presenters
         public int LayerIndex {  get; set; }
         public int TilesetIndex { get; set; }
 
+        public int MapWidth { get; private set; }
+        public int MapHeight { get; private set; }
+        public int TileWidth { get; private set; }
+        public int TileHeight { get; private set; }
+
+
         public Vector2? BeginSelectionBox { get; set; }
         public Vector2? EndSelectionBox { get; set; }        
 
         private IPaintTool[] paintTools;
 
         private PaintTool currentPaintTool;
+
+
 
         public Rectangle SelectionBox
         {
@@ -88,12 +92,12 @@ namespace MapEditor.Presenters
 
                 memoryStream.Seek(0, SeekOrigin.Begin);
 
-                pixel = Texture2D.FromStream(view.GetGraphicsDevice, memoryStream);
+                Pixel = Texture2D.FromStream(view.GetGraphicsDevice, memoryStream);
             }
 
             commandManager = new CommandManager();
 
-            paintTools = new IPaintTool[] { new DrawPaintTool(this), new ErasePaintTool(this) };
+            paintTools = new IPaintTool[] { new DrawPaintTool(this), new ErasePaintTool(this), new SelectPaintTool(this) };
         }
         
         void view_OnXnaMove(object sender, MouseEventArgs e)
@@ -108,6 +112,14 @@ namespace MapEditor.Presenters
        
         void view_OnXnaDown(object sender, MouseEventArgs e)
         {
+            switch (e.Button)
+            {
+                case MouseButtons.Right:
+                    SetPaintTool(PaintTool.Select);
+                    break;
+                    
+            }
+
             paintTools[(int)currentPaintTool].OnMouseDown(sender, e);
         }
 
@@ -124,13 +136,13 @@ namespace MapEditor.Presenters
 
 
             // Draw only viewport
-            int left = (int)Math.Floor(camera.Position.X / tileWidth);
-            int right = tileWidth + left + spriteBatch.GraphicsDevice.Viewport.Width / tileWidth;
-            right = Math.Min(right, mapWidth);
+            int left = (int)Math.Floor(camera.Position.X / TileWidth);
+            int right = TileWidth + left + spriteBatch.GraphicsDevice.Viewport.Width / TileWidth;
+            right = Math.Min(right, MapWidth);
 
-            int top = (int)Math.Floor(camera.Position.Y / tileHeight);
-            int bottom = tileHeight + top + spriteBatch.GraphicsDevice.Viewport.Height / tileHeight;
-            bottom = Math.Min(bottom, mapHeight);
+            int top = (int)Math.Floor(camera.Position.Y / TileHeight);
+            int bottom = TileHeight + top + spriteBatch.GraphicsDevice.Viewport.Height / TileHeight;
+            bottom = Math.Min(bottom, MapHeight);
 
             for (int y = top; y < bottom; y++)
             {
@@ -171,7 +183,7 @@ namespace MapEditor.Presenters
             }
 
             if (paintTools[(int)currentPaintTool] != null)
-                paintTools[(int)currentPaintTool].Draw(spriteBatch, Tilesets[TilesetIndex]);
+                paintTools[(int)currentPaintTool].Draw(spriteBatch);
 
             spriteBatch.End();
         }
@@ -201,10 +213,10 @@ namespace MapEditor.Presenters
 
             Layers.Add(new Layer(mapWidth, mapHeight));
 
-            this.mapWidth = mapWidth;
-            this.mapHeight = mapHeight;
-            this.tileWidth = tileWidth;
-            this.tileHeight = tileHeight;
+            this.MapWidth = mapWidth;
+            this.MapHeight = mapHeight;
+            this.TileWidth = tileWidth;
+            this.TileHeight = tileHeight;
 
             checkedListBox.Items.Add("Layer" + checkedListBox.Items.Count, true);
             //checkedListBox.SelectedIndex++;
@@ -224,7 +236,7 @@ namespace MapEditor.Presenters
 
         public void AddLayer(CheckedListBox checkedListBox)
         {
-            commandManager.ExecuteLayerAddCommand(Layers, mapWidth, mapHeight, checkedListBox);
+            commandManager.ExecuteLayerAddCommand(Layers, MapWidth, MapHeight, checkedListBox);
         }
 
         public void RemoveLayer(CheckedListBox checkedListBox)

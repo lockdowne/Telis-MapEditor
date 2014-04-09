@@ -15,6 +15,7 @@ namespace MapEditor.Core.PaintTools
     {
         Draw = 0,
         Erase = 1,
+        Select = 2,
     }
 
 
@@ -24,6 +25,6 @@ namespace MapEditor.Core.PaintTools
         void OnMouseMove(object sender, MouseEventArgs e);
         void OnMouseUp(object sender, MouseEventArgs e);
 
-        void Draw(SpriteBatch spriteBatch, Tileset tileset);
+        void Draw(SpriteBatch spriteBatch);
     }
 }
