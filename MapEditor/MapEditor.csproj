@@ -93,6 +93,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Core\PaintTools\DrawPaintTool.cs" />
+    <Compile Include="Core\PaintTools\ErasePaintTool.cs" />
     <Compile Include="Core\Program.cs" />
     <Compile Include="Models\Camera.cs" />
     <Compile Include="Models\Cell.cs" />

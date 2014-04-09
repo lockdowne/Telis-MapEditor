@@ -5,7 +5,9 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MapEditor.Core;
 using MapEditor.Core.Controls;
+using MapEditor.Core.PaintTools;
 using MapEditor.Models;
 using MapEditor.UI;
 
@@ -179,7 +181,7 @@ namespace MapEditor.Presenters
 
         void view_EditRemove(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            CurrentMainPresenter.SetPaintTool(PaintTool.Erase);
         }
 
         void view_EditPaste(object sender, EventArgs e)
@@ -189,7 +191,7 @@ namespace MapEditor.Presenters
 
         void view_EditDraw(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            CurrentMainPresenter.SetPaintTool(PaintTool.Draw);
         }
 
         void view_EditCut(object sender, EventArgs e)

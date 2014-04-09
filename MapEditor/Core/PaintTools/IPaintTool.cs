@@ -10,6 +10,14 @@ using MapEditor.Models;
 
 namespace MapEditor.Core.PaintTools
 {
+    [Flags]
+    public enum PaintTool
+    {
+        Draw = 0,
+        Erase = 1,
+    }
+
+
     public interface IPaintTool
     {
         void OnMouseDown(object sender, MouseEventArgs e);

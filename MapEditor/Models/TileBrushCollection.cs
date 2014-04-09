@@ -29,13 +29,16 @@ namespace MapEditor.Models
                         {
                             int tileID = brush.Brush[y, x];
 
-                            spriteBatch.Draw(tileset.Texture,
-                                                    new Rectangle(x * tileset.TileWidth + (tileset.TileWidth * (int)brush.Position.X),
-                                                        y * tileset.TileHeight + (tileset.TileHeight * (int)brush.Position.Y),
-                                                        tileset.TileWidth,
-                                                        tileset.TileHeight),
-                                                        tileset.GetSourceRectangle(tileID),
-                                                        Color.White * 0.5f);
+                            if (tileID > -1)
+                            {
+                                spriteBatch.Draw(tileset.Texture,
+                                                        new Rectangle(x * tileset.TileWidth + (tileset.TileWidth * (int)brush.Position.X),
+                                                            y * tileset.TileHeight + (tileset.TileHeight * (int)brush.Position.Y),
+                                                            tileset.TileWidth,
+                                                            tileset.TileHeight),
+                                                            tileset.GetSourceRectangle(tileID),
+                                                            Color.White * 0.5f);
+                            }
                         }
                     }
                 });

@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MapEditor.Core;
 using MapEditor.Core.Commands;
 using MapEditor.Core.PaintTools;
 using MapEditor.UI;
@@ -41,9 +42,11 @@ namespace MapEditor.Presenters
         public int TilesetIndex { get; set; }
 
         public Vector2? BeginSelectionBox { get; set; }
-        public Vector2? EndSelectionBox { get; set; }
+        public Vector2? EndSelectionBox { get; set; }        
 
-        public IPaintTool paintTool;
+        private IPaintTool[] paintTools;
+
+        private PaintTool currentPaintTool;
 
         public Rectangle SelectionBox
         {
@@ -90,22 +93,22 @@ namespace MapEditor.Presenters
 
             commandManager = new CommandManager();
 
-            paintTool = new DrawPaintTool(this);
+            paintTools = new IPaintTool[] { new DrawPaintTool(this), new ErasePaintTool(this) };
         }
         
         void view_OnXnaMove(object sender, MouseEventArgs e)
         {
-            paintTool.OnMouseMove(sender, e);
+            paintTools[(int)currentPaintTool].OnMouseMove(sender, e);
         }
 
         void view_OnXnaUp(object sender, MouseEventArgs e)
         {
-            paintTool.OnMouseUp(sender, e);
+            paintTools[(int)currentPaintTool].OnMouseUp(sender, e);
         }
        
         void view_OnXnaDown(object sender, MouseEventArgs e)
         {
-            paintTool.OnMouseDown(sender, e);
+            paintTools[(int)currentPaintTool].OnMouseDown(sender, e);
         }
 
         void view_OnInitialize()
@@ -167,10 +170,15 @@ namespace MapEditor.Presenters
                 }
             }
 
-            if (paintTool != null)
-                paintTool.Draw(spriteBatch, Tilesets[TilesetIndex]);
+            if (paintTools[(int)currentPaintTool] != null)
+                paintTools[(int)currentPaintTool].Draw(spriteBatch, Tilesets[TilesetIndex]);
 
             spriteBatch.End();
+        }
+
+        public void SetPaintTool(PaintTool paintTool)
+        {
+            this.currentPaintTool = paintTool;
         }
 
         public void InitializeMap(string texturePath, int tileWidth, int tileHeight, int mapWidth, int mapHeight, CheckedListBox checkedListBox)
@@ -211,6 +219,9 @@ namespace MapEditor.Presenters
         {
             
         }
+
+       
+
         public void AddLayer(CheckedListBox checkedListBox)
         {
             commandManager.ExecuteLayerAddCommand(Layers, mapWidth, mapHeight, checkedListBox);
@@ -256,6 +267,14 @@ namespace MapEditor.Presenters
                 return;
 
             commandManager.ExecuteEditDrawCommand(Layers[LayerIndex], tileBrushes.TileBrushes); 
+        } 
+        
+        public void RemoveTiles(TileBrushCollection tileBrushes)
+        {
+            if (Layers.Count <= 0)
+                return;
+
+            commandManager.ExecuteEditRemoveCommand(Layers[LayerIndex], tileBrushes.TileBrushes);
         }
 
         public void OffsetMap(int offsetX, int offsetY)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using MapEditor.Core.PaintTools;
 
 namespace MapEditor.Presenters
 {
@@ -13,6 +14,7 @@ namespace MapEditor.Presenters
         int LayerIndex {  get; set; }
         int TilesetIndex { get; set; }
 
+        void SetPaintTool(PaintTool paintTool);
         void InitializeMap(string texturePath, int tileWidth, int tileHeight, int mapWidth, int mapHeight, CheckedListBox checkedListBox);
         void AddTileset(string path, int tileWidth, int tileHeight);
         void RemoveTileset();

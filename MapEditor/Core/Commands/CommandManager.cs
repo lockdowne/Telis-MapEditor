@@ -51,6 +51,15 @@ namespace MapEditor.Core.Commands
             RedoCommands.Clear();
         }
 
+        public void ExecuteEditRemoveCommand(Layer layer, List<TileBrush> tileBrushes)
+        {
+            ICommand command = new EditRemoveCommand(layer, tileBrushes);
+            command.Execute();
+
+            UndoCommands.Push(command);
+            RedoCommands.Clear();
+        }
+
         public void ExecuteAddTilesetCommand()
         {
             //ICommand command = new MapAddTilesetCommand(
