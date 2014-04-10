@@ -262,6 +262,7 @@ namespace MapEditor.UI
             this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
             this.redoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.redoToolStripMenuItem.Text = "Redo";
+            this.redoToolStripMenuItem.Click += new System.EventHandler(this.redoToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
@@ -523,6 +524,12 @@ namespace MapEditor.UI
         {
             if (EditSelect != null)
                 EditSelect(sender, e);
+        }
+
+        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Redo != null)
+                Redo(sender, e);
         }
     }
 }
