@@ -7,6 +7,8 @@ using System.Windows.Forms;
 
 namespace MapEditor.Core.Controls
 {
+    //This class is to modify the TabControl Class 
+    //Making tabs closable
     public class ClosableTabControl : TabControl
     {
         public ClosableTabControl()
