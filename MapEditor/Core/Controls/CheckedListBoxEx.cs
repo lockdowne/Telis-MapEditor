@@ -9,6 +9,7 @@ using System.Windows.Forms;
 
 namespace MapEditor.Core.Controls
 {
+    //This class is just in case we decided to modify the CheckedListBox class
     public partial class CheckedListBoxEx : CheckedListBox
     {
         protected override void OnDoubleClick(EventArgs e)
