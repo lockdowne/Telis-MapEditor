@@ -34,6 +34,8 @@ namespace MapEditor.Presenters
 
         public int[,] TileBrushValues { get; set; }
 
+        public List<int[,]> Clipboard;
+
         public int LayerIndex {  get; set; }
         public int TilesetIndex { get; set; }
 
@@ -83,6 +85,8 @@ namespace MapEditor.Presenters
                 Rotation = 0f,
                 Zoom = 1f,
             };
+
+            Clipboard = new List<int[,]>();
 
             using (MemoryStream memoryStream = new MemoryStream())
             {
@@ -238,7 +242,9 @@ namespace MapEditor.Presenters
             {
                 if (!SelectionBox.IsEmpty)
                 {
-                    commandManager.ExecuteEditCopyCommand(Layers[LayerIndex], SelectionBox, TileWidth, TileHeight, TileBrushValues);
+                    commandManager.ExecuteEditCopyCommand(Layers[LayerIndex], SelectionBox, TileWidth, TileHeight, Clipboard);
+
+                    TileBrushValues = Clipboard.FirstOrDefault();
 
                     SetPaintTool(PaintTool.Draw);
                 }

@@ -60,7 +60,7 @@ namespace MapEditor.Core.Commands
             RedoCommands.Clear();
         }
 
-        public void ExecuteEditCopyCommand(Layer layer, Rectangle selectionBox, int tileWidth, int tileHeight, int[,] tileBrush)
+        public void ExecuteEditCopyCommand(Layer layer, Rectangle selectionBox, int tileWidth, int tileHeight, List<int[,]> tileBrush)
         {
             ICommand command = new EditCopyCommand(layer, selectionBox, tileWidth, tileHeight, tileBrush);
             command.Execute();

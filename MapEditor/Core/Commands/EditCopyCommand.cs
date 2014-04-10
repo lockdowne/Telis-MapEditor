@@ -13,21 +13,21 @@ namespace MapEditor.Core.Commands
 
         private Rectangle selectionBox;
 
-        private int[,] tileBrush;
-
         private int tileWidth;
         private int tileHeight;
 
-        public EditCopyCommand(Layer layer, Rectangle selectionBox, int tileWidth, int tileHeight, int[,] tileBrush)
+        private List<int[,]> clipboard;
+
+        public EditCopyCommand(Layer layer, Rectangle selectionBox, int tileWidth, int tileHeight, List<int[,]> clipboard)
         {
             this.layer = layer;
 
             this.selectionBox = selectionBox;
 
-            this.tileBrush = tileBrush;
-
             this.tileWidth = tileWidth;
             this.tileHeight = tileHeight;
+
+            this.clipboard = clipboard;
         }
 
         public void Execute()
@@ -42,7 +42,7 @@ namespace MapEditor.Core.Commands
                 }
             }
 
-            tileBrush = brush;
+            clipboard.Add(brush);
 
         }
 
