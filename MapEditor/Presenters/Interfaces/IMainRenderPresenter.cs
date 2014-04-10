@@ -23,6 +23,7 @@ namespace MapEditor.Presenters
         void SetLayerVisibility(bool isVisible);
         void RaiseLayer(CheckedListBox checkedListBox);
         void LowerLayer(CheckedListBox checkedListBox);
+        void CopySelection();
     
     }
 }

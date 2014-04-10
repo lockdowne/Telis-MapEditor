@@ -232,7 +232,18 @@ namespace MapEditor.Presenters
             
         }
 
-       
+        public void CopySelection()
+        {
+            if (currentPaintTool == PaintTool.Select)
+            {
+                if (!SelectionBox.IsEmpty)
+                {
+                    commandManager.ExecuteEditCopyCommand(Layers[LayerIndex], SelectionBox, TileWidth, TileHeight, TileBrushValues);
+
+                    SetPaintTool(PaintTool.Draw);
+                }
+            }
+        }
 
         public void AddLayer(CheckedListBox checkedListBox)
         {

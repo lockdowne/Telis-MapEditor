@@ -60,6 +60,14 @@ namespace MapEditor.Core.Commands
             RedoCommands.Clear();
         }
 
+        public void ExecuteEditCopyCommand(Layer layer, Rectangle selectionBox, int tileWidth, int tileHeight, int[,] tileBrush)
+        {
+            ICommand command = new EditCopyCommand(layer, selectionBox, tileWidth, tileHeight, tileBrush);
+            command.Execute();
+
+            // No undo/redo
+        }
+
         public void ExecuteAddTilesetCommand()
         {
             //ICommand command = new MapAddTilesetCommand(

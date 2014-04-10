@@ -201,7 +201,7 @@ namespace MapEditor.Presenters
 
         void view_EditCopy(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            CurrentMainPresenter.CopySelection();
         }
 
         void view_LayerAdd(object sender, EventArgs e)
