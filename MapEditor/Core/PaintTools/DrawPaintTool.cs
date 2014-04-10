@@ -12,7 +12,8 @@ using MapEditor.Models;
 namespace MapEditor.Core.PaintTools
 {
     /// <summary>
-    /// Map state to enable drawing tilebrushes to map
+    ///Paint brush tool state. Changes the map state to paint brush.
+    ///Map state to enable drawing tilebrushes to map
     /// </summary>
     public class DrawPaintTool : IPaintTool
     {
