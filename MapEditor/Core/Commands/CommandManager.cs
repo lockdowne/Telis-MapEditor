@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +10,7 @@ using MapEditor.Models;
 namespace MapEditor.Core.Commands
 {
     /// <summary>
-    /// Manages all commands to execute, undo, and redo
+    /// Manages all commands. Keeps track of commands in stack to execute, undo, and redo
     /// </summary>
     public class CommandManager
     {
