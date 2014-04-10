@@ -24,6 +24,9 @@ namespace MapEditor.Presenters
         void RaiseLayer(CheckedListBox checkedListBox);
         void LowerLayer(CheckedListBox checkedListBox);
         void CopySelection();
+        void CutSelection();
+        void Undo();
+        void Redo();
     
     }
 }

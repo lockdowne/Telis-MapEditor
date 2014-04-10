@@ -8,29 +8,29 @@ namespace MapEditor.Core.Commands
 {
     public class EditDrawCommand : ICommand
     {
-        private Layer currentLayer;
-        private Layer previousLayer;
+        private Layer layer;
 
-        private List<TileBrush> tileBrushes;
+        private List<TileBrush> currentTileBrushes;
+        private List<TileBrush> previousTileBrushes;
 
         public EditDrawCommand(Layer layer, List<TileBrush> brushes)
         {
-            currentLayer = layer;
+            this.layer = layer;
 
-            tileBrushes = brushes;
+            this.currentTileBrushes = brushes;
         }
 
         public void Execute()
         {
-            previousLayer = currentLayer;
+            previousTileBrushes = currentTileBrushes;
 
-            tileBrushes.ForEach(brush =>
+            currentTileBrushes.ForEach(brush =>
                 {
                     for (int y = 0; y < brush.Brush.GetLength(0); y++)
                     {
                         for (int x = 0; x < brush.Brush.GetLength(1); x++)
                         {
-                            currentLayer.Rows[(int)(y + brush.Position.Y)].Columns[(int)(x + brush.Position.X)].TileID = brush.Brush[y, x];
+                            layer.Rows[(int)(y + brush.Position.Y)].Columns[(int)(x + brush.Position.X)].TileID = brush.Brush[y, x];
                         }
                     }
                 });
@@ -38,7 +38,7 @@ namespace MapEditor.Core.Commands
 
         public void UnExecute()
         {
-            currentLayer = previousLayer;
+            
         }
 
     }

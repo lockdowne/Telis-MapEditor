@@ -16,6 +16,8 @@ namespace MapEditor.Presenters
 {
     public class MainRenderPresenter : IMainRenderPresenter
     {
+        #region Fields
+
         private readonly IXnaRenderView view;
 
         private Camera camera;
@@ -27,10 +29,13 @@ namespace MapEditor.Presenters
 
         public Texture2D Pixel { get; set; }       
 
-        public List<Tileset> Tilesets = new List<Tileset>();
-        public List<Layer> Layers = new List<Layer>();
+     
 
         private CommandManager commandManager;
+
+        #endregion
+
+        #region Properties
 
         public int[,] TileBrushValues { get; set; }
 
@@ -44,6 +49,8 @@ namespace MapEditor.Presenters
         public int TileWidth { get; private set; }
         public int TileHeight { get; private set; }
 
+        public List<Tileset> Tilesets = new List<Tileset>();
+        public List<Layer> Layers = new List<Layer>();
 
         public Vector2? BeginSelectionBox { get; set; }
         public Vector2? EndSelectionBox { get; set; }        
@@ -67,6 +74,10 @@ namespace MapEditor.Presenters
                    (int)Math.Abs(BeginSelectionBox.Value.Y - EndSelectionBox.Value.Y));
             }
         }
+
+        #endregion
+
+        #region Initialize
 
         public MainRenderPresenter(IXnaRenderView view)
         {
@@ -103,7 +114,11 @@ namespace MapEditor.Presenters
 
             paintTools = new IPaintTool[] { new DrawPaintTool(this), new ErasePaintTool(this), new SelectPaintTool(this) };
         }
-        
+
+        #endregion
+
+        #region Events
+
         void view_OnXnaMove(object sender, MouseEventArgs e)
         {
             paintTools[(int)currentPaintTool].OnMouseMove(sender, e);
@@ -192,6 +207,10 @@ namespace MapEditor.Presenters
             spriteBatch.End();
         }
 
+        #endregion
+
+        #region Methods
+
         public void SetPaintTool(PaintTool paintTool)
         {
             this.currentPaintTool = paintTool;
@@ -236,6 +255,12 @@ namespace MapEditor.Presenters
             
         }
 
+        private void ClearSelectionBox()
+        {
+            BeginSelectionBox = null;
+            EndSelectionBox = null;
+        }
+
         public void CopySelection()
         {
             if (currentPaintTool == PaintTool.Select)
@@ -246,7 +271,30 @@ namespace MapEditor.Presenters
 
                     TileBrushValues = Clipboard.FirstOrDefault();
 
+                    Clipboard.Clear();
+
                     SetPaintTool(PaintTool.Draw);
+
+                    ClearSelectionBox();
+                }
+            }
+        }
+
+        public void CutSelection()
+        {
+            if (currentPaintTool == PaintTool.Select)
+            {
+                if (!SelectionBox.IsEmpty)
+                {
+                    commandManager.ExecuteEditCutCommand(Layers[LayerIndex], SelectionBox, TileWidth, TileHeight, Clipboard);
+
+                    TileBrushValues = Clipboard.FirstOrDefault();
+
+                    Clipboard.Clear();
+
+                    SetPaintTool(PaintTool.Draw);
+
+                    ClearSelectionBox();                                       
                 }
             }
         }
@@ -362,5 +410,7 @@ namespace MapEditor.Presenters
         {
             return Vector2.Transform(new Vector2(point.X, point.Y), Matrix.Invert(camera.CameraTransformation));
         }
+
+        #endregion
     }
 }

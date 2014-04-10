@@ -62,6 +62,8 @@ namespace MapEditor.Presenters
             view.LayerVisibility += new EventHandler(view_LayerVisibility);
             view.MapOffset += new EventHandler(view_MapOffset);
             view.MapResize += new EventHandler(view_MapResize);
+            view.Undo += new EventHandler(view_Undo);
+            view.Redo += new EventHandler(view_Redo);
 
             layerView.AddLayerItem += new EventHandler(layerView_AddLayerItem);
             layerView.MoveLayerDown += new EventHandler(layerView_MoveLayerDown);
@@ -93,10 +95,24 @@ namespace MapEditor.Presenters
         }
 
         
+
+        
+
+        
         
         #endregion
 
         #region Events
+
+        void view_Redo(object sender, EventArgs e)
+        {
+            CurrentMainPresenter.Redo();
+        }
+
+        void view_Undo(object sender, EventArgs e)
+        {
+            CurrentMainPresenter.Undo();
+        }
 
         void layerView_LayerIndexChanged(object sender, EventArgs e)
         {
@@ -196,7 +212,7 @@ namespace MapEditor.Presenters
 
         void view_EditCut(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            CurrentMainPresenter.CutSelection();
         }
 
         void view_EditCopy(object sender, EventArgs e)

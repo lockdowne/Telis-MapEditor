@@ -60,12 +60,21 @@ namespace MapEditor.Core.Commands
             RedoCommands.Clear();
         }
 
-        public void ExecuteEditCopyCommand(Layer layer, Rectangle selectionBox, int tileWidth, int tileHeight, List<int[,]> tileBrush)
+        public void ExecuteEditCopyCommand(Layer layer, Rectangle selectionBox, int tileWidth, int tileHeight, List<int[,]> clipboard)
         {
-            ICommand command = new EditCopyCommand(layer, selectionBox, tileWidth, tileHeight, tileBrush);
+            ICommand command = new EditCopyCommand(layer, selectionBox, tileWidth, tileHeight, clipboard);
             command.Execute();
 
             // No undo/redo
+        }
+
+        public void ExecuteEditCutCommand(Layer layer, Rectangle selectionBox, int tileWidth, int tileHeight, List<int[,]> clipboard)
+        {
+            ICommand command = new EditCutCommand(layer, selectionBox, tileWidth, tileHeight, clipboard);
+            command.Execute();
+
+            UndoCommands.Push(command);
+            RedoCommands.Clear();
         }
 
         public void ExecuteAddTilesetCommand()
