@@ -12,5 +12,9 @@ namespace MapEditor.UI
 
         int OffsetX { get; }
         int OffsetY { get; }
+
+        void ShowForm();
+        void CloseForm();
+
     }
 }

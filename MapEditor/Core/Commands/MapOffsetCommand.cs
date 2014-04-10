@@ -6,26 +6,41 @@ using MapEditor.Models;
 
 namespace MapEditor.Core.Commands
 {
-    public class MapOffsetCommand : ICommand 
+    /// <summary>
+    /// Command that offsets map by number of tiles
+    /// </summary>
+    public class MapOffsetCommand : ICommand
     {
+        #region Fields
+
         private List<Layer> currentLayers;
         private List<Layer> previousLayers;
 
         private int offsetX;
         private int offsetY;
 
+        #endregion
+
+        #region Initialize
+
         public MapOffsetCommand(List<Layer> layers, int offsetX, int offsetY)
         {
-            currentLayers = layers;
+            this.currentLayers = layers;
+            this.previousLayers = new List<Layer>(layers.AsEnumerable());
 
             this.offsetX = offsetX;
             this.offsetY = offsetY;
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Offset all layers
+        /// </summary>
         public void Execute()
         {
-            previousLayers = currentLayers;
-
             List<Layer> newLayers = new List<Layer>();
 
             currentLayers.ForEach(layer =>
@@ -45,12 +60,19 @@ namespace MapEditor.Core.Commands
 
                 });
 
-            currentLayers = newLayers;
+            currentLayers.Clear();
+            currentLayers.AddRange(newLayers.AsEnumerable());
         }
 
+        /// <summary>
+        /// Inverse of execute method
+        /// </summary>
         public void UnExecute()
         {
-            currentLayers = previousLayers;
+            currentLayers.Clear();
+            currentLayers.AddRange(previousLayers.AsEnumerable());
         }
+
+        #endregion
     }
 }

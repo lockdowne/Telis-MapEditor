@@ -7,7 +7,7 @@ using System.Windows.Forms;
 namespace MapEditor.UI
 {
     /// <summary>
-    /// Layer UI
+    /// Base for layer UI
     /// </summary>
     public interface ILayerView
     {

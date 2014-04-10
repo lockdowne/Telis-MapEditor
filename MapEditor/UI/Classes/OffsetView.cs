@@ -9,8 +9,13 @@ using System.Windows.Forms;
 
 namespace MapEditor.UI
 {
+    /// <summary>
+    /// Offset UI
+    /// </summary>
     public class OffsetView : Form, IOffsetView
     {
+        #region Fields
+
         public event EventHandler OnConfirm;
         public event EventHandler OnCancel;
 
@@ -24,19 +29,9 @@ namespace MapEditor.UI
 
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        #endregion
 
+        #region Properties
 
         public int OffsetX
         {
@@ -47,6 +42,10 @@ namespace MapEditor.UI
         {
             get { return (int)numericUpDownEx2.Value; }
         }
+
+        #endregion
+
+        #region Initialize
 
         public OffsetView()
         {
@@ -160,6 +159,10 @@ namespace MapEditor.UI
 
         #endregion
 
+        #endregion
+
+        #region Events
+
         private void buttonConfirm_Click(object sender, EventArgs e)
         {
             if (OnConfirm != null)
@@ -172,6 +175,34 @@ namespace MapEditor.UI
                 OnCancel(sender, e);
         }
 
+        #endregion
 
+        #region Methods
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        public void ShowForm()
+        {
+            this.ShowDialog();
+        }
+
+        public void CloseForm()
+        {
+            this.Close();
+        }
+
+
+        #endregion
     }
 }

@@ -7,43 +7,62 @@ using MapEditor.Models;
 
 namespace MapEditor.Core.Commands
 {
+    /// <summary>
+    /// Remove layer from map and view
+    /// </summary>
     public class LayerRemoveCommand : ICommand
     {
-        private List<Layer> currentLayers;
+        #region Fields
 
-        private Layer currentLayer;
+        private List<Layer> layers;
 
-        private int index;
+        private Layer layer;
+
+        private int layerIndex;
 
         private CheckedListBox checkedListBox;
 
-        private object currentCheckedListBoxItem;
+        private object checkedListBoxItem;
 
-        public LayerRemoveCommand(List<Layer> layers, int removeIndex, CheckedListBox box)
+        #endregion
+
+        #region Initialize
+
+        public LayerRemoveCommand(List<Layer> layers, int layerIndex, CheckedListBox checkedListBox)
         {
-            currentLayers = layers;
+            this.layers = layers;
 
-            currentLayer = layers[removeIndex];
+            this.layer = layers[layerIndex];
 
-            checkedListBox = box;
+            this.checkedListBox = checkedListBox;
 
-            currentCheckedListBoxItem = box.Items[removeIndex];
+            this.checkedListBoxItem = checkedListBox.Items[layerIndex];
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Remove selected layer from and view
+        /// </summary>
         public void Execute()
         {
-            currentLayers.RemoveAt(index);
+            layers.RemoveAt(layerIndex);
 
-            checkedListBox.Items.RemoveAt(index);
+            checkedListBox.Items.RemoveAt(layerIndex);
         }
 
+        /// <summary>
+        /// Inverse of execute method
+        /// </summary>
         public void UnExecute()
         {
-            currentLayers.Insert(index, currentLayer);
+            layers.Insert(layerIndex, layer);
 
-            checkedListBox.Items.Insert(index, currentCheckedListBoxItem);
+            checkedListBox.Items.Insert(layerIndex, checkedListBoxItem);
         }
 
-        
+        #endregion
     }
 }

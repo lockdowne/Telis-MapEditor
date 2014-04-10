@@ -25,8 +25,9 @@ namespace MapEditor.Presenters
 
         private Dictionary<string, IMainRenderPresenter> MainPresenters = new Dictionary<string, IMainRenderPresenter>();
 
-        private FileNewPresenter fileNewPresenter;
-        private TilesetPresenter tilesetPresenter;
+        private IFileNewPresenter fileNewPresenter;
+        private ITilesetPresenter tilesetPresenter;
+        private IOffsetPresenter offsetPresenter;
         
 
         #endregion
@@ -77,10 +78,13 @@ namespace MapEditor.Presenters
 
             fileNewPresenter = new FileNewPresenter(new FileNewView());
             tilesetPresenter = new TilesetPresenter(new TilesetView());
+            offsetPresenter = new OffsetPresenter(new OffsetView());
 
             fileNewPresenter.Confirmed += fileNewPresenter_Confirmed;            
 
             tilesetPresenter.SendTileBrushValues += (brush) => CurrentMainPresenter.TileBrushValues = brush;
+
+            offsetPresenter.Confirm += new EventHandler(offsetPresenter_Confirm);
 
          
 
@@ -95,10 +99,17 @@ namespace MapEditor.Presenters
             v.OnInitialize += () => System.Windows.Forms.MessageBox.Show("WORKS");
             ((MainView)view).Controls.Add((System.Windows.Forms.Control)v); */
         }
+
+       
         
         #endregion
 
         #region Events
+ 
+        void offsetPresenter_Confirm(object sender, EventArgs e)
+        {
+            CurrentMainPresenter.OffsetMap(offsetPresenter.OffsetX, offsetPresenter.OffsetY);
+        }
 
         void layerView_DuplicateLayer(object sender, EventArgs e)
         {
@@ -163,7 +174,7 @@ namespace MapEditor.Presenters
 
         void view_MapOffset(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            offsetPresenter.Load();
         }
 
         void view_LayerVisibility(object sender, EventArgs e)
@@ -178,17 +189,17 @@ namespace MapEditor.Presenters
 
         void view_LayerRaise(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         void view_LayerLower(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         void view_LayerClone(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         void view_EditSelect(object sender, EventArgs e)
@@ -203,7 +214,7 @@ namespace MapEditor.Presenters
 
         void view_EditPaste(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         void view_EditDraw(object sender, EventArgs e)

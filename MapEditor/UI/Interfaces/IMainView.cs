@@ -6,6 +6,9 @@ using MapEditor.Core.Helpers;
 
 namespace MapEditor.UI
 {
+    /// <summary>
+    /// Base for main UI
+    /// </summary>
     public interface IMainView
     {
         event EventHandler FileNew;

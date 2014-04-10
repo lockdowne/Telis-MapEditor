@@ -6,34 +6,55 @@ using MapEditor.Models;
 
 namespace MapEditor.Core.Commands
 {
+    /// <summary>
+    /// Command that sets the dimensions of the tiles
+    /// </summary>
     public class TileResizeCommand : ICommand
     {
-        private List<Tileset> currentTilesets;
+        #region Fields
+
+        private List<Tileset> tilesets;
 
         private int currentWidth;
         private int currentHeight;
         private int previousWidth;
         private int previousHeight;
 
+        #endregion
+
+        #region Initialize
+
         public TileResizeCommand(List<Tileset> tilesets, int tileWidth, int tileHeight)
         {
-            currentTilesets = tilesets;
+            this.tilesets = tilesets;
 
             currentWidth = tileWidth;
             currentHeight = tileHeight;
+            
+            previousWidth = tilesets.FirstOrDefault().TileWidth;
+            previousHeight = tilesets.FirstOrDefault().TileHeight;
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Resize tiles
+        /// </summary>
         public void Execute()
-        {
-            previousWidth = currentTilesets.FirstOrDefault().TileWidth;
-            previousHeight = currentTilesets.FirstOrDefault().TileHeight;
-
-            currentTilesets.ForEach(tile => { tile.TileWidth = currentWidth; tile.TileHeight = currentHeight; });
+        {           
+            tilesets.ForEach(tile => { tile.TileWidth = currentWidth; tile.TileHeight = currentHeight; });
         }
 
+        /// <summary>
+        /// Inverse of execute method
+        /// </summary>
         public void UnExecute()
         {
-            currentTilesets.ForEach(tile => { tile.TileWidth = previousWidth; tile.TileHeight = previousHeight; });
+            tilesets.ForEach(tile => { tile.TileWidth = previousWidth; tile.TileHeight = previousHeight; });
         }
+
+        #endregion
     }
 }

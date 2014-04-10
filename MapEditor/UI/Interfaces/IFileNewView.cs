@@ -7,6 +7,9 @@ using MapEditor.UI;
 
 namespace MapEditor.UI
 {
+    /// <summary>
+    /// Base for new view
+    /// </summary>
     public interface IFileNewView
     {
         event EventHandler Browse;

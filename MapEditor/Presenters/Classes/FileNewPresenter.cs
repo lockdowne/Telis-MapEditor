@@ -13,43 +13,39 @@ namespace MapEditor.Presenters
     /// </summary>
     public class FileNewPresenter : IFileNewPresenter
     {
-        // Form associated with presenter
+        #region Fields
+
         private readonly IFileNewView view;
 
-        // OK button pressed in view
         public event Action Confirmed;
-          
-        // File name
+
+        #endregion
+
         public string MapName
         {
             get { return view.GetFileName; }
         }
 
-        // Tileset directory
         public string TilesetPath
         {
             get { return view.GetTilesetPath; }
         }
 
-        // Map width
         public int MapWidth
         {
             get { return view.GetMapWidth; }
         }
-
-        // Map height
+   
         public int MapHeight
         {
             get { return view.GetMapHeight; }
         }
-
-        // Tile width
+      
         public int TileWidth
         {
             get { return view.GetTileWidth; }
         }
 
-        // Tile height
         public int TileHeight
         {
             get { return view.GetTileHeight; }
@@ -59,7 +55,6 @@ namespace MapEditor.Presenters
         {
             this.view = view;
 
-            // Suscribe events
             view.Browse += new EventHandler(Browse);
             view.Confirm += new EventHandler(Confirm);
             view.Cancel += new EventHandler(Cancel);

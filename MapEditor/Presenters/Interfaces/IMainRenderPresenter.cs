@@ -26,6 +26,7 @@ namespace MapEditor.Presenters
         void LowerLayer(CheckedListBox checkedListBox);
         void CopySelection();
         void CutSelection();
+        void OffsetMap(int offsetX, int offsetY);
         void Undo();
         void Redo();
 

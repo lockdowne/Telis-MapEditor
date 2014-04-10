@@ -11,6 +11,7 @@ namespace MapEditor.Presenters
     {
         event Action Confirmed;
 
+        string MapName { get; }
         string TilesetPath { get; }
 
         int MapWidth { get; }
