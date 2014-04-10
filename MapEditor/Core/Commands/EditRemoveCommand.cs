@@ -7,12 +7,21 @@ using MapEditor.Models;
 
 namespace MapEditor.Core.Commands
 {
+    /// <summary>
+    /// Command removes selected tiles
+    /// </summary>
     public class EditRemoveCommand : ICommand
     {
+        #region Fields
+
         private Layer layer;
 
         private List<TileBrush> currentTileBrushes;
         private List<TileBrush> previousTileBrushes;
+
+        #endregion
+
+        #region Initialize
 
         public EditRemoveCommand(Layer layer, List<TileBrush> brushes)
         {
@@ -23,6 +32,13 @@ namespace MapEditor.Core.Commands
             this.previousTileBrushes = new List<TileBrush>();
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Store previous tiles and replace them with new tilebrushes
+        /// </summary>
         public void Execute()
         {
             currentTileBrushes.ForEach(brush =>
@@ -60,6 +76,9 @@ namespace MapEditor.Core.Commands
             });
         }
 
+        /// <summary>
+        /// Inverse of execute method
+        /// </summary>
         public void UnExecute()
         {
             previousTileBrushes.ForEach(brush =>
@@ -73,5 +92,7 @@ namespace MapEditor.Core.Commands
                 }
             });
         }
+
+        #endregion
     }
 }

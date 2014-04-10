@@ -11,11 +11,22 @@ using MapEditor.UI;
 
 namespace MapEditor.Presenters
 {
+    /// <summary>
+    /// Delegates multiple tileset presenters
+    /// </summary>
     public class TilesetPresenter : ITilesetPresenter
     {
+        #region Fields
+
+        private readonly ITilesetView view;
+
         public event Action<int[,]> SendTileBrushValues;
 
         private Dictionary<string, ITilesetRenderPresenter> Presenters = new Dictionary<string, ITilesetRenderPresenter>();
+
+        #endregion
+
+        #region Properties
 
         public ITilesetRenderPresenter CurrentPresenter
         {
@@ -24,15 +35,28 @@ namespace MapEditor.Presenters
                 return Presenters[view.GetCurrentView.KeyName];
             }
         }
-        
-        private readonly ITilesetView view;
+
+        #endregion
+
+        #region Initialize
 
         public TilesetPresenter(ITilesetView view)
         {
             this.view = view;            
         }
 
-      
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Add a new tab to tileset view and tileset presenter
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="renderView"></param>
+        /// <param name="tilesetPath"></param>
+        /// <param name="tileWidth"></param>
+        /// <param name="tileHeight"></param>
         public void AddPresenter(string name, IXnaRenderView renderView, string tilesetPath, int tileWidth, int tileHeight)
         {
             if (Presenters.ContainsKey(name))
@@ -53,9 +77,15 @@ namespace MapEditor.Presenters
 
         }
 
+        /// <summary>
+        /// Show form
+        /// </summary>
+        /// <param name="parent"></param>
         public void LoadForm(IMainView parent)
         {
             view.ShowForm(parent);
         }
+
+        #endregion
     }
 }

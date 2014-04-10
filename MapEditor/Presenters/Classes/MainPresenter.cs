@@ -14,7 +14,7 @@ using MapEditor.UI;
 namespace MapEditor.Presenters
 {
     /// <summary>
-    /// Parent to all forms
+    /// Main holder of logic between UIs and Models
     /// </summary>
     public class MainPresenter
     {
@@ -32,7 +32,9 @@ namespace MapEditor.Presenters
         #endregion
 
         #region Properties
-        
+        /// <summary>
+        /// Get current map presenter
+        /// </summary>
         public IMainRenderPresenter CurrentMainPresenter
         {
             get { return MainPresenters[view.GetCurrentView.KeyName]; }
@@ -71,7 +73,7 @@ namespace MapEditor.Presenters
             layerView.RemoveLayerItem += new EventHandler(layerView_RemoveLayerItem);
             layerView.LayerItemChecked += new EventHandler(layerView_LayerItemChecked);
             layerView.LayerIndexChanged += new EventHandler(layerView_LayerIndexChanged);
-            
+            layerView.DuplicateLayer += new EventHandler(layerView_DuplicateLayer);
 
             fileNewPresenter = new FileNewPresenter(new FileNewView());
             tilesetPresenter = new TilesetPresenter(new TilesetView());
@@ -93,16 +95,15 @@ namespace MapEditor.Presenters
             v.OnInitialize += () => System.Windows.Forms.MessageBox.Show("WORKS");
             ((MainView)view).Controls.Add((System.Windows.Forms.Control)v); */
         }
-
-        
-
-        
-
-        
         
         #endregion
 
         #region Events
+
+        void layerView_DuplicateLayer(object sender, EventArgs e)
+        {
+            CurrentMainPresenter.CloneLayer(layerView.CheckedListBox);
+        }
 
         void view_Redo(object sender, EventArgs e)
         {
@@ -244,8 +245,18 @@ namespace MapEditor.Presenters
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
+        /// <summary>
+        /// Add new tab with presenter to main view
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="renderView"></param>
+        /// <param name="tilesetPath"></param>
+        /// <param name="tileWidth"></param>
+        /// <param name="tileHeight"></param>
+        /// <param name="mapWidth"></param>
+        /// <param name="mapHeight"></param>
         public void AddMainPresenter(string name, IXnaRenderView renderView, string tilesetPath, int tileWidth, int tileHeight, int mapWidth, int mapHeight)
         {
             if (MainPresenters.ContainsKey(name))

@@ -2,35 +2,69 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using MapEditor.Models;
 
 namespace MapEditor.Core.Commands
 {
     public class LayerCloneCommand : ICommand
     {
-        private List<Layer> currentLayers;
+        #region Fields
 
-        private Layer currentLayer;
+        private List<Layer> layers;
 
-        private int index;
+        private Layer layer;
 
-        public LayerCloneCommand(List<Layer> layers, int layerIndex)
+        private int layerIndex;
+
+        private object checkedListBoxItem;
+
+        private CheckedListBox checkedListBox;
+
+        #endregion 
+
+        #region Initialize
+
+        public LayerCloneCommand(List<Layer> layers, int layerIndex, CheckedListBox checkedListBox)
         {
-            currentLayers = layers;
+            this.layers = layers;
 
-            index = layerIndex;
+            this.layer = layers[layerIndex];
+
+            this.layerIndex = layerIndex;
+
+            int number = checkedListBox.Items.Count + 1;
+
+            this.checkedListBoxItem = "Layer" + number;
+
+            this.checkedListBox = checkedListBox;
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Add clone of layer to map and view
+        /// </summary>
         public void Execute()
         {
-            currentLayer = currentLayers[index];
+            layers.Add(layer);
 
-            currentLayers.Add(currentLayer);
+            checkedListBox.Items.Add(checkedListBoxItem);
         }
 
+
+        /// <summary>
+        /// Inverse of execute method
+        /// </summary>
         public void UnExecute()
         {
-            currentLayers.Remove(currentLayer);
+            layers.Remove(layer);
+
+            checkedListBox.Items.Remove(checkedListBoxItem);
         }
+
+        #endregion
     }
 }

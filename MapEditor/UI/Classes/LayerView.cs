@@ -10,14 +10,13 @@ using MapEditor.Core.Controls;
 
 namespace MapEditor.UI
 {
+    /// <summary>
+    /// Layer UI
+    /// Holds events to interact with layers in the map
+    /// </summary>
     public class LayerView : Form, ILayerView
     {
-        public event EventHandler MoveLayerDown;
-        public event EventHandler MoveLayerUp;
-        public event EventHandler RemoveLayerItem;
-        public event EventHandler AddLayerItem;
-        public event EventHandler LayerItemChecked;
-        public event EventHandler LayerIndexChanged;
+        #region Fields
 
         /// <summary>
         /// Required designer variable.
@@ -29,25 +28,33 @@ namespace MapEditor.UI
         private ToolStripButton toolStripRemove;
         private ToolStripButton toolStripMoveUp;
         private ToolStripButton toolStripMoveDown;
+        private ToolStripButton toolStripButton1;
+        private ToolStripSeparator toolStripSeparator1;
         private CheckedListBox checkedListBox1;
 
+        #endregion
+ 
+        #region Properties
+
+        public event EventHandler MoveLayerDown;
+        public event EventHandler MoveLayerUp;
+        public event EventHandler RemoveLayerItem;
+        public event EventHandler AddLayerItem;
+        public event EventHandler LayerItemChecked;
+        public event EventHandler LayerIndexChanged;
+        public event EventHandler DuplicateLayer;
+        
+        /// <summary>
+        /// Get the check box list control
+        /// </summary>
         public CheckedListBox CheckedListBox
         {
             get { return checkedListBox1; }
         }
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        #endregion
+
+        #region Initialize
 
         public LayerView()
         {
@@ -65,6 +72,8 @@ namespace MapEditor.UI
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripAdd = new System.Windows.Forms.ToolStripButton();
             this.toolStripRemove = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMoveUp = new System.Windows.Forms.ToolStripButton();
             this.toolStripMoveDown = new System.Windows.Forms.ToolStripButton();
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
@@ -77,6 +86,8 @@ namespace MapEditor.UI
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripAdd,
             this.toolStripRemove,
+            this.toolStripButton1,
+            this.toolStripSeparator1,
             this.toolStripMoveUp,
             this.toolStripMoveDown});
             this.toolStrip1.Location = new System.Drawing.Point(0, 236);
@@ -88,7 +99,7 @@ namespace MapEditor.UI
             // toolStripAdd
             // 
             this.toolStripAdd.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripAdd.Image = global::MapEditor.Properties.Resources.newFile;
+            this.toolStripAdd.Image = global::MapEditor.Properties.Resources.plus_32;
             this.toolStripAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripAdd.Name = "toolStripAdd";
             this.toolStripAdd.Size = new System.Drawing.Size(23, 22);
@@ -98,7 +109,7 @@ namespace MapEditor.UI
             // toolStripRemove
             // 
             this.toolStripRemove.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripRemove.Image = global::MapEditor.Properties.Resources.remove;
+            this.toolStripRemove.Image = global::MapEditor.Properties.Resources.x_mark_32;
             this.toolStripRemove.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripRemove.Name = "toolStripRemove";
             this.toolStripRemove.Size = new System.Drawing.Size(23, 22);
@@ -106,10 +117,26 @@ namespace MapEditor.UI
             this.toolStripRemove.ToolTipText = "Remove Layer";
             this.toolStripRemove.Click += new System.EventHandler(this.toolStripRemove_Click);
             // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = global::MapEditor.Properties.Resources.copy_32;
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButton1.ToolTipText = "Duplicate Layer";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
             // toolStripMoveUp
             // 
             this.toolStripMoveUp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripMoveUp.Image = global::MapEditor.Properties.Resources.upArrow;
+            this.toolStripMoveUp.Image = global::MapEditor.Properties.Resources.arrow_141_32;
             this.toolStripMoveUp.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripMoveUp.Name = "toolStripMoveUp";
             this.toolStripMoveUp.Size = new System.Drawing.Size(23, 22);
@@ -120,7 +147,7 @@ namespace MapEditor.UI
             // toolStripMoveDown
             // 
             this.toolStripMoveDown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripMoveDown.Image = global::MapEditor.Properties.Resources.downArrow;
+            this.toolStripMoveDown.Image = global::MapEditor.Properties.Resources.arrow_142_32;
             this.toolStripMoveDown.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripMoveDown.Name = "toolStripMoveDown";
             this.toolStripMoveDown.Size = new System.Drawing.Size(23, 22);
@@ -137,7 +164,7 @@ namespace MapEditor.UI
             this.checkedListBox1.Size = new System.Drawing.Size(284, 236);
             this.checkedListBox1.TabIndex = 1;
             this.checkedListBox1.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBox1_ItemCheck);
-            this.checkedListBox1.SelectedIndexChanged += new EventHandler(checkedListBox1_SelectedIndexChanged);
+            this.checkedListBox1.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
             // 
             // LayerView
             // 
@@ -158,20 +185,12 @@ namespace MapEditor.UI
        
        
         #endregion 
-        
-    
 
-        public void ShowForm(IMainView parent)
-        {
-            this.Show((Form)parent);
-        }
+        #endregion       
 
-        public void CloseForm()
-        {
-            this.Close();
-        }
+        #region Events
 
-        void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
            
             if (LayerIndexChanged != null)
@@ -209,7 +228,41 @@ namespace MapEditor.UI
                 RemoveLayerItem(sender, e);
         }
 
-       
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            if (DuplicateLayer != null)
+                DuplicateLayer(sender, e);
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        public void ShowForm(IMainView parent)
+        {
+            this.Show((Form)parent);
+        }
+
+        public void CloseForm()
+        {
+            this.Close();
+        }
+
+        #endregion
+
     }
 }
 

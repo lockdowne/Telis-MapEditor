@@ -6,12 +6,21 @@ using MapEditor.Models;
 
 namespace MapEditor.Core.Commands
 {
+    /// <summary>
+    /// Command draws tilebrushes to map
+    /// </summary>
     public class EditDrawCommand : ICommand
     {
+        #region Fields
+
         private Layer layer;
 
         private List<TileBrush> currentTileBrushes;
         private List<TileBrush> previousTileBrushes;
+
+        #endregion
+
+        #region Initialize
 
         public EditDrawCommand(Layer layer, List<TileBrush> brushes)
         {
@@ -22,6 +31,13 @@ namespace MapEditor.Core.Commands
             this.previousTileBrushes = new List<TileBrush>();
         }
 
+        #endregion
+
+        #region Methods
+        
+        /// <summary>
+        /// Change current tile ids to new tile ids
+        /// </summary>
         public void Execute()
         {
             currentTileBrushes.ForEach(brush =>
@@ -59,6 +75,9 @@ namespace MapEditor.Core.Commands
                 });
         }
 
+        /// <summary>
+        /// Invert execute method
+        /// </summary>
         public void UnExecute()
         {
             previousTileBrushes.ForEach(brush =>
@@ -72,6 +91,8 @@ namespace MapEditor.Core.Commands
                 }
             });
         }
+
+        #endregion
 
     }
 }

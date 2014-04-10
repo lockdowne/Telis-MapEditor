@@ -6,6 +6,9 @@ using System.Windows.Forms;
 
 namespace MapEditor.UI
 {
+    /// <summary>
+    /// Layer UI
+    /// </summary>
     public interface ILayerView
     {
         event EventHandler MoveLayerDown;
@@ -14,6 +17,7 @@ namespace MapEditor.UI
         event EventHandler AddLayerItem;
         event EventHandler LayerItemChecked;
         event EventHandler LayerIndexChanged;
+        event EventHandler DuplicateLayer;
 
         CheckedListBox CheckedListBox { get; }
 

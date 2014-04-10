@@ -11,8 +11,13 @@ using MapEditor.Models;
 
 namespace MapEditor.Core.PaintTools
 {
+    /// <summary>
+    /// Map state to enable drawing tilebrushes to map
+    /// </summary>
     public class DrawPaintTool : IPaintTool
     {
+        #region Fields
+
         private readonly MainRenderPresenter presenter;
 
         private bool isMouseLeftPressed;
@@ -22,6 +27,10 @@ namespace MapEditor.Core.PaintTools
 
         private TileBrushCollection tileBrushes;
 
+        #endregion
+
+        #region Initialize
+
         public DrawPaintTool(MainRenderPresenter parent)
         {
             this.presenter = parent;
@@ -29,6 +38,15 @@ namespace MapEditor.Core.PaintTools
             tileBrushes = new TileBrushCollection();
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Create tilebrush at mouse position
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void OnMouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -50,6 +68,11 @@ namespace MapEditor.Core.PaintTools
             }
         }
 
+        /// <summary>
+        /// Create tilebrush at mouse positions
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void OnMouseMove(object sender, MouseEventArgs e)
         {
             if (isMouseLeftPressed)
@@ -86,6 +109,11 @@ namespace MapEditor.Core.PaintTools
             }            
         }
 
+        /// <summary>
+        /// Apply tilebrushes to map
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void OnMouseUp(object sender, MouseEventArgs e)
         {
             if (isMouseLeftPressed)
@@ -98,9 +126,15 @@ namespace MapEditor.Core.PaintTools
             }
         }
 
+        /// <summary>
+        /// Draw temporary tilebrushes before they are applied
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
             tileBrushes.Draw(spriteBatch, presenter.Tilesets[presenter.TilesetIndex]);
         }
+
+        #endregion
     }
 }

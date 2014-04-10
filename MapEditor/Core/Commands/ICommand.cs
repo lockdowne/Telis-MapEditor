@@ -6,6 +6,9 @@ using MapEditor.Models;
 
 namespace MapEditor.Core.Commands
 {
+    /// <summary>
+    /// Base for all commands
+    /// </summary>
     public interface ICommand
     {
         void Execute();

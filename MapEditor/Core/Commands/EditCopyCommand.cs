@@ -7,8 +7,13 @@ using MapEditor.Models;
 
 namespace MapEditor.Core.Commands
 {
+    /// <summary>
+    /// Command copies selected tiles to new tilebrush
+    /// </summary>
     public class EditCopyCommand : ICommand
     {
+        #region Fields
+
         private Layer layer;
 
         private Rectangle selectionBox;
@@ -17,6 +22,10 @@ namespace MapEditor.Core.Commands
         private int tileHeight;
 
         private List<int[,]> clipboard;
+
+        #endregion
+
+        #region Initialize
 
         public EditCopyCommand(Layer layer, Rectangle selectionBox, int tileWidth, int tileHeight, List<int[,]> clipboard)
         {
@@ -30,6 +39,13 @@ namespace MapEditor.Core.Commands
             this.clipboard = clipboard;
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Copies selected tiles to new tilebrush
+        /// </summary>
         public void Execute()
         {
             int[,] brush = new int[selectionBox.Height / tileHeight, selectionBox.Width / tileWidth];
@@ -46,10 +62,8 @@ namespace MapEditor.Core.Commands
 
         }
 
+        public void UnExecute() { }
 
-        public void UnExecute()
-        {
-
-        }
+        #endregion
     }
 }

@@ -211,11 +211,24 @@ namespace MapEditor.Presenters
 
         #region Methods
 
+        /// <summary>
+        /// Sets current paint tool
+        /// </summary>
+        /// <param name="paintTool"></param>
         public void SetPaintTool(PaintTool paintTool)
         {
             this.currentPaintTool = paintTool;
         }
 
+        /// <summary>
+        /// Sets up map with data to initialize
+        /// </summary>
+        /// <param name="texturePath"></param>
+        /// <param name="tileWidth"></param>
+        /// <param name="tileHeight"></param>
+        /// <param name="mapWidth"></param>
+        /// <param name="mapHeight"></param>
+        /// <param name="checkedListBox"></param>
         public void InitializeMap(string texturePath, int tileWidth, int tileHeight, int mapWidth, int mapHeight, CheckedListBox checkedListBox)
         {
             Texture2D texture;
@@ -255,12 +268,18 @@ namespace MapEditor.Presenters
             
         }
 
+        /// <summary>
+        /// Sets the selection box to empty
+        /// </summary>
         private void ClearSelectionBox()
         {
             BeginSelectionBox = null;
             EndSelectionBox = null;
         }
 
+        /// <summary>
+        /// Copy selected tiles
+        /// </summary>
         public void CopySelection()
         {
             if (currentPaintTool == PaintTool.Select)
@@ -280,6 +299,10 @@ namespace MapEditor.Presenters
             }
         }
 
+
+        /// <summary>
+        /// Cut selected tiles
+        /// </summary>
         public void CutSelection()
         {
             if (currentPaintTool == PaintTool.Select)
@@ -299,21 +322,36 @@ namespace MapEditor.Presenters
             }
         }
 
+        /// <summary>
+        /// Add layer to map
+        /// </summary>
+        /// <param name="checkedListBox"></param>
         public void AddLayer(CheckedListBox checkedListBox)
         {
             commandManager.ExecuteLayerAddCommand(Layers, MapWidth, MapHeight, checkedListBox);
         }
 
+        /// <summary>
+        /// Remove layer from map
+        /// </summary>
+        /// <param name="checkedListBox"></param>
         public void RemoveLayer(CheckedListBox checkedListBox)
         {
             commandManager.ExecuteLayerRemoveCommand(Layers, LayerIndex, checkedListBox);
         }
 
-        public void CloneLayer()
+        /// <summary>
+        /// Duplicate layer 
+        /// </summary>
+        public void CloneLayer(CheckedListBox checkedListBox)
         {
-            commandManager.ExecuteLayerClone(Layers, LayerIndex);
+            commandManager.ExecuteLayerClone(Layers, LayerIndex, checkedListBox);
         }
 
+        /// <summary>
+        /// Move layer one index up
+        /// </summary>
+        /// <param name="checkedListBox"></param>
         public void RaiseLayer(CheckedListBox checkedListBox)
         {
             if (LayerIndex <= 0)
@@ -322,6 +360,10 @@ namespace MapEditor.Presenters
             commandManager.ExecuteLayerRaise(Layers, LayerIndex, checkedListBox);
         }
 
+        /// <summary>
+        /// Move layer one index down
+        /// </summary>
+        /// <param name="checkedListBox"></param>
         public void LowerLayer(CheckedListBox checkedListBox)
         {
             if (LayerIndex >= Layers.Count - 1)
@@ -330,6 +372,10 @@ namespace MapEditor.Presenters
             commandManager.ExecuteLayerLower(Layers, LayerIndex, checkedListBox);
         }
 
+        /// <summary>
+        /// Set layers visibility
+        /// </summary>
+        /// <param name="isVisible"></param>
         public void SetLayerVisibility(bool isVisible)
         {
             if (Layers.Count <= 0)
@@ -338,14 +384,24 @@ namespace MapEditor.Presenters
             commandManager.ExecuteLayerVisibility(Layers[LayerIndex], isVisible);
         }
 
+        /// <summary>
+        /// Draw temporary tilebrushes into map
+        /// </summary>
+        /// <param name="tileBrushes"></param>
         public void DrawTileBrushes(TileBrushCollection tileBrushes)
         {
             if (Layers.Count <= 0)
                 return;
 
+            // TODO: Check if layer is selected
+
             commandManager.ExecuteEditDrawCommand(Layers[LayerIndex], tileBrushes.TileBrushes); 
         } 
         
+        /// <summary>
+        /// Remove selected tiles from map
+        /// </summary>
+        /// <param name="tileBrushes"></param>
         public void RemoveTiles(TileBrushCollection tileBrushes)
         {
             if (Layers.Count <= 0)
@@ -354,31 +410,47 @@ namespace MapEditor.Presenters
             commandManager.ExecuteEditRemoveCommand(Layers[LayerIndex], tileBrushes.TileBrushes);
         }
 
+        /// <summary>
+        /// Offset map in tile measurement
+        /// </summary>
+        /// <param name="offsetX"></param>
+        /// <param name="offsetY"></param>
         public void OffsetMap(int offsetX, int offsetY)
         {
             commandManager.ExecuteMapOffset(Layers, offsetX, offsetY);
         }
 
+        /// <summary>
+        /// Resize map in tile measurement
+        /// </summary>
+        /// <param name="mapWidth"></param>
+        /// <param name="mapHeight"></param>
         public void ResizeMap(int mapWidth, int mapHeight)
         {
             commandManager.ExecuteMapResize(Layers, mapWidth, mapHeight);
         }
 
+        /// <summary>
+        /// Undo previous action
+        /// </summary>
         public void Undo()
         {
             commandManager.Undo();
         }
 
+        /// <summary>
+        /// Redo previous action
+        /// </summary>
         public void Redo()
         {
             commandManager.Redo();
         }
 
-        public void InitializeMap()
-        {
-
-        }
-
+        /// <summary>
+        /// Rounds off position to fit with the map
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
         public Vector2 SnapToGrid(Vector2 position)
         {
             int tileWidth = Tilesets.FirstOrDefault().TileWidth;
@@ -390,6 +462,12 @@ namespace MapEditor.Presenters
             return new Vector2(x * tileWidth, y * tileHeight);
         }
 
+        /// <summary>
+        /// Changes set of coordinates on map to pixel length
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
         public Vector2 CoordinateToPixels(int x, int y)
         {
             int tileWidth = Tilesets.FirstOrDefault().TileWidth;
@@ -398,6 +476,11 @@ namespace MapEditor.Presenters
             return new Vector2(x * tileWidth, y * tileHeight);
         }
 
+        /// <summary>
+        /// Changes position to set of coordnates on map
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
         public Vector2 PixelsToCoordinate(Vector2 position)
         {
             int tileWidth = Tilesets.FirstOrDefault().TileWidth;
@@ -406,6 +489,11 @@ namespace MapEditor.Presenters
             return new Vector2((int)position.X / tileWidth, (int)position.Y / tileHeight);
         }
 
+        /// <summary>
+        /// Transforms position to adjust itself to scrollable maps
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
         public Vector2 InvertCameraMatrix(System.Drawing.Point point)
         {
             return Vector2.Transform(new Vector2(point.X, point.Y), Matrix.Invert(camera.CameraTransformation));

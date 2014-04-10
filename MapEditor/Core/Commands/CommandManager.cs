@@ -9,10 +9,19 @@ using MapEditor.Models;
 
 namespace MapEditor.Core.Commands
 {
+    /// <summary>
+    /// Manages all commands to execute, undo, and redo
+    /// </summary>
     public class CommandManager
     {
+        #region Fields
+
         private Stack<ICommand> UndoCommands = new Stack<ICommand>();
         private Stack<ICommand> RedoCommands = new Stack<ICommand>();
+
+        #endregion
+
+        #region Methods
 
         public void Undo()
         {
@@ -110,9 +119,9 @@ namespace MapEditor.Core.Commands
             //RedoCommands.Clear();
         }
 
-        public void ExecuteLayerClone(List<Layer> layers, int index)
+        public void ExecuteLayerClone(List<Layer> layers, int index, CheckedListBox checkedListBox)
         {
-            ICommand command = new LayerCloneCommand(layers, index);
+            ICommand command = new LayerCloneCommand(layers, index, checkedListBox);
             command.Execute();
 
             UndoCommands.Push(command);
@@ -161,5 +170,7 @@ namespace MapEditor.Core.Commands
            // ICommand addLayer = new LayerAddCommand(layers, mapWidth, mapHeight);
             //ICommand addTileset
         }
+
+        #endregion
     }
 }

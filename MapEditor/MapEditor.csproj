@@ -54,9 +54,7 @@
     <Compile Include="Core\Commands\EditCopyCommand.cs" />
     <Compile Include="Core\Commands\EditCutCommand.cs" />
     <Compile Include="Core\Commands\EditDrawCommand.cs" />
-    <Compile Include="Core\Commands\EditPasteCommand.cs" />
     <Compile Include="Core\Commands\EditRemoveCommand.cs" />
-    <Compile Include="Core\Commands\EditSelectCommand.cs" />
     <Compile Include="Core\Commands\ICommand.cs" />
     <Compile Include="Core\Commands\LayerAddCommand.cs" />
     <Compile Include="Core\Commands\LayerCloneCommand.cs" />
@@ -182,6 +180,28 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Documentation\Requirements.txt" />
+    <None Include="Resources\paint-bucket-32.png" />
+    <None Include="Resources\arrow-142-32.png" />
+    <None Include="Resources\redo 4-32.png" />
+    <None Include="Resources\zoom-out-32.png" />
+    <None Include="Resources\zoom-in-32.png" />
+    <None Include="Resources\x-mark-32.png" />
+    <None Include="Resources\undo-4-32.png" />
+    <None Include="Resources\square-dashed-32.png" />
+    <None Include="Resources\show-property-32.png" />
+    <None Include="Resources\save-as-32.png" />
+    <None Include="Resources\save-32.png" />
+    <None Include="Resources\plus-32.png" />
+    <None Include="Resources\pencil-32.png" />
+    <None Include="Resources\folder-3-32.png" />
+    <None Include="Resources\folder-2-32.png" />
+    <None Include="Resources\exit-2-32.png" />
+    <None Include="Resources\erase-32.png" />
+    <None Include="Resources\edit-6-32.png" />
+    <None Include="Resources\cut-32.png" />
+    <None Include="Resources\copy-32.png" />
+    <None Include="Resources\arrow-141-32.png" />
+    <None Include="Resources\add-file-32.png" />
     <None Include="Resources\remove.png" />
     <None Include="Resources\downArrow.png" />
     <None Include="Resources\newFile.png" />

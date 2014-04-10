@@ -7,8 +7,13 @@ using MapEditor.Models;
 
 namespace MapEditor.Core.Commands
 {
+    /// <summary>
+    /// Command that adds a layer to map and layer view
+    /// </summary>
     public class LayerAddCommand : ICommand
     {
+        #region Fields
+
         private List<Layer> currentLayers;
 
         private Layer currentLayer;
@@ -16,6 +21,10 @@ namespace MapEditor.Core.Commands
         private CheckedListBox checkedListBox;
 
         private object currentCheckedListBoxItem;
+
+        #endregion
+
+        #region Initialize
 
         public LayerAddCommand(List<Layer> layers, int width, int height, CheckedListBox box)
         {
@@ -26,6 +35,13 @@ namespace MapEditor.Core.Commands
             checkedListBox = box;
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Create layer for map and object for layer view
+        /// </summary>
         public void Execute()
         {
             currentLayers.Add(currentLayer);
@@ -35,6 +51,9 @@ namespace MapEditor.Core.Commands
             checkedListBox.Items.Add(currentCheckedListBoxItem, true);
         }
 
+        /// <summary>
+        /// Invert execute method
+        /// </summary>
         public void UnExecute()
         {
             currentLayers.Remove(currentLayer);
@@ -42,6 +61,7 @@ namespace MapEditor.Core.Commands
             checkedListBox.Items.Remove(currentCheckedListBoxItem);
         }
 
+        #endregion
 
     }
 }

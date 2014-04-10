@@ -11,8 +11,13 @@ using MapEditor.Models;
 
 namespace MapEditor.Presenters
 {
+    /// <summary>
+    /// Holds logic for tileset model and UI
+    /// </summary>
     public class TilesetRenderPresenter : ITilesetRenderPresenter
     {
+        #region Fields
+
         public event Action<int[,]> SendTileBrushValues;
 
         private readonly IXnaRenderView view;        
@@ -31,6 +36,13 @@ namespace MapEditor.Presenters
         private int tileWidth;
         private int tileHeight;
 
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the selection box created on top of the tileset image
+        /// </summary>
         public Rectangle SelectionBox
         {
             get
@@ -45,6 +57,9 @@ namespace MapEditor.Presenters
             }
         }
 
+        /// <summary>
+        /// Gets the width of the tileset image in pixels
+        /// </summary>
         public int PixelWidth
         {
             get
@@ -57,6 +72,9 @@ namespace MapEditor.Presenters
             
         }
 
+        /// <summary>
+        /// Gets the height of the tileset image in pixels
+        /// </summary>
         public int PixelHeight
         {
             get
@@ -67,6 +85,10 @@ namespace MapEditor.Presenters
                 return tileset.Height;
             }
         }
+
+        #endregion
+
+        #region Initialize
 
         public TilesetRenderPresenter(IXnaRenderView view)
         {
@@ -98,10 +120,14 @@ namespace MapEditor.Presenters
             }       
                       
         }
-        
+
+        #endregion
+
+        #region Events
+
         void view_OnInitialize()
         {
-            // TODO: FIX THIS SHIET
+            
         }
         
         void view_OnDraw(SpriteBatch spriteBatch)
@@ -158,6 +184,14 @@ namespace MapEditor.Presenters
             }
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Gets the tile ids of the selected tiles in the tileset selection box
+        /// </summary>
+        /// <returns></returns>
         public int[,] GetTileBrush()
         {
             if (tileset == null)
@@ -192,6 +226,10 @@ namespace MapEditor.Presenters
             return box;
         }
 
+        /// <summary>
+        /// Load texture from path
+        /// </summary>
+        /// <param name="path"></param>
         public void LoadTexture(string path)
         {
             using (FileStream fileStream = new FileStream(path, FileMode.Open))
@@ -200,12 +238,23 @@ namespace MapEditor.Presenters
             }
         }
 
+        /// <summary>
+        /// Set the tile width and height
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
         public void SetTileDimesions(int width, int height)
         {
             tileWidth = width;
             tileHeight = height;
         }
 
+
+        /// <summary>
+        /// Rounds off position to fit with the map
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
         private Vector2 SnapToGrid(Vector2 position)
         {
             int x = (int)position.X / tileWidth;
@@ -214,9 +263,16 @@ namespace MapEditor.Presenters
             return new Vector2(x * tileWidth, y * tileHeight);
         }
 
+        /// <summary>
+        /// Transforms position to adjust itself to scrollable maps
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
         private Vector2 InvertCameraMatrix(System.Drawing.Point point)
         {
             return Vector2.Transform(new Vector2(point.X, point.Y), Matrix.Invert(camera.CameraTransformation));
         }
+
+        #endregion
     }
 }
