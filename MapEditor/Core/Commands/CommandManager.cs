@@ -156,9 +156,9 @@ namespace MapEditor.Core.Commands
             RedoCommands.Clear();
         }
 
-        public void ExecuteMapResize(List<Layer> layers, int width, int height)
+        public void ExecuteMapResize(List<Layer> layers, int mapWidth, int mapHeight)
         {
-            ICommand command = new MapResizeCommand(layers, width, height);
+            ICommand command = new MapResizeCommand(layers, mapWidth, mapHeight);
             command.Execute();
 
             UndoCommands.Push(command);

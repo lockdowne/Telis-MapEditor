@@ -347,6 +347,8 @@ namespace MapEditor.Presenters
                 tilesetPresenter.AddPresenter(fileNewView.FileName, new XnaRenderView(), fileNewView.TilesetPath, fileNewView.TileWidth, fileNewView.TileHeight);
 
                 layerView.CheckedListBox.SelectedIndex = 0;
+                mapResizeView.MapWidth = fileNewView.MapWidth;
+                mapResizeView.MapHeight = fileNewView.MapHeight;
             };
 
             fileNewView.Cancel += (sender, e) =>
@@ -379,7 +381,11 @@ namespace MapEditor.Presenters
 
             mapResizeView.OnConfirm += (sender, e) =>
                 {
-                    // TODO: Resize map
+                    mapResizeView.CloseForm();
+
+                    if (CurrentMainPresenter != null)
+                        if (mapResizeView != null)
+                            CurrentMainPresenter.ResizeMap(mapResizeView.MapWidth, mapResizeView.MapHeight);
                 };
 
             mapResizeView.OnCancel += (sender, e) =>

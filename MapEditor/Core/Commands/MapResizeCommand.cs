@@ -8,30 +8,63 @@ namespace MapEditor.Core.Commands
 {
     public class MapResizeCommand : ICommand
     {
+        #region Fields
+
         private List<Layer> currentLayers;
         private List<Layer> previousLayers;
 
-        private int width;
-        private int height;
+        private int mapWidth;
+        private int mapHeight;
 
-        public MapResizeCommand(List<Layer> layers, int width, int height)
+        #endregion
+
+        #region Initialize
+
+        public MapResizeCommand(List<Layer> layers, int mapWidth, int mapHeight)
         {
             currentLayers = layers;
 
-            this.width = width;
-            this.height = height;
+            previousLayers = new List<Layer>(currentLayers.AsEnumerable());
+
+            this.mapWidth = mapWidth;
+            this.mapHeight = mapHeight;
         }
+
+        #endregion
+
+        #region Methods
 
         public void Execute()
         {
-            previousLayers = currentLayers;
+            List<Layer> newLayers = new List<Layer>();
 
-            //currentLayers.ForEach(layer => layer.Resize(width, height));
+            currentLayers.ForEach(layer =>
+                {
+                    Layer tempLayer = new Layer(mapWidth, mapHeight);
+
+                    for (int y = 0; y < mapHeight; y++)
+                    {
+                        for (int x = 0; x < mapWidth; x++)
+                        {
+                            tempLayer.Rows[y].Columns[x].TileID = layer.Rows[y].Columns[x].TileID;
+                        }
+                    }
+
+                    newLayers.Add(tempLayer);
+                });
+
+            currentLayers.Clear();
+
+            currentLayers.AddRange(newLayers.AsEnumerable());
         }
 
         public void UnExecute()
         {
-            //currentLayers = previousLayers;
+            currentLayers.Clear();
+
+            currentLayers.AddRange(previousLayers.AsEnumerable());
         }
+
+        #endregion
     }
 }
