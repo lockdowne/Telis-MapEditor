@@ -193,6 +193,8 @@ namespace MapEditor.UI
             this.zoomOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.tilesetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minimapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resizeMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resizeTilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -221,8 +223,6 @@ namespace MapEditor.UI
             this.toolStripButton8 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton12 = new System.Windows.Forms.ToolStripButton();
             this.closableTabControl1 = new MapEditor.Core.Controls.ClosableTabControl();
-            this.layersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.minimapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -431,7 +431,7 @@ namespace MapEditor.UI
             // showGridToolStripMenuItem
             // 
             this.showGridToolStripMenuItem.Name = "showGridToolStripMenuItem";
-            this.showGridToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.showGridToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.showGridToolStripMenuItem.Text = "Show Grid";
             this.showGridToolStripMenuItem.Click += new System.EventHandler(this.showGridToolStripMenuItem_Click);
             // 
@@ -439,7 +439,7 @@ namespace MapEditor.UI
             // 
             this.zoomInToolStripMenuItem.Image = global::MapEditor.Properties.Resources.zoom_in_32;
             this.zoomInToolStripMenuItem.Name = "zoomInToolStripMenuItem";
-            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.zoomInToolStripMenuItem.Text = "Zoom In";
             this.zoomInToolStripMenuItem.Click += new System.EventHandler(this.zoomInToolStripMenuItem_Click);
             // 
@@ -447,21 +447,35 @@ namespace MapEditor.UI
             // 
             this.zoomOutToolStripMenuItem.Image = global::MapEditor.Properties.Resources.zoom_out_32;
             this.zoomOutToolStripMenuItem.Name = "zoomOutToolStripMenuItem";
-            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.zoomOutToolStripMenuItem.Text = "Zoom Out";
             this.zoomOutToolStripMenuItem.Click += new System.EventHandler(this.zoomOutToolStripMenuItem_Click);
             // 
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(126, 6);
             // 
             // tilesetToolStripMenuItem
             // 
             this.tilesetToolStripMenuItem.Name = "tilesetToolStripMenuItem";
-            this.tilesetToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.tilesetToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.tilesetToolStripMenuItem.Text = "Tileset";
             this.tilesetToolStripMenuItem.Click += new System.EventHandler(this.tilesetToolStripMenuItem_Click);
+            // 
+            // layersToolStripMenuItem
+            // 
+            this.layersToolStripMenuItem.Name = "layersToolStripMenuItem";
+            this.layersToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.layersToolStripMenuItem.Text = "Layers";
+            this.layersToolStripMenuItem.Click += new System.EventHandler(this.layersToolStripMenuItem_Click);
+            // 
+            // minimapToolStripMenuItem
+            // 
+            this.minimapToolStripMenuItem.Name = "minimapToolStripMenuItem";
+            this.minimapToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.minimapToolStripMenuItem.Text = "Minimap";
+            this.minimapToolStripMenuItem.Click += new System.EventHandler(this.minimapToolStripMenuItem_Click);
             // 
             // mapToolStripMenuItem
             // 
@@ -730,24 +744,11 @@ namespace MapEditor.UI
             this.closableTabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.closableTabControl1.TabIndex = 2;
             // 
-            // layersToolStripMenuItem
-            // 
-            this.layersToolStripMenuItem.Name = "layersToolStripMenuItem";
-            this.layersToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.layersToolStripMenuItem.Text = "Layers";
-            this.layersToolStripMenuItem.Click += new System.EventHandler(this.layersToolStripMenuItem_Click);
-            // 
-            // minimapToolStripMenuItem
-            // 
-            this.minimapToolStripMenuItem.Name = "minimapToolStripMenuItem";
-            this.minimapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.minimapToolStripMenuItem.Text = "Minimap";
-            this.minimapToolStripMenuItem.Click += new System.EventHandler(this.minimapToolStripMenuItem_Click);
-            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(373, 334);
             this.Controls.Add(this.closableTabControl1);
             this.Controls.Add(this.toolStrip1);
@@ -1032,11 +1033,14 @@ namespace MapEditor.UI
         public void AddView(string name, IXnaRenderView renderer)
         {
             Control view = (Control)renderer;
-            view.Name = name;
+            view.Name = name;  
             view.Dock = DockStyle.Fill;
+            
 
             TabPage tab = new TabPage(name);
             tab.Name = name;
+            // tab.AutoScroll = true; ? wont work
+            
             tab.Controls.Add(view);
 
             closableTabControl1.TabPages.Add(tab);

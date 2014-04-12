@@ -9,47 +9,58 @@ namespace MapEditor.Core.Commands
 {
     public class LayerLowerCommand : ICommand
     {
-        private List<Layer> currentLayers;
+        #region Fields
 
-        private int currentIndex;
+        private List<Layer> layers;
+
+        private int layerIndex;
 
         private CheckedListBox checkedListBox;
 
-        public LayerLowerCommand(List<Layer> layers, int layerIndex, CheckedListBox box)
+        #endregion
+
+        #region Initialize
+
+        public LayerLowerCommand(List<Layer> layers, int layerIndex, CheckedListBox checkedListBox)
         {
-            currentLayers = layers;
+            this.layers = layers;
 
-            currentIndex = layerIndex;
+            this.layerIndex = layerIndex;
 
-            checkedListBox = box;
+            this.checkedListBox = checkedListBox;
         }
+
+        #endregion
+
+        #region Methods
 
         public void Execute()
         {
-            Layer swap = currentLayers[currentIndex + 1];
+            Layer swap = layers[layerIndex + 1];
 
-            currentLayers[currentIndex + 1] = currentLayers[currentIndex];
-            currentLayers[currentIndex] = swap;       
-     
-            object boxSwap = checkedListBox.Items[currentIndex + 1];
+            layers[layerIndex + 1] = layers[layerIndex];
+            layers[layerIndex] = swap;
 
-            CheckState newCheckState = checkedListBox.GetItemCheckState(currentIndex);
-            CheckState previousCheckState = checkedListBox.GetItemCheckState(currentIndex + 1);
+            object boxSwap = checkedListBox.Items[layerIndex + 1];
 
-            checkedListBox.Items[currentIndex + 1] = checkedListBox.Items[currentIndex];
-            checkedListBox.Items[currentIndex] = boxSwap;
-            checkedListBox.SelectedIndex = currentIndex + 1;
-            checkedListBox.SetItemCheckState(currentIndex + 1, newCheckState);
-            checkedListBox.SetItemCheckState(currentIndex, previousCheckState);
-        }
-        
+            CheckState newCheckState = checkedListBox.GetItemCheckState(layerIndex);
+            CheckState previousCheckState = checkedListBox.GetItemCheckState(layerIndex + 1);
+
+            checkedListBox.Items[layerIndex + 1] = checkedListBox.Items[layerIndex];
+            checkedListBox.Items[layerIndex] = boxSwap;
+            checkedListBox.SelectedIndex = layerIndex + 1;
+            checkedListBox.SetItemCheckState(layerIndex + 1, newCheckState);
+            checkedListBox.SetItemCheckState(layerIndex, previousCheckState);
+        }        
 
         public void UnExecute()
         {
-            Layer swap = currentLayers[currentIndex];
+            Layer swap = layers[layerIndex];
 
-            currentLayers[currentIndex] = currentLayers[currentIndex + 1];
-            currentLayers[currentIndex + 1] = swap;
+            layers[layerIndex] = layers[layerIndex + 1];
+            layers[layerIndex + 1] = swap;
         }
+
+        #endregion
     }
 }

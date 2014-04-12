@@ -28,6 +28,7 @@ namespace MapEditor.Presenters
         void CutSelection();
         void OffsetMap(int offsetX, int offsetY);
         void ResizeMap(int mapWidth, int mapHeight);
+        void ResizeTiles(int tileWidth, int tileHeight);
         void Undo();
         void Redo();    
     }

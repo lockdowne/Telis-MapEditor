@@ -15,10 +15,10 @@ namespace MapEditor.Core.Commands
 
         private List<Tileset> tilesets;
 
-        private int currentWidth;
-        private int currentHeight;
-        private int previousWidth;
-        private int previousHeight;
+        private int currentTileWidth;
+        private int previousTileWidth;
+        private int currentTileHeight;
+        private int previousTileHeight;
 
         #endregion
 
@@ -26,13 +26,17 @@ namespace MapEditor.Core.Commands
 
         public TileResizeCommand(List<Tileset> tilesets, int tileWidth, int tileHeight)
         {
+            if (tilesets == null)
+                return;
+
             this.tilesets = tilesets;
 
-            currentWidth = tileWidth;
-            currentHeight = tileHeight;
+            this.currentTileWidth = tileWidth;
+            this.currentTileHeight = tileHeight;
             
-            previousWidth = tilesets.FirstOrDefault().TileWidth;
-            previousHeight = tilesets.FirstOrDefault().TileHeight;
+            // TODO: Check bounds
+            this.previousTileWidth = tilesets.FirstOrDefault().TileWidth;
+            this.previousTileHeight = tilesets.FirstOrDefault().TileHeight;
         }
 
         #endregion
@@ -44,7 +48,7 @@ namespace MapEditor.Core.Commands
         /// </summary>
         public void Execute()
         {           
-            tilesets.ForEach(tile => { tile.TileWidth = currentWidth; tile.TileHeight = currentHeight; });
+            tilesets.ForEach(tile => { tile.TileWidth = currentTileWidth; tile.TileHeight = currentTileHeight; });
         }
 
         /// <summary>
@@ -52,7 +56,7 @@ namespace MapEditor.Core.Commands
         /// </summary>
         public void UnExecute()
         {
-            tilesets.ForEach(tile => { tile.TileWidth = previousWidth; tile.TileHeight = previousHeight; });
+            tilesets.ForEach(tile => { tile.TileWidth = previousTileWidth; tile.TileHeight = previousTileHeight; });
         }
 
         #endregion

@@ -91,18 +91,48 @@ namespace MapEditor.UI
             // numericUpDownEx2
             // 
             this.numericUpDownEx2.Location = new System.Drawing.Point(170, 21);
+            this.numericUpDownEx2.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
             this.numericUpDownEx2.Measure = "tiles";
+            this.numericUpDownEx2.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.numericUpDownEx2.Name = "numericUpDownEx2";
             this.numericUpDownEx2.Size = new System.Drawing.Size(65, 20);
             this.numericUpDownEx2.TabIndex = 3;
+            this.numericUpDownEx2.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // numericUpDownEx1
             // 
             this.numericUpDownEx1.Location = new System.Drawing.Point(52, 21);
+            this.numericUpDownEx1.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
             this.numericUpDownEx1.Measure = "tiles";
+            this.numericUpDownEx1.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.numericUpDownEx1.Name = "numericUpDownEx1";
             this.numericUpDownEx1.Size = new System.Drawing.Size(65, 20);
             this.numericUpDownEx1.TabIndex = 2;
+            this.numericUpDownEx1.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // label2
             // 

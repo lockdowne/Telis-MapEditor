@@ -61,15 +61,15 @@ namespace MapEditor.UI
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.numericUpDownEx1 = new MapEditor.Core.Controls.NumericUpDownEx();
             this.numericUpDownEx2 = new MapEditor.Core.Controls.NumericUpDownEx();
+            this.numericUpDownEx1 = new MapEditor.Core.Controls.NumericUpDownEx();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.buttonConfirm = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownEx1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownEx2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownEx1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -85,14 +85,51 @@ namespace MapEditor.UI
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Offset";
             // 
-            // label1
+            // numericUpDownEx2
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 21);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(17, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "X:";
+            this.numericUpDownEx2.Location = new System.Drawing.Point(107, 19);
+            this.numericUpDownEx2.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.numericUpDownEx2.Measure = null;
+            this.numericUpDownEx2.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownEx2.Name = "numericUpDownEx2";
+            this.numericUpDownEx2.Size = new System.Drawing.Size(35, 20);
+            this.numericUpDownEx2.TabIndex = 3;
+            this.numericUpDownEx2.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // numericUpDownEx1
+            // 
+            this.numericUpDownEx1.Location = new System.Drawing.Point(31, 19);
+            this.numericUpDownEx1.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.numericUpDownEx1.Measure = null;
+            this.numericUpDownEx1.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownEx1.Name = "numericUpDownEx1";
+            this.numericUpDownEx1.Size = new System.Drawing.Size(35, 20);
+            this.numericUpDownEx1.TabIndex = 2;
+            this.numericUpDownEx1.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // label2
             // 
@@ -103,21 +140,14 @@ namespace MapEditor.UI
             this.label2.TabIndex = 1;
             this.label2.Text = "Y:";
             // 
-            // numericUpDownEx1
+            // label1
             // 
-            this.numericUpDownEx1.Location = new System.Drawing.Point(31, 19);
-            this.numericUpDownEx1.Measure = null;
-            this.numericUpDownEx1.Name = "numericUpDownEx1";
-            this.numericUpDownEx1.Size = new System.Drawing.Size(35, 20);
-            this.numericUpDownEx1.TabIndex = 2;
-            // 
-            // numericUpDownEx2
-            // 
-            this.numericUpDownEx2.Location = new System.Drawing.Point(107, 19);
-            this.numericUpDownEx2.Measure = null;
-            this.numericUpDownEx2.Name = "numericUpDownEx2";
-            this.numericUpDownEx2.Size = new System.Drawing.Size(35, 20);
-            this.numericUpDownEx2.TabIndex = 3;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(8, 21);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(17, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "X:";
             // 
             // buttonConfirm
             // 
@@ -151,8 +181,8 @@ namespace MapEditor.UI
             this.Text = "Offset";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownEx1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownEx2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownEx1)).EndInit();
             this.ResumeLayout(false);
 
         }

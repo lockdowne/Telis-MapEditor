@@ -133,8 +133,8 @@ namespace MapEditor.Core.Commands
             ICommand command = new LayerRaiseCommand(layers, index, checkedListBox);
             command.Execute();
 
-            /*UndoCommands.Push(command);
-            RedoCommands.Clear();*/
+            UndoCommands.Push(command);
+            RedoCommands.Clear();
         }
 
         public void ExecuteLayerLower(List<Layer> layers, int index, CheckedListBox checkedListBox)
@@ -142,8 +142,8 @@ namespace MapEditor.Core.Commands
             ICommand command = new LayerLowerCommand(layers, index, checkedListBox);
             command.Execute();
 
-            /*UndoCommands.Push(command);
-             RedoCommands.Clear();*/
+            UndoCommands.Push(command);
+             RedoCommands.Clear();
         }
 
 
@@ -164,6 +164,16 @@ namespace MapEditor.Core.Commands
             UndoCommands.Push(command);
             RedoCommands.Clear();
         }
+
+        public void ExecuteTileResize(List<Tileset> tilesets, int tileWidth, int tileHeight)
+        {
+            ICommand command = new TileResizeCommand(tilesets, tileWidth, tileHeight);
+            command.Execute();
+
+            UndoCommands.Push(command);
+            RedoCommands.Clear();
+        }
+
 
         public void ExecuteInitializeMap(List<Layer> layers, int mapWidth, int mapHeight, int tileWidth, int tileHeight)
         {

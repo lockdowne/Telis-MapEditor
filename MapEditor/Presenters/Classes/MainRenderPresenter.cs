@@ -26,10 +26,7 @@ namespace MapEditor.Presenters
         private Vector2 currentMousePosition;
         private Vector2 previousMousePosition;
 
-
-        public Texture2D Pixel { get; set; }       
-
-     
+        public Texture2D Pixel { get; set; }     
 
         private CommandManager commandManager;
 
@@ -92,8 +89,6 @@ namespace MapEditor.Presenters
             // Move to initialize method
             camera = new Camera()
             {
-                Position = Vector2.Zero,
-                Rotation = 0f,
                 Zoom = 1f,
             };
 
@@ -122,6 +117,8 @@ namespace MapEditor.Presenters
         void view_OnXnaMove(object sender, MouseEventArgs e)
         {
             paintTools[(int)currentPaintTool].OnMouseMove(sender, e);
+
+            
         }
 
         void view_OnXnaUp(object sender, MouseEventArgs e)
@@ -460,6 +457,16 @@ namespace MapEditor.Presenters
         public void ResizeMap(int mapWidth, int mapHeight)
         {
             commandManager.ExecuteMapResize(Layers, mapWidth, mapHeight);
+        }
+
+        /// <summary>
+        /// Resize tiles in map and tilesets
+        /// </summary>
+        /// <param name="tileWidth"></param>
+        /// <param name="tileHeight"></param>
+        public void ResizeTiles(int tileWidth, int tileHeight)
+        {
+            commandManager.ExecuteTileResize(Tilesets, tileWidth, tileHeight);
         }
 
         /// <summary>
