@@ -46,6 +46,18 @@ namespace MapEditor.UI
             set { numericUpDownEx2.Value = value; }
         }
 
+        public NumericUpDownEx TileWidthNumeric
+        {
+            get { return numericUpDownEx1; }
+            set { numericUpDownEx1 = value; }
+        }
+
+        public NumericUpDownEx TileHeightNumeric
+        {
+            get { return numericUpDownEx2; }
+            set { numericUpDownEx2 = value; }
+        }
+
         #endregion
 
         #region Initialize

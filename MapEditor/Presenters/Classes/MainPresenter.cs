@@ -387,7 +387,7 @@ namespace MapEditor.Presenters
                     mapResizeView.CloseForm();
 
                     if (CurrentMainPresenter != null)
-                        CurrentMainPresenter.ResizeMap(mapResizeView.MapWidth, mapResizeView.MapHeight);
+                        CurrentMainPresenter.ResizeMap(mapResizeView.MapWidth, mapResizeView.MapHeight, mapResizeView.MapWidthNumeric, mapResizeView.MapHeightNumeric);
                 };
 
             mapResizeView.OnCancel += (sender, e) =>
@@ -406,7 +406,7 @@ namespace MapEditor.Presenters
                     tileResizeView.CloseForm();
 
                     if (CurrentMainPresenter != null)
-                        CurrentMainPresenter.ResizeTiles(tileResizeView.TileWidth, tileResizeView.TileHeight);
+                        CurrentMainPresenter.ResizeTiles(tileResizeView.TileWidth, tileResizeView.TileHeight, tileResizeView.TileWidthNumeric, tileResizeView.TileHeightNumeric);
                 };
 
             tileResizeView.OnCancel += (sender, e) =>

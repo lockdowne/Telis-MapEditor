@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MapEditor.Core.Controls;
 
 namespace MapEditor.UI
 {
@@ -12,6 +13,9 @@ namespace MapEditor.UI
 
         int MapWidth { get; set; }
         int MapHeight { get; set; }
+
+        NumericUpDownEx MapWidthNumeric { get;  set; }
+        NumericUpDownEx MapHeightNumeric { get;  set; }
 
         void ShowForm();
         void CloseForm();

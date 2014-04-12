@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MapEditor.Core.Controls;
 using MapEditor.Models;
 
 namespace MapEditor.Core.Commands
@@ -156,18 +157,18 @@ namespace MapEditor.Core.Commands
             RedoCommands.Clear();
         }
 
-        public void ExecuteMapResize(List<Layer> layers, int mapWidth, int mapHeight)
+        public void ExecuteMapResize(List<Layer> layers, int mapWidth, int mapHeight, NumericUpDownEx mapWidthNumeric, NumericUpDownEx mapHeightNumeric)
         {
-            ICommand command = new MapResizeCommand(layers, mapWidth, mapHeight);
+            ICommand command = new MapResizeCommand(layers, mapWidth, mapHeight, mapWidthNumeric, mapHeightNumeric);
             command.Execute();
 
             UndoCommands.Push(command);
             RedoCommands.Clear();
         }
 
-        public void ExecuteTileResize(List<Tileset> tilesets, int tileWidth, int tileHeight)
+        public void ExecuteTileResize(List<Tileset> tilesets, int tileWidth, int tileHeight, NumericUpDownEx tileWidthNumeric, NumericUpDownEx tileHeightNumeric)
         {
-            ICommand command = new TileResizeCommand(tilesets, tileWidth, tileHeight);
+            ICommand command = new TileResizeCommand(tilesets, tileWidth, tileHeight, tileWidthNumeric, tileHeightNumeric);
             command.Execute();
 
             UndoCommands.Push(command);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using MapEditor.Core.Controls;
 using MapEditor.Core.PaintTools;
 
 namespace MapEditor.Presenters
@@ -27,8 +28,8 @@ namespace MapEditor.Presenters
         void CopySelection();
         void CutSelection();
         void OffsetMap(int offsetX, int offsetY);
-        void ResizeMap(int mapWidth, int mapHeight);
-        void ResizeTiles(int tileWidth, int tileHeight);
+        void ResizeMap(int mapWidth, int mapHeight, NumericUpDownEx mapWidthNumeric, NumericUpDownEx mapHeightNumeric);
+        void ResizeTiles(int tileWidth, int tileHeight, NumericUpDownEx tileWidthNumeric, NumericUpDownEx tileHeightNumeric);
         void Undo();
         void Redo();    
     }

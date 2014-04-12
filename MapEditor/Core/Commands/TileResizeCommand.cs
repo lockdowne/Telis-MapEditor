@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MapEditor.Core.Controls;
 using MapEditor.Models;
 
 namespace MapEditor.Core.Commands
@@ -20,11 +21,14 @@ namespace MapEditor.Core.Commands
         private int currentTileHeight;
         private int previousTileHeight;
 
+        private NumericUpDownEx tileWidthNumeric;
+        private NumericUpDownEx tileHeightNumeric;
+
         #endregion
 
         #region Initialize
 
-        public TileResizeCommand(List<Tileset> tilesets, int tileWidth, int tileHeight)
+        public TileResizeCommand(List<Tileset> tilesets, int tileWidth, int tileHeight, NumericUpDownEx tileWidthNumeric, NumericUpDownEx tileHeightNumeric)
         {
             if (tilesets == null)
                 return;
@@ -37,6 +41,9 @@ namespace MapEditor.Core.Commands
             // TODO: Check bounds
             this.previousTileWidth = tilesets.FirstOrDefault().TileWidth;
             this.previousTileHeight = tilesets.FirstOrDefault().TileHeight;
+
+            this.tileWidthNumeric = tileWidthNumeric;
+            this.tileHeightNumeric = tileHeightNumeric;
         }
 
         #endregion
@@ -49,6 +56,9 @@ namespace MapEditor.Core.Commands
         public void Execute()
         {           
             tilesets.ForEach(tile => { tile.TileWidth = currentTileWidth; tile.TileHeight = currentTileHeight; });
+
+            tileWidthNumeric.Value = currentTileWidth;
+            tileHeightNumeric.Value = currentTileHeight;
         }
 
         /// <summary>
@@ -57,6 +67,9 @@ namespace MapEditor.Core.Commands
         public void UnExecute()
         {
             tilesets.ForEach(tile => { tile.TileWidth = previousTileWidth; tile.TileHeight = previousTileHeight; });
+
+            tileWidthNumeric.Value = previousTileWidth;
+            tileHeightNumeric.Value = previousTileHeight;
         }
 
         #endregion

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MapEditor.Core.Controls;
 using MapEditor.Models;
 
 namespace MapEditor.Core.Commands
@@ -16,11 +17,14 @@ namespace MapEditor.Core.Commands
         private int mapWidth;
         private int mapHeight;
 
+        private NumericUpDownEx mapWidthNumeric;
+        private NumericUpDownEx mapHeightNumeric;
+
         #endregion
 
         #region Initialize
 
-        public MapResizeCommand(List<Layer> layers, int mapWidth, int mapHeight)
+        public MapResizeCommand(List<Layer> layers, int mapWidth, int mapHeight, NumericUpDownEx mapWidthNumeric, NumericUpDownEx mapHeightNumeric)
         {
             currentLayers = layers;
 
@@ -28,6 +32,9 @@ namespace MapEditor.Core.Commands
 
             this.mapWidth = mapWidth;
             this.mapHeight = mapHeight;
+
+            this.mapWidthNumeric = mapWidthNumeric;
+            this.mapHeightNumeric = mapHeightNumeric;
         }
 
         #endregion
@@ -56,6 +63,9 @@ namespace MapEditor.Core.Commands
             currentLayers.Clear();
 
             currentLayers.AddRange(newLayers.AsEnumerable());
+
+            mapWidthNumeric.Value = mapWidth;
+            mapHeightNumeric.Value = mapHeight;
         }
 
         public void UnExecute()
@@ -63,6 +73,9 @@ namespace MapEditor.Core.Commands
             currentLayers.Clear();
 
             currentLayers.AddRange(previousLayers.AsEnumerable());
+
+            mapWidthNumeric.Value = currentLayers.FirstOrDefault().MapWidth;
+            mapHeightNumeric.Value = currentLayers.FirstOrDefault().MapHeight;
         }
 
         #endregion

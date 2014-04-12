@@ -889,8 +889,8 @@ namespace MapEditor.UI
 
         private void toolStripButton7_Click(object sender, EventArgs e)
         {
-            if (LayerRemove != null)
-                LayerRemove(sender, e);
+            if (EditErase != null)
+                EditErase(sender, e);
         }
 
         private void toolStripButton8_Click(object sender, EventArgs e)

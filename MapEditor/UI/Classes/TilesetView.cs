@@ -12,10 +12,11 @@ namespace MapEditor.UI
 {
     public class TilesetView : Form, ITilesetView
     {
+       
         #region Fields
 
-        private ClosableTabControl closableTabControl1;        
         private System.ComponentModel.IContainer components = null;
+        private TabControl tabControl1;
 
         #endregion
 
@@ -25,8 +26,8 @@ namespace MapEditor.UI
         {
             get
             {
-                if(closableTabControl1.SelectedTab.Controls.Count > 0)
-                    return (IXnaRenderView)closableTabControl1.SelectedTab.Controls[0];
+                if(tabControl1.SelectedTab.Controls.Count > 0)
+                    return (IXnaRenderView)tabControl1.SelectedTab.Controls[0];
 
                 return null;
             }
@@ -57,28 +58,24 @@ namespace MapEditor.UI
         /// </summary>
         private void InitializeComponent()
         {
-            this.closableTabControl1 = new ClosableTabControl();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.SuspendLayout();
             // 
-            // closableTabControl1
+            // tabControl1
             // 
-            this.closableTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.closableTabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
-            this.closableTabControl1.ItemSize = new System.Drawing.Size(90, 0);
-            this.closableTabControl1.Location = new System.Drawing.Point(0, 0);
-            this.closableTabControl1.Name = "closableTabControl1";
-            this.closableTabControl1.SelectedIndex = 0;
-            this.closableTabControl1.ShowToolTips = true;
-            this.closableTabControl1.Size = new System.Drawing.Size(284, 261);
-            this.closableTabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.closableTabControl1.TabIndex = 0;
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(284, 261);
+            this.tabControl1.TabIndex = 0;
             // 
             // TilesetView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Controls.Add(this.closableTabControl1);
+            this.Controls.Add(this.tabControl1);
             this.Name = "TilesetView";
             this.Text = "TilesetView";
             this.ResumeLayout(false);
@@ -112,7 +109,7 @@ namespace MapEditor.UI
             tab.Name = name;
             tab.Controls.Add(view);
 
-            closableTabControl1.TabPages.Add(tab);
+            tabControl1.TabPages.Add(tab);
         }
 
         public void ShowForm(IMainView view)

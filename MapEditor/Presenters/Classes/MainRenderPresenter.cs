@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MapEditor.Core;
 using MapEditor.Core.Commands;
+using MapEditor.Core.Controls;
 using MapEditor.Core.PaintTools;
 using MapEditor.UI;
 using MapEditor.Models;
@@ -111,56 +112,17 @@ namespace MapEditor.Presenters
         }
 
         #endregion
-
-
-        //TESTING
-        bool isMiddle;
-
-        /*public Vector2 CameraPosition
-        {
-            get { return cameraPosition; }
-            set
-            {
-                cameraPosition = new Vector2(MathHelper.Clamp(value.X, 0, 3200), MathHelper.Clamp(value.Y, 0, 3200));
-            }
-        }*/
-
+        
         #region Events
 
         void view_OnXnaMove(object sender, MouseEventArgs e)
         {
             paintTools[(int)currentPaintTool].OnMouseMove(sender, e);
-
-            if (isMiddle)
-            {
-                currentMousePosition = InvertCameraMatrix(e.Location);
-
-                Vector2 difference = currentMousePosition - previousMousePosition;
-
-                Console.WriteLine(difference.ToString());
-
-                cameraPosition += new Vector2((int)difference.X, (int)difference.Y);
-
-                ScrollCamera(cameraPosition);
-                /*
-                 * return new Rectangle((int)Math.Min(BeginSelectionBox.Value.X, EndSelectionBox.Value.X),
-                   (int)Math.Min(BeginSelectionBox.Value.Y, EndSelectionBox.Value.Y),
-                   (int)Math.Abs(BeginSelectionBox.Value.X - EndSelectionBox.Value.X),
-                   (int)Math.Abs(BeginSelectionBox.Value.Y - EndSelectionBox.Value.Y));
-                 * 
-                 * 
-                 * 
-                 * */
-            }
-            
         }
 
         void view_OnXnaUp(object sender, MouseEventArgs e)
         {
             paintTools[(int)currentPaintTool].OnMouseUp(sender, e);
-
-            if (e.Button == MouseButtons.Middle)
-                isMiddle = false;
         }
        
         void view_OnXnaDown(object sender, MouseEventArgs e)
@@ -174,18 +136,6 @@ namespace MapEditor.Presenters
             }
 
             paintTools[(int)currentPaintTool].OnMouseDown(sender, e);
-
-            // Testing
-
-            if (e.Button == MouseButtons.Middle)
-            {
-                currentMousePosition = InvertCameraMatrix(e.Location);
-                previousMousePosition = InvertCameraMatrix(e.Location);
-
-                isMiddle = true;
-            }
-
-
         }
 
         void view_OnInitialize()
@@ -278,20 +228,19 @@ namespace MapEditor.Presenters
 
         public void ScrollCamera(Vector2 vector)
         {
-
             // Calculate the side edges of the screen.
-            float marginWidth = camera.ViewportWidth; // * 0.5f
+            float marginWidth = camera.ViewportWidth * 0.5f; // * 0.5f
             float marginLeft = camera.Position.X + marginWidth;
             float marginRight = camera.Position.X + camera.ViewportWidth - marginWidth;
 
             // Calculate the top and bottom edges of the screen.
-            float marginHeight = camera.ViewportHeight; // * 0.5f
+            float marginHeight = camera.ViewportHeight * 0.5f; // * 0.5f
             float marginTop = camera.Position.Y + marginHeight;
             float marginBottom = camera.Position.Y + camera.ViewportHeight - marginHeight;
 
             // Calculate how far to scroll when the vector is near the edges of the screen.
-            float cameraMovementX = 0.0f;
-            float cameraMovementY = 0.0f;
+            float cameraMovementX = 0;
+            float cameraMovementY = 0;
 
             if (vector.X < marginLeft)
                 cameraMovementX = vector.X - marginLeft;
@@ -324,8 +273,8 @@ namespace MapEditor.Presenters
             float maxCameraPositionX = tileWidth * mapWidth - camera.ViewportWidth;
             float maxCameraPositionY = tileHeight * mapHeight - camera.ViewportHeight;
 
-            camera.Position = new Vector2(MathHelper.Clamp(camera.Position.X + cameraMovementX, 0.0f, maxCameraPositionX),
-                 MathHelper.Clamp(camera.Position.Y + cameraMovementY, 0.0f, maxCameraPositionY));
+            camera.Position = new Vector2(MathHelper.Clamp(camera.Position.X + cameraMovementX, 0, maxCameraPositionX),
+                 MathHelper.Clamp(camera.Position.Y + cameraMovementY, 0, maxCameraPositionY));
         }
 
 
@@ -556,9 +505,9 @@ namespace MapEditor.Presenters
         /// </summary>
         /// <param name="mapWidth"></param>
         /// <param name="mapHeight"></param>
-        public void ResizeMap(int mapWidth, int mapHeight)
+        public void ResizeMap(int mapWidth, int mapHeight, NumericUpDownEx mapWidthNumeric, NumericUpDownEx mapHeightNumeric)
         {
-            commandManager.ExecuteMapResize(Layers, mapWidth, mapHeight);
+            commandManager.ExecuteMapResize(Layers, mapWidth, mapHeight, mapWidthNumeric, mapHeightNumeric);
         }
 
         /// <summary>
@@ -566,9 +515,9 @@ namespace MapEditor.Presenters
         /// </summary>
         /// <param name="tileWidth"></param>
         /// <param name="tileHeight"></param>
-        public void ResizeTiles(int tileWidth, int tileHeight)
+        public void ResizeTiles(int tileWidth, int tileHeight, NumericUpDownEx tileWidthNumeric, NumericUpDownEx tileHeightNumeric)
         {
-            commandManager.ExecuteTileResize(Tilesets, tileWidth, tileHeight);
+            commandManager.ExecuteTileResize(Tilesets, tileWidth, tileHeight, tileWidthNumeric, tileHeightNumeric);
         }
 
         /// <summary>
