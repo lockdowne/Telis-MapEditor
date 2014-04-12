@@ -123,6 +123,8 @@ namespace MapEditor.UI
         public event EventHandler MapResize;
         public event EventHandler TileResize;
 
+        public event FormClosingEventHandler ViewClosing;
+
 
 
         /// <summary>
@@ -132,7 +134,11 @@ namespace MapEditor.UI
         {
             get
             {
-                return (IXnaRenderView)closableTabControl1.SelectedTab.Controls[0];
+                if(closableTabControl1.SelectedTab != null)
+                    if(closableTabControl1.SelectedTab.Controls.Count > 0)
+                        return (IXnaRenderView)closableTabControl1.SelectedTab.Controls[0];
+
+                return null;
             }
         }
 
@@ -143,6 +149,12 @@ namespace MapEditor.UI
         public MainView()
         {
             InitializeComponent();
+
+            this.FormClosing += (sender, e) =>
+            {
+                if (ViewClosing != null)
+                    ViewClosing(sender, e);
+            };
         }
 
         #region Windows Form Designer generated code

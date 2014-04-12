@@ -59,6 +59,12 @@ namespace MapEditor.UI
         public LayerView()
         {
             InitializeComponent();
+
+            this.FormClosing += (sender, e) =>
+            {
+                this.Hide();
+                e.Cancel = true;
+            };
         }
 
         #region Windows Form Designer generated code
@@ -248,17 +254,19 @@ namespace MapEditor.UI
             {
                 components.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
         public void ShowForm(IMainView parent)
         {
-            this.Show((Form)parent);
+            if(!Visible)
+                this.Show((Form)parent);
         }
 
         public void CloseForm()
         {
-            this.Close();
+            this.Hide();
         }
 
         #endregion

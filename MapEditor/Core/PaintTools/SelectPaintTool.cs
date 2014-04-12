@@ -76,8 +76,8 @@ namespace MapEditor.Core.PaintTools
 
                 if (presenter.Layers.Count > 0)
                 {
-                    mapWidth = presenter.Tilesets.FirstOrDefault().TileWidth;
-                    mapHeight = presenter.Tilesets.FirstOrDefault().TileHeight;
+                    mapWidth = presenter.Layers.FirstOrDefault().MapWidth;
+                    mapHeight = presenter.Layers.FirstOrDefault().MapHeight;
                 }                
 
                 beginSelectionBox = presenter.SnapToGrid(new Vector2(MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).X, 0, mapWidth * tileWidth),
@@ -105,9 +105,9 @@ namespace MapEditor.Core.PaintTools
 
                 if (presenter.Layers.Count > 0)
                 {
-                    mapWidth = presenter.Tilesets.FirstOrDefault().TileWidth;
-                    mapHeight = presenter.Tilesets.FirstOrDefault().TileHeight;
-                }
+                    mapWidth = presenter.Layers.FirstOrDefault().MapWidth;
+                    mapHeight = presenter.Layers.FirstOrDefault().MapHeight;
+                }    
 
                 endSelectionBox = presenter.SnapToGrid(new Vector2(MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).X, 0, mapWidth * tileWidth),
                     MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).Y, 0, mapHeight * tileHeight)));
@@ -137,9 +137,9 @@ namespace MapEditor.Core.PaintTools
 
                 if (presenter.Layers.Count > 0)
                 {
-                    mapWidth = presenter.Tilesets.FirstOrDefault().TileWidth;
-                    mapHeight = presenter.Tilesets.FirstOrDefault().TileHeight;
-                }
+                    mapWidth = presenter.Layers.FirstOrDefault().MapWidth;
+                    mapHeight = presenter.Layers.FirstOrDefault().MapHeight;
+                }    
 
                 endSelectionBox = presenter.SnapToGrid(new Vector2(MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).X, 0, mapWidth * tileWidth),
                     MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).Y, 0, mapHeight * tileHeight)));

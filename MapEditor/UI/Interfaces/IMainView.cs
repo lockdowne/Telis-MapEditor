@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using MapEditor.Core.Helpers;
 
 namespace MapEditor.UI
@@ -43,7 +44,9 @@ namespace MapEditor.UI
 
         event EventHandler MapOffset;
         event EventHandler MapResize;
-        event EventHandler TileResize;        
+        event EventHandler TileResize;
+
+        event FormClosingEventHandler ViewClosing;
 
         IXnaRenderView GetCurrentView { get; }
 

@@ -19,8 +19,8 @@ namespace MapEditor.UI
 
         #endregion
 
-        #region Fields
-
+        #region Properties
+        
         public IXnaRenderView GetCurrentView
         {
             get
@@ -39,6 +39,12 @@ namespace MapEditor.UI
         public TilesetView()
         {
             InitializeComponent();
+
+            this.FormClosing += (sender, e) =>
+            {
+                this.Hide();
+                e.Cancel = true;
+            };
         }
 
         #endregion
@@ -111,12 +117,13 @@ namespace MapEditor.UI
 
         public void ShowForm(IMainView view)
         {
-            Show((Form)view);
+            if (!Visible)
+                Show((Form)view);
         }
 
         public void CloseForm()
         {
-            Close();
+            Hide();
         }
 
         #endregion

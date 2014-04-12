@@ -166,8 +166,8 @@ namespace MapEditor.Presenters
 
             if (Layers.Count > 0)
             {
-                mapWidth = Tilesets.FirstOrDefault().TileWidth;
-                mapHeight = Tilesets.FirstOrDefault().TileHeight;
+                mapWidth = Layers.FirstOrDefault().MapWidth;
+                mapHeight = Layers.FirstOrDefault().MapHeight;
             }
 
             if (tileWidth <= 0 || tileHeight <= 0)

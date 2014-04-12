@@ -42,8 +42,9 @@ namespace MapEditor.Presenters
         {
             get 
             {
-                if (MainPresenters.ContainsKey(mainView.GetCurrentView.KeyName))
-                    return MainPresenters[mainView.GetCurrentView.KeyName];
+                if(mainView.GetCurrentView != null)
+                    if (MainPresenters.ContainsKey(mainView.GetCurrentView.KeyName))
+                        return MainPresenters[mainView.GetCurrentView.KeyName];
 
                 return null;
             }
@@ -68,6 +69,8 @@ namespace MapEditor.Presenters
             SubscribeOffsetViewEvents();
             SubscribeFileNewViewEvents();
             SubscribeTilesetViewEvents();
+            SubscribeMapResizeViewEvents();
+            SubscribeTileResizeViewEvents();
         }
 
 
@@ -245,7 +248,10 @@ namespace MapEditor.Presenters
                 // TODO: tile resize
             };
 
-         
+            mainView.ViewClosing += (sender, e) =>
+                {
+                    e.Cancel = false;
+                };
         }
 
         private void SubscribeLayerViewEvents()
@@ -397,6 +403,7 @@ namespace MapEditor.Presenters
                     tileResizeView.CloseForm();
                 };
         }
+       
         #endregion             
 
         #region Methods
