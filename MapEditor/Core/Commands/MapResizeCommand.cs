@@ -26,12 +26,12 @@ namespace MapEditor.Core.Commands
         {
             previousLayers = currentLayers;
 
-            currentLayers.ForEach(layer => layer.Resize(width, height));
+            //currentLayers.ForEach(layer => layer.Resize(width, height));
         }
 
         public void UnExecute()
         {
-            currentLayers = previousLayers;
+            //currentLayers = previousLayers;
         }
     }
 }

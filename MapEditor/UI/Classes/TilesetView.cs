@@ -12,35 +12,36 @@ namespace MapEditor.UI
 {
     public class TilesetView : Form, ITilesetView
     {
+        #region Fields
+
         private ClosableTabControl closableTabControl1;        
         private System.ComponentModel.IContainer components = null;
+
+        #endregion
+
+        #region Fields
 
         public IXnaRenderView GetCurrentView
         {
             get
             {
-                // TODO: Add exceptions
-                return (IXnaRenderView)closableTabControl1.SelectedTab.Controls[0];
+                if(closableTabControl1.SelectedTab.Controls.Count > 0)
+                    return (IXnaRenderView)closableTabControl1.SelectedTab.Controls[0];
+
+                return null;
             }
         }
+
+        #endregion
+
+        #region Initialize
 
         public TilesetView()
         {
             InitializeComponent();
-        }        
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
         }
+
+        #endregion
 
         #region Windows Form Designer generated code
 
@@ -80,6 +81,21 @@ namespace MapEditor.UI
 
         #endregion
 
+        #region Methods
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
         public void AddView(string name, IXnaRenderView renderer)
         {
             Control view = (Control)renderer;
@@ -102,5 +118,7 @@ namespace MapEditor.UI
         {
             Close();
         }
+
+        #endregion
     }
 }

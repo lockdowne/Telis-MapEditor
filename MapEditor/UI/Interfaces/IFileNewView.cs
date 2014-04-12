@@ -17,16 +17,16 @@ namespace MapEditor.UI
         event EventHandler Cancel;
         event EventHandler ValueChanged;
 
-        string GetFileName { get; }
-        string GetTilesetPath { get; }
-        string SetDisplay { set; }
+        string FileName { get; }
+        string TilesetPath { get; }
+        string Display { set; }
 
-        int GetMapWidth { get; }
-        int GetMapHeight { get; }
-        int GetTileWidth { get; }
-        int GetTileHeight { get; }
+        int MapWidth { get; }
+        int MapHeight { get; }
+        int TileWidth { get; }
+        int TileHeight { get; }
 
-        DialogResult ShowForm();
+        void ShowForm();
 
         void CloseForm();
         void DisplayMessage(string message);

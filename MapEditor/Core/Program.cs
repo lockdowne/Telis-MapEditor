@@ -17,14 +17,12 @@ namespace MapEditor.Core
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-
+            
             IMainView view = new MainView();
             
-            MainPresenter presenter = new MainPresenter(view, new LayerView());
-            Application.Run((MainView)view);
-
-            
+            MainPresenter presenter = new MainPresenter(view, new LayerView(), new OffsetView(), new MapResizeView(), new FileNewView(), new TilesetView());
+            Application.Run((MainView)view);                        
         }
     }
 }
+

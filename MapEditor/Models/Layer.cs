@@ -8,11 +8,17 @@ namespace MapEditor.Models
 {
     public class Row
     {
+        #region Properties
+
         public List<Cell> Columns = new List<Cell>();
+
+        #endregion
     }
    
     public class Layer
     {
+        #region Properties
+
         // Matrix
         public List<Row> Rows = new List<Row>();
         
@@ -23,6 +29,10 @@ namespace MapEditor.Models
 
         // Visibility of layer
         public bool IsVisible { get; set; }
+
+        #endregion
+
+        #region Initialize
 
         public Layer(int width, int height)
         {
@@ -47,7 +57,6 @@ namespace MapEditor.Models
                 {
                     row.Columns.Add(new Cell()
                     {
-                        Property = string.Empty,
                         TileID = -1,
                     });
                 }
@@ -56,31 +65,6 @@ namespace MapEditor.Models
             }
         }
 
-        public void Resize(int width, int height)
-        {
-            List<Row> resizedLayer = new List<Row>();
-
-            for (int y = 0; y < height; y++)
-            {
-                Row row = new Row();
-
-                for (int x = 0; x < width; x++)
-                {
-                    row.Columns.Add(new Cell()
-                    {
-                        Property = Rows[y].Columns[x].Property,
-                        TileID = Rows[y].Columns[x].TileID,
-                    });
-                }
-
-                resizedLayer.Add(row);
-            }
-
-            Rows = resizedLayer;
-
-            MapWidth = width;
-            MapHeight = height;
-        }
-
+        #endregion
     }
 }

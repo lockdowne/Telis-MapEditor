@@ -13,6 +13,8 @@ namespace MapEditor.UI
 {
     public class FileNewView : Form, IFileNewView
     {
+        #region Fields
+
         private GroupBox groupBox1;
         private Button buttonBrowse;
         private TextBox textBoxTileset;
@@ -34,64 +36,67 @@ namespace MapEditor.UI
         private Button buttonOK;
         private IContainer components = null;
 
+        #endregion
+
+        #region Properties
+
         public event EventHandler Browse;
         public event EventHandler Confirm;
         public event EventHandler Cancel;
         public event EventHandler ValueChanged;
 
-        public string GetFileName
+        public string FileName
         {
             get { return textBoxName.Text; }
         }
 
-        public string GetTilesetPath
+        public string TilesetPath
         {
             get { return textBoxTileset.Text; }
         }
 
-        public string SetDisplay
+        public string Display
         {
             set { labelDisplay.Text = value; }
         }
 
-        public int GetMapWidth
+        public int MapWidth
         {
             get { return (int)numericUpDownExMapWidth.Value; }
         }
 
-        public int GetMapHeight
+        public int MapHeight
         {
             get { return (int)numericUpDownExMapHeight.Value; }
         }
 
-        public int GetTileWidth
+        public int TileWidth
         {
             get { return (int)numericUpDownExTileWidth.Value; }
         }
 
-        public int GetTileHeight
+        public int TileHeight
         {
             get { return (int)numericUpDownExTileHeight.Value; }
         }
 
-       
+        #endregion
+
+        #region Initialize
 
         public FileNewView()
         {
             InitializeComponent();
 
-            labelDisplay.Text = GetMapWidth * GetTileWidth + " x " + GetMapHeight * GetTileHeight + " pixels";
+            labelDisplay.Text = MapWidth * TileWidth + " x " + MapHeight * TileHeight + " pixels";
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        #region Windows Form Designer generated code
 
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -144,7 +149,7 @@ namespace MapEditor.UI
             this.buttonBrowse.TabIndex = 2;
             this.buttonBrowse.Text = "Browse";
             this.buttonBrowse.UseVisualStyleBackColor = true;
-            this.buttonBrowse.Click += new System.EventHandler(this.buttonBrowse_Click);
+            this.buttonBrowse.Click += new System.EventHandler(buttonBrowse_Click);
             // 
             // textBoxTileset
             // 
@@ -224,7 +229,7 @@ namespace MapEditor.UI
             0,
             0,
             0});
-            this.numericUpDownExMapHeight.ValueChanged += new System.EventHandler(this.numericUpDownExMapHeight_ValueChanged);
+            this.numericUpDownExMapHeight.ValueChanged += new EventHandler(numericUpDownExMapHeight_ValueChanged);
             // 
             // numericUpDownExMapWidth
             // 
@@ -248,7 +253,7 @@ namespace MapEditor.UI
             0,
             0,
             0});
-            this.numericUpDownExMapWidth.ValueChanged += new System.EventHandler(this.numericUpDownExMapWidth_ValueChanged);
+            this.numericUpDownExMapWidth.ValueChanged += new EventHandler(numericUpDownExMapWidth_ValueChanged);
             // 
             // label4
             // 
@@ -303,7 +308,7 @@ namespace MapEditor.UI
             0,
             0,
             0});
-            this.numericUpDownExTileHeight.ValueChanged += new System.EventHandler(this.numericUpDownExTileHeight_ValueChanged);
+            this.numericUpDownExTileHeight.ValueChanged += new EventHandler(numericUpDownExTileHeight_ValueChanged);
             // 
             // label6
             // 
@@ -336,7 +341,7 @@ namespace MapEditor.UI
             0,
             0,
             0});
-            this.numericUpDownExTileWidth.ValueChanged += new System.EventHandler(this.numericUpDownExTileWidth_ValueChanged);
+            this.numericUpDownExTileWidth.ValueChanged += new EventHandler(numericUpDownExTileWidth_ValueChanged);
             // 
             // label5
             // 
@@ -355,7 +360,7 @@ namespace MapEditor.UI
             this.buttonCancel.TabIndex = 8;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
-            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            this.buttonCancel.Click += new EventHandler(buttonCancel_Click);
             // 
             // buttonOK
             // 
@@ -365,7 +370,7 @@ namespace MapEditor.UI
             this.buttonOK.TabIndex = 7;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
-            this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
+            this.buttonOK.Click += new EventHandler(buttonOK_Click);
             // 
             // FileNewView
             // 
@@ -396,15 +401,70 @@ namespace MapEditor.UI
 
         }
 
-        private void buttonBrowse_Click(object sender, EventArgs e)
+        #endregion
+
+        #endregion
+
+        #region Windows Form Designer generated events
+
+        void numericUpDownExTileWidth_ValueChanged(object sender, EventArgs e)
+        {
+            if (ValueChanged != null)
+                ValueChanged(sender, e);
+        }
+
+        void numericUpDownExMapHeight_ValueChanged(object sender, EventArgs e)
+        {
+            if (ValueChanged != null)
+                ValueChanged(sender, e);
+        }
+
+        void buttonBrowse_Click(object sender, EventArgs e)
         {
             if (Browse != null)
                 Browse(sender, e);
         }
 
-        public DialogResult ShowForm()
+        void numericUpDownExMapWidth_ValueChanged(object sender, EventArgs e)
         {
-            return ShowDialog();
+            if (ValueChanged != null)
+                ValueChanged(sender, e);
+        }
+
+        void numericUpDownExTileHeight_ValueChanged(object sender, EventArgs e)
+        {
+            if (ValueChanged != null)
+                ValueChanged(sender, e);
+        }
+
+        void buttonCancel_Click(object sender, EventArgs e)
+        {
+            if (Cancel != null)
+                Cancel(sender, e);
+        }
+
+        void buttonOK_Click(object sender, EventArgs e)
+        {
+            if (Confirm != null)
+                Confirm(sender, e);
+        }
+
+        #endregion
+
+        #region Methods
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }  
+
+        public void ShowForm()
+        {
+            ShowDialog();
         }
 
         public void CloseForm()
@@ -422,40 +482,6 @@ namespace MapEditor.UI
             textBoxTileset.Text = path;
         }
 
-        private void buttonOK_Click(object sender, EventArgs e)
-        {
-            if (Confirm != null)
-                Confirm(sender, e);
-        }
-
-        private void buttonCancel_Click(object sender, EventArgs e)
-        {
-            if (Cancel != null)
-                Cancel(sender, e);
-        }
-
-        private void numericUpDownExMapWidth_ValueChanged(object sender, EventArgs e)
-        {
-            if (ValueChanged != null)
-                ValueChanged(sender, e);
-        }
-
-        private void numericUpDownExMapHeight_ValueChanged(object sender, EventArgs e)
-        {
-            if (ValueChanged != null)
-                ValueChanged(sender, e);
-        }
-
-        private void numericUpDownExTileWidth_ValueChanged(object sender, EventArgs e)
-        {
-            if (ValueChanged != null)
-                ValueChanged(sender, e);
-        }
-
-        private void numericUpDownExTileHeight_ValueChanged(object sender, EventArgs e)
-        {
-            if (ValueChanged != null)
-                ValueChanged(sender, e);
-        }
+        #endregion        
     }
 }

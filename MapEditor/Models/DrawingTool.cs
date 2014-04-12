@@ -12,6 +12,8 @@ namespace MapEditor.Models
     /// </summary>
     public static class DrawingTool
     {
+        #region Methods
+
         public static void DrawLine(SpriteBatch spriteBatch, Texture2D texture, Vector2 PointA, Vector2 PointB, Color XnaColor, int thickness)
         {
             int distance = (int)Vector2.Distance(PointA, PointB);
@@ -30,7 +32,15 @@ namespace MapEditor.Models
         }
 
 
-        //Draws a rect with the help of DrawLine
+        /// <summary>
+        /// Draws a rectangle with the help of DrawLine
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="texture"></param>
+        /// <param name="Rect"></param>
+        /// <param name="XnaColor"></param>
+        /// <param name="thickness"></param>
+
         public static void DrawRectangle(SpriteBatch spriteBatch, Texture2D texture, Rectangle Rect, Color XnaColor, int thickness)
         {
             // | left
@@ -42,5 +52,7 @@ namespace MapEditor.Models
             // | right
             DrawLine(spriteBatch, texture, new Vector2(Rect.X + Rect.Width, Rect.Y), new Vector2(Rect.X + Rect.Width, Rect.Y + Rect.Height), XnaColor, thickness);
         }
+
+        #endregion
     }
 }

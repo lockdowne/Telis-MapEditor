@@ -16,14 +16,20 @@ namespace MapEditor.UI
 {
     public class XnaRenderView : GraphicsDeviceControl, IXnaRenderView
     {
+        #region Fields
+
+        private SpriteBatch spriteBatch;
+
+        #endregion
+
+        #region Properties
+
         public event MouseEventHandler OnXnaDown;
         public event MouseEventHandler OnXnaUp;
         public event MouseEventHandler OnXnaMove;
 
         public event Action OnInitialize;
-        public event Action<SpriteBatch> OnDraw;       
-
-        private SpriteBatch spriteBatch;
+        public event Action<SpriteBatch> OnDraw;   
        
         public GraphicsDevice GetGraphicsDevice
         {
@@ -34,6 +40,10 @@ namespace MapEditor.UI
         {
             get { return Name; }            
         }
+
+        #endregion
+
+        #region Initialize
 
         public XnaRenderView()
         {
@@ -52,13 +62,16 @@ namespace MapEditor.UI
             Application.Idle += delegate { Invalidate(); };
         }
 
+        #endregion
+
+        #region Methods
+
         protected override void Draw()
         {
             if (OnDraw != null)
                 OnDraw(spriteBatch);
         }
 
-       
-
+        #endregion        
     }
 }

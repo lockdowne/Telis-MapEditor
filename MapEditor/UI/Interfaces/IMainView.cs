@@ -12,30 +12,38 @@ namespace MapEditor.UI
     public interface IMainView
     {
         event EventHandler FileNew;
+        event EventHandler FileOpen;
+        event EventHandler FileSave;
+        event EventHandler FileSaveAs;
+        event EventHandler FileClose;
+        event EventHandler FileCloseAll;
         event EventHandler FileExit;
 
+        event EventHandler EditUndo;
+        event EventHandler EditRedo;
         event EventHandler EditCopy;
         event EventHandler EditCut;
         event EventHandler EditDraw;
-        event EventHandler EditPaste;
-        event EventHandler EditRemove;
+        event EventHandler EditErase;
         event EventHandler EditSelect;
+        event EventHandler EditFill;
+
+        event EventHandler ViewShowGrid;
+        event EventHandler ViewZoomIn;
+        event EventHandler ViewZoomOut;
+        event EventHandler ViewShowLayerForm;
+        event EventHandler ViewShowTilesetForm;
+        event EventHandler ViewShowMinimapForm;
 
         event EventHandler LayerAdd;
         event EventHandler LayerRemove;
         event EventHandler LayerClone;
         event EventHandler LayerRaise;
         event EventHandler LayerLower;
-        event EventHandler LayerVisibility;
 
         event EventHandler MapOffset;
         event EventHandler MapResize;
-
-        event EventHandler TileResize;
-
-        event EventHandler Undo;
-        event EventHandler Redo;
-        
+        event EventHandler TileResize;        
 
         IXnaRenderView GetCurrentView { get; }
 

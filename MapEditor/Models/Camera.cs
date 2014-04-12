@@ -6,10 +6,13 @@ using Microsoft.Xna.Framework;
 
 namespace MapEditor.Models
 {
-
+    /// <summary>
+    /// Camera used to navigate through rendered areas
+    /// </summary>
     public class Camera
     {
-      
+        #region Properties
+
         // Camera position
         public Vector2 Position { get; set; }
 
@@ -35,5 +38,7 @@ namespace MapEditor.Models
                     Matrix.CreateScale(new Vector3(Zoom, Zoom, 1));
             }
         }
+
+        #endregion
     }
 }

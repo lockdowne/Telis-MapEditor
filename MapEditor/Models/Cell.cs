@@ -10,11 +10,14 @@ namespace MapEditor.Models
     /// </summary>
     public class Cell
     {
+        #region Properties
+
         // Number to draw on map referenced from given tileset
         public int TileID { get; set; }
 
         // Cell property
         public string Property { get; set; }
 
+        #endregion
     }
 }

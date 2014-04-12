@@ -188,7 +188,7 @@ namespace MapEditor.UI
 
         #endregion       
 
-        #region Events
+        #region Windows Form Designer generated events
 
         private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {

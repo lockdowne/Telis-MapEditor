@@ -18,21 +18,24 @@ namespace MapEditor.Presenters
     {
         #region Fields
 
-        private readonly ITilesetView view;
-
-        public event Action<int[,]> SendTileBrushValues;
+        private readonly ITilesetView view;       
 
         private Dictionary<string, ITilesetRenderPresenter> Presenters = new Dictionary<string, ITilesetRenderPresenter>();
 
         #endregion
 
         #region Properties
+ 
+        public event Action<int[,]> SendTileBrushValues;
 
         public ITilesetRenderPresenter CurrentPresenter
         {
             get
             {
-                return Presenters[view.GetCurrentView.KeyName];
+                if(Presenters.ContainsKey(view.GetCurrentView.KeyName))
+                    return Presenters[view.GetCurrentView.KeyName];
+
+                return null;
             }
         }
 

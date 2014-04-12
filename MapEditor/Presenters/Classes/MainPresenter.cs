@@ -20,241 +20,349 @@ namespace MapEditor.Presenters
     {
         #region Fields
 
-        private readonly IMainView view;
+        private readonly IMainView mainView;
         private readonly ILayerView layerView;
+        private readonly IOffsetView offsetView;
+        private readonly IMapResizeView mapResizeView;
+        private readonly IFileNewView fileNewView;
+        private readonly ITilesetPresenter tilesetPresenter;
 
         private Dictionary<string, IMainRenderPresenter> MainPresenters = new Dictionary<string, IMainRenderPresenter>();
 
-        private IFileNewPresenter fileNewPresenter;
-        private ITilesetPresenter tilesetPresenter;
-        private IOffsetPresenter offsetPresenter;
-        
 
         #endregion
 
         #region Properties
+
         /// <summary>
         /// Get current map presenter
         /// </summary>
         public IMainRenderPresenter CurrentMainPresenter
         {
-            get { return MainPresenters[view.GetCurrentView.KeyName]; }
+            get 
+            {
+                if (MainPresenters.ContainsKey(mainView.GetCurrentView.KeyName))
+                    return MainPresenters[mainView.GetCurrentView.KeyName];
+
+                return null;
+            }
         }
 
         #endregion
 
         #region Initialize
 
-        public MainPresenter(IMainView view, ILayerView layerView)
+        public MainPresenter(IMainView mainView, ILayerView layerView, IOffsetView offsetView, IMapResizeView mapResizeView, IFileNewView fileNewView, ITilesetView tilesetView)
         {
-            this.view = view;
+            this.mainView = mainView;
             this.layerView = layerView;
+            this.offsetView = offsetView;
+            this.mapResizeView = mapResizeView;
+            this.fileNewView = fileNewView;
+            this.tilesetPresenter = new TilesetPresenter(tilesetView);
 
-            view.FileNew += new EventHandler(FileNew);
-            view.LayerAdd += new EventHandler(view_LayerAdd);
-            view.EditCopy += new EventHandler(view_EditCopy);
-            view.EditCut += new EventHandler(view_EditCut);
-            view.EditDraw += new EventHandler(view_EditDraw);
-            view.EditPaste += new EventHandler(view_EditPaste);
-            view.EditRemove += new EventHandler(view_EditRemove);
-            view.EditSelect += new EventHandler(view_EditSelect);
-            view.LayerClone += new EventHandler(view_LayerClone);
-            view.LayerLower += new EventHandler(view_LayerLower);
-            view.LayerRaise += new EventHandler(view_LayerRaise);
-            view.LayerRemove += new EventHandler(view_LayerRemove);
-            view.LayerVisibility += new EventHandler(view_LayerVisibility);
-            view.MapOffset += new EventHandler(view_MapOffset);
-            view.MapResize += new EventHandler(view_MapResize);
-            view.Undo += new EventHandler(view_Undo);
-            view.Redo += new EventHandler(view_Redo);
+            SubscribeMainViewEvents();
+            SubscribeLayerViewEvents();
+            SubscribeOffsetViewEvents();
+            SubscribeFileNewViewEvents();
+            SubscribeTilesetViewEvents();
+        }
 
-            layerView.AddLayerItem += new EventHandler(layerView_AddLayerItem);
-            layerView.MoveLayerDown += new EventHandler(layerView_MoveLayerDown);
-            layerView.MoveLayerUp += new EventHandler(layerView_MoveLayerUp);
-            layerView.RemoveLayerItem += new EventHandler(layerView_RemoveLayerItem);
-            layerView.LayerItemChecked += new EventHandler(layerView_LayerItemChecked);
-            layerView.LayerIndexChanged += new EventHandler(layerView_LayerIndexChanged);
-            layerView.DuplicateLayer += new EventHandler(layerView_DuplicateLayer);
 
-            fileNewPresenter = new FileNewPresenter(new FileNewView());
-            tilesetPresenter = new TilesetPresenter(new TilesetView());
-            offsetPresenter = new OffsetPresenter(new OffsetView());
+        private void SubscribeMainViewEvents()
+        {
+            if (mainView == null)
+                return;
 
-            fileNewPresenter.Confirmed += fileNewPresenter_Confirmed;            
+            mainView.FileNew += (sender, e) =>
+            {
+                if (fileNewView != null)
+                    fileNewView.ShowForm();
+            };
 
-            tilesetPresenter.SendTileBrushValues += (brush) => CurrentMainPresenter.TileBrushValues = brush;
+            mainView.FileOpen += (sender, e) =>
+            {
+                // TODO: open file
+            };
 
-            offsetPresenter.Confirm += new EventHandler(offsetPresenter_Confirm);
+            mainView.FileSave += (sender, e) =>
+            {
+                // TODO: save file
+            };
+
+            mainView.FileSaveAs += (sender, e) =>
+            {
+                // TODO: save as
+            };
+
+            mainView.FileClose += (sender, e) =>
+            {
+                // TODO: close file
+            };
+
+            mainView.FileCloseAll += (sender, e) =>
+            {
+                // TODO: close all files
+            };
+
+            mainView.FileExit += (sender, e) =>
+            {
+                // TODO: exit system
+            };
+
+            mainView.EditCopy += (sender, e) =>
+            {
+                if (CurrentMainPresenter != null)
+                    CurrentMainPresenter.CopySelection();
+            };
+
+            mainView.EditCut += (sender, e) =>
+            {
+                if (CurrentMainPresenter != null)
+                    CurrentMainPresenter.CutSelection();
+            };
+
+            mainView.EditDraw += (sender, e) =>
+            {
+                if (CurrentMainPresenter != null)
+                    CurrentMainPresenter.SetPaintTool(PaintTool.Draw);
+            };
+
+            mainView.EditErase += (sender, e) =>
+            {
+                if (CurrentMainPresenter != null)
+                    CurrentMainPresenter.SetPaintTool(PaintTool.Erase);
+            };
+
+            mainView.EditSelect += (sender, e) =>
+            {
+                if (CurrentMainPresenter != null)
+                    CurrentMainPresenter.SetPaintTool(PaintTool.Select);
+            };
+
+            mainView.EditFill += (sender, e) =>
+            {
+                // TODO: flood fill algorithm
+            };
+
+            mainView.EditUndo += (sender, e) =>
+            {
+                if (CurrentMainPresenter != null)
+                    CurrentMainPresenter.Undo();
+            };
+
+            mainView.EditRedo += (sender, e) =>
+            {
+                if (CurrentMainPresenter != null)
+                    CurrentMainPresenter.Redo();
+            };
+
+            mainView.ViewShowGrid += (sender, e) =>
+            {
+                // TODO: show grid
+            };
+
+            mainView.ViewZoomIn += (sender, e) =>
+            {
+                // TODO: zoom in
+            };
+
+            mainView.ViewZoomOut += (sender, e) =>
+            {
+                // TODO: zoom out
+            };
+            
+            mainView.ViewShowLayerForm += (sender, e) =>
+            {
+                if (layerView != null)
+                    layerView.ShowForm(mainView);
+            };
+
+            mainView.ViewShowTilesetForm += (sender, e) =>
+            {
+                if (tilesetPresenter != null)
+                    tilesetPresenter.LoadForm(mainView);
+            };
+
+            mainView.ViewShowMinimapForm += (sender, e) =>
+            {
+                // TODO: show minimap
+            };
+
+            mainView.LayerClone += (sender, e) =>
+            {
+                if (CurrentMainPresenter != null)
+                    if (layerView != null)
+                        CurrentMainPresenter.CloneLayer(layerView.CheckedListBox);
+            };
+
+            mainView.LayerAdd += (sender, e) =>
+            {
+                if (CurrentMainPresenter != null)
+                    if (layerView != null)
+                        CurrentMainPresenter.AddLayer(layerView.CheckedListBox);
+            };
+
+            mainView.LayerLower += (sender, e) =>
+            {
+                if (CurrentMainPresenter != null)
+                    if (layerView != null)
+                        CurrentMainPresenter.LowerLayer(layerView.CheckedListBox);
+            };
+
+            mainView.LayerRaise += (sender, e) =>
+            {
+                if (CurrentMainPresenter != null)
+                    if (layerView != null)
+                        CurrentMainPresenter.RaiseLayer(layerView.CheckedListBox);
+            };
+
+            mainView.LayerRemove += (sender, e) =>
+            {
+                if (CurrentMainPresenter != null)
+                    if (layerView != null)
+                        CurrentMainPresenter.RemoveLayer(layerView.CheckedListBox);
+            };
+
+            mainView.MapOffset += (sender, e) =>
+            {
+                if (CurrentMainPresenter != null)
+                    if (offsetView != null)
+                        offsetView.ShowForm();
+            };
+
+            mainView.MapResize += (sender, e) =>
+            {
+                if (mapResizeView != null)
+                    mapResizeView.ShowForm();
+            };            
+
+            mainView.TileResize += (sender, e) =>
+            {
+                // TODO: tile resize
+            };
 
          
-
-
-            // TEST
-           // tilesetPresenter.LoadForm();
-            
-           // tilesetPresenter.AddPresenter("boosh", new XnaRenderView(), @"C:\Users\Imperator\Pictures\aa.png", 32, 32);
-
-           /* ITilesetRenderView v = new TilesetRenderView();
-           // v.Dock = System.Windows.Forms.DockStyle.Fill;
-            v.OnInitialize += () => System.Windows.Forms.MessageBox.Show("WORKS");
-            ((MainView)view).Controls.Add((System.Windows.Forms.Control)v); */
         }
 
-       
-        
-        #endregion
-
-        #region Events
- 
-        void offsetPresenter_Confirm(object sender, EventArgs e)
+        private void SubscribeLayerViewEvents()
         {
-            CurrentMainPresenter.OffsetMap(offsetPresenter.OffsetX, offsetPresenter.OffsetY);
-        }
+            if (layerView == null)
+                return;
 
-        void layerView_DuplicateLayer(object sender, EventArgs e)
-        {
-            CurrentMainPresenter.CloneLayer(layerView.CheckedListBox);
-        }
-
-        void view_Redo(object sender, EventArgs e)
-        {
-            CurrentMainPresenter.Redo();
-        }
-
-        void view_Undo(object sender, EventArgs e)
-        {
-            CurrentMainPresenter.Undo();
-        }
-
-        void layerView_LayerIndexChanged(object sender, EventArgs e)
-        {
-            // TODO: Need work around for rapid clicks and registering event, may seem buggy with different intervals between mouse clicks
-
-            Console.WriteLine(layerView.CheckedListBox.SelectedIndex);
-            CurrentMainPresenter.LayerIndex = layerView.CheckedListBox.SelectedIndex;
-
-            if (CurrentMainPresenter.LayerIndex != -1)
+            layerView.AddLayerItem += (sender, e) =>
             {
-                if (layerView.CheckedListBox.GetItemChecked(CurrentMainPresenter.LayerIndex))
-                    CurrentMainPresenter.SetLayerVisibility(true);
-                else
-                    CurrentMainPresenter.SetLayerVisibility(false);
-            }
+                if (CurrentMainPresenter != null)
+                    CurrentMainPresenter.AddLayer(layerView.CheckedListBox);
+            };
+
+            layerView.MoveLayerDown += (sender, e) =>
+            {
+                if (CurrentMainPresenter != null)
+                    CurrentMainPresenter.LowerLayer(layerView.CheckedListBox);
+            };
+
+            layerView.MoveLayerUp += (sender, e) =>
+            {
+                if (CurrentMainPresenter != null)
+                    CurrentMainPresenter.RaiseLayer(layerView.CheckedListBox);
+            };
+
+            layerView.RemoveLayerItem += (sender, e) =>
+            {
+                if (CurrentMainPresenter != null)
+                    CurrentMainPresenter.RemoveLayer(layerView.CheckedListBox);
+            };
+
+            layerView.LayerIndexChanged += (sender, e) =>
+            {
+                // TODO: Need work around for finding check state of checkedBoxList item and to invoke layer visibility event               
+            };
+
+            layerView.DuplicateLayer += (sender, e) =>
+            {
+                if (CurrentMainPresenter != null)
+                    CurrentMainPresenter.CloneLayer(layerView.CheckedListBox);
+            };
         }
-        
-        void layerView_LayerItemChecked(object sender, EventArgs e)
+
+        private void SubscribeOffsetViewEvents()
         {
-            //CurrentMainPresenter.SetLayerVisibility();
-        }        
-        
-        void layerView_RemoveLayerItem(object sender, EventArgs e)
+            if (offsetView == null)
+                return;
+
+            offsetView.OnCancel += (sender, e) =>
+            {
+                offsetView.CloseForm();
+            };
+
+            offsetView.OnConfirm += (sender, e) =>
+            {
+                offsetView.CloseForm();
+
+                if (CurrentMainPresenter != null)
+                    CurrentMainPresenter.OffsetMap(offsetView.OffsetX, offsetView.OffsetY);
+            };
+        }
+
+        private void SubscribeFileNewViewEvents()
         {
-            CurrentMainPresenter.RemoveLayer(layerView.CheckedListBox);
+            if (fileNewView == null)
+                return;
+
+            fileNewView.Browse += (sender, e) =>
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+
+                openFileDialog.Filter = "Image Files (.bmp, .jpeg, .jpg, .png)|*.bmp;*.jpeg;*.jpg*;*.png;";
+                openFileDialog.FilterIndex = 1;
+                openFileDialog.Multiselect = false;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    fileNewView.SetTilesetPath(openFileDialog.FileName);
+                }
+            };
+
+            fileNewView.Confirm += (sender, e) =>
+            {
+                fileNewView.CloseForm();
+
+                // TODO: Change below code accordingly 
+
+                tilesetPresenter.LoadForm(mainView);
+                layerView.ShowForm(mainView);
+
+                AddMainPresenter(fileNewView.FileName, new XnaRenderView(), fileNewView.TilesetPath, fileNewView.TileWidth, fileNewView.TileHeight, fileNewView.MapWidth, fileNewView.MapHeight);
+                tilesetPresenter.AddPresenter(fileNewView.FileName, new XnaRenderView(), fileNewView.TilesetPath, fileNewView.TileWidth, fileNewView.TileHeight);
+
+                layerView.CheckedListBox.SelectedIndex = 0;
+            };
+
+            fileNewView.Cancel += (sender, e) =>
+            {
+                fileNewView.CloseForm();
+            };
+
+            fileNewView.ValueChanged += (sender, e) =>
+            {
+                fileNewView.Display = fileNewView.MapWidth * fileNewView.TileWidth + " x " + fileNewView.MapHeight * fileNewView.TileHeight + " pixels";
+            };
         }
 
-        void layerView_MoveLayerUp(object sender, EventArgs e)
+        private void SubscribeTilesetViewEvents()
         {
-            CurrentMainPresenter.RaiseLayer(layerView.CheckedListBox);
+            if (tilesetPresenter == null)
+                return;
+
+            tilesetPresenter.SendTileBrushValues += (brush) =>
+                {
+                    if (CurrentMainPresenter != null)
+                        CurrentMainPresenter.TileBrushValues = brush;
+                };
         }
 
-        void layerView_MoveLayerDown(object sender, EventArgs e)
-        {
-            CurrentMainPresenter.LowerLayer(layerView.CheckedListBox);
-        }
-
-        void layerView_AddLayerItem(object sender, EventArgs e)
-        {
-            CurrentMainPresenter.AddLayer(layerView.CheckedListBox);
-        }
-
-        void view_MapResize(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        void view_MapOffset(object sender, EventArgs e)
-        {
-            offsetPresenter.Load();
-        }
-
-        void view_LayerVisibility(object sender, EventArgs e)
-        {
-            //CurrentMainPresenter.SetLayerVisibility();
-        }
-
-        void view_LayerRemove(object sender, EventArgs e)
-        {
-            //CurrentMainPresenter.RemoveLayer(layerView.CheckedListBox);
-        }
-
-        void view_LayerRaise(object sender, EventArgs e)
-        {
-            //throw new NotImplementedException();
-        }
-
-        void view_LayerLower(object sender, EventArgs e)
-        {
-            //throw new NotImplementedException();
-        }
-
-        void view_LayerClone(object sender, EventArgs e)
-        {
-            //throw new NotImplementedException();
-        }
-
-        void view_EditSelect(object sender, EventArgs e)
-        {
-            CurrentMainPresenter.SetPaintTool(PaintTool.Select);
-        }
-
-        void view_EditRemove(object sender, EventArgs e)
-        {
-            CurrentMainPresenter.SetPaintTool(PaintTool.Erase);
-        }
-
-        void view_EditPaste(object sender, EventArgs e)
-        {
-            //throw new NotImplementedException();
-        }
-
-        void view_EditDraw(object sender, EventArgs e)
-        {
-            CurrentMainPresenter.SetPaintTool(PaintTool.Draw);
-        }
-
-        void view_EditCut(object sender, EventArgs e)
-        {
-            CurrentMainPresenter.CutSelection();
-        }
-
-        void view_EditCopy(object sender, EventArgs e)
-        {
-            CurrentMainPresenter.CopySelection();
-        }
-
-        void view_LayerAdd(object sender, EventArgs e)
-        {
-            
-        }
-
-        void fileNewPresenter_Confirmed()
-        {          
-            tilesetPresenter.LoadForm(view);
-            layerView.ShowForm(view);
-
-            AddMainPresenter(fileNewPresenter.MapName, new XnaRenderView(), fileNewPresenter.TilesetPath, fileNewPresenter.TileWidth, fileNewPresenter.TileHeight, fileNewPresenter.MapWidth, fileNewPresenter.MapHeight);
-            tilesetPresenter.AddPresenter(fileNewPresenter.MapName, new XnaRenderView(), fileNewPresenter.TilesetPath, fileNewPresenter.TileWidth, fileNewPresenter.TileHeight);
-
-            layerView.CheckedListBox.SelectedIndex = 0;
-        }
-
-        
-        void FileNew(object sender, EventArgs e)
-        {
-            fileNewPresenter.Load();            
-        }
-
-        #endregion
+        #endregion             
 
         #region Methods
 
@@ -273,7 +381,7 @@ namespace MapEditor.Presenters
             if (MainPresenters.ContainsKey(name))
                 return;
 
-            view.AddView(name, renderView);
+            mainView.AddView(name, renderView);
 
             IMainRenderPresenter presenter = new MainRenderPresenter(renderView);
             presenter.InitializeMap(tilesetPath, tileWidth, tileHeight, mapWidth, mapHeight, layerView.CheckedListBox);

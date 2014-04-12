@@ -9,15 +9,28 @@ namespace MapEditor.Models
 {
     public class TileBrushCollection
     {
+        #region Fields
+
         private List<TileBrush> tileBrushes = new List<TileBrush>();
+
+        #endregion
+
+        #region Properties
 
         public List<TileBrush> TileBrushes
         {
             get { return tileBrushes; }
         }
 
+        #endregion
+
+        #region Methods
+
         public void Draw(SpriteBatch spriteBatch, Tileset tileset)
         {
+            if (spriteBatch == null)
+                return;
+
             if (tileset == null)
                 return;
 
@@ -46,6 +59,9 @@ namespace MapEditor.Models
 
         public void AddTileBrush(TileBrush brush)
         {
+            if (brush == null)
+                return;
+
             tileBrushes.ForEach(tileBrush =>
                 {
                     if (tileBrush.Position == brush.Position)
@@ -59,5 +75,7 @@ namespace MapEditor.Models
         {
             tileBrushes.Clear();
         }
+
+        #endregion
     }
 }
