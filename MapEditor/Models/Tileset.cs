@@ -9,6 +9,8 @@ namespace MapEditor.Models
 {
     public class Tileset
     {
+        #region Properties
+
         public int TileWidth { get; set; }
         public int TileHeight { get; set; }
 
@@ -22,12 +24,17 @@ namespace MapEditor.Models
         public Rectangle GetSourceRectangle(int tileIndex)
         {
             if (Texture == null)
-                throw new Exception("Texture null no rectangle can be made");
+                return Rectangle.Empty;
+
+            if (TileWidth <= 0)
+                return Rectangle.Empty;
 
             int tileY = tileIndex / (Texture.Width / TileWidth);
             int tileX = tileIndex % (Texture.Width / TileWidth);
 
             return new Rectangle(tileX * TileWidth, tileY * TileHeight, TileWidth, TileHeight);
         }
+
+        #endregion
     }
 }

@@ -5,13 +5,13 @@ using System.Text;
 
 namespace MapEditor.UI
 {
-    public interface IMapResizeView
+    public interface ITileResizeView
     {
         event EventHandler OnConfirm;
         event EventHandler OnCancel;
 
-        int MapWidth { get; set; }
-        int MapHeight { get; set; }
+        int TileWidth { get; set; }
+        int TileHeight { get; set; }
 
         void ShowForm();
         void CloseForm();

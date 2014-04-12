@@ -13,7 +13,7 @@ namespace MapEditor.UI
     /// <summary>
     /// Offset UI
     /// </summary>
-    public class MapResizeView : Form, IMapResizeView
+    public class TileResizeView : Form, ITileResizeView
     {
         #region Fields
 
@@ -34,13 +34,13 @@ namespace MapEditor.UI
 
         #region Properties
 
-        public int MapWidth
+        public int TileWidth
         {
             get { return (int)numericUpDownEx1.Value; }
             set { numericUpDownEx1.Value = value; }
         }
 
-        public int MapHeight
+        public int TileHeight
         {
             get { return (int)numericUpDownEx2.Value; }
             set { numericUpDownEx2.Value = value; }
@@ -50,7 +50,7 @@ namespace MapEditor.UI
 
         #region Initialize
 
-        public MapResizeView()
+        public TileResizeView()
         {
             InitializeComponent();
         }
@@ -86,28 +86,38 @@ namespace MapEditor.UI
             this.groupBox1.Size = new System.Drawing.Size(248, 54);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Map";
+            this.groupBox1.Text = "Tile";
             // 
             // numericUpDownEx2
             // 
             this.numericUpDownEx2.Location = new System.Drawing.Point(170, 21);
-            this.numericUpDownEx2.Measure = "tiles";
+            this.numericUpDownEx2.Measure = "px";
             this.numericUpDownEx2.Name = "numericUpDownEx2";
             this.numericUpDownEx2.Size = new System.Drawing.Size(65, 20);
             this.numericUpDownEx2.TabIndex = 3;
+            this.numericUpDownEx2.Value = new decimal(new int[] {
+            32,
+            0,
+            0,
+            0});
             // 
             // numericUpDownEx1
             // 
             this.numericUpDownEx1.Location = new System.Drawing.Point(52, 21);
-            this.numericUpDownEx1.Measure = "tiles";
+            this.numericUpDownEx1.Measure = "px";
             this.numericUpDownEx1.Name = "numericUpDownEx1";
             this.numericUpDownEx1.Size = new System.Drawing.Size(65, 20);
             this.numericUpDownEx1.TabIndex = 2;
+            this.numericUpDownEx1.Value = new decimal(new int[] {
+            32,
+            0,
+            0,
+            0});
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(123, 23);
+            this.label2.Location = new System.Drawing.Point(123, 21);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(41, 13);
             this.label2.TabIndex = 1;
@@ -116,7 +126,7 @@ namespace MapEditor.UI
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 23);
+            this.label1.Location = new System.Drawing.Point(8, 21);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(38, 13);
             this.label1.TabIndex = 0;
@@ -142,7 +152,7 @@ namespace MapEditor.UI
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
-            // MapResizeView
+            // TileResizeView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -150,8 +160,8 @@ namespace MapEditor.UI
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonConfirm);
             this.Controls.Add(this.groupBox1);
-            this.Name = "MapResizeView";
-            this.Text = "Resize Map";
+            this.Name = "TileResizeView";
+            this.Text = "Resize Tile";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownEx2)).EndInit();

@@ -26,6 +26,7 @@ namespace MapEditor.Presenters
         private readonly IMapResizeView mapResizeView;
         private readonly IFileNewView fileNewView;
         private readonly ITilesetPresenter tilesetPresenter;
+        private readonly ITileResizeView tileResizeView;
 
         private Dictionary<string, IMainRenderPresenter> MainPresenters = new Dictionary<string, IMainRenderPresenter>();
 
@@ -52,7 +53,7 @@ namespace MapEditor.Presenters
 
         #region Initialize
 
-        public MainPresenter(IMainView mainView, ILayerView layerView, IOffsetView offsetView, IMapResizeView mapResizeView, IFileNewView fileNewView, ITilesetView tilesetView)
+        public MainPresenter(IMainView mainView, ILayerView layerView, IOffsetView offsetView, IMapResizeView mapResizeView, IFileNewView fileNewView, ITilesetView tilesetView, ITileResizeView tileResizeView)
         {
             this.mainView = mainView;
             this.layerView = layerView;
@@ -60,6 +61,7 @@ namespace MapEditor.Presenters
             this.mapResizeView = mapResizeView;
             this.fileNewView = fileNewView;
             this.tilesetPresenter = new TilesetPresenter(tilesetView);
+            this.tileResizeView = tileResizeView;
 
             SubscribeMainViewEvents();
             SubscribeLayerViewEvents();
@@ -200,7 +202,8 @@ namespace MapEditor.Presenters
             {
                 if (CurrentMainPresenter != null)
                     if (layerView != null)
-                        CurrentMainPresenter.AddLayer(layerView.CheckedListBox);
+                       if(mapResizeView != null)
+                            CurrentMainPresenter.AddLayer(layerView.CheckedListBox, mapResizeView.MapWidth, mapResizeView.MapHeight);
             };
 
             mainView.LayerLower += (sender, e) =>
@@ -253,7 +256,8 @@ namespace MapEditor.Presenters
             layerView.AddLayerItem += (sender, e) =>
             {
                 if (CurrentMainPresenter != null)
-                    CurrentMainPresenter.AddLayer(layerView.CheckedListBox);
+                    if(mapResizeView != null)
+                        CurrentMainPresenter.AddLayer(layerView.CheckedListBox, mapResizeView.MapWidth, mapResizeView.MapHeight);
             };
 
             layerView.MoveLayerDown += (sender, e) =>
@@ -362,6 +366,37 @@ namespace MapEditor.Presenters
                 };
         }
 
+        private void SubscribeMapResizeViewEvents()
+        {
+            if (mapResizeView == null)
+                return;
+
+            mapResizeView.OnConfirm += (sender, e) =>
+                {
+                    // TODO: Resize map
+                };
+
+            mapResizeView.OnCancel += (sender, e) =>
+                {
+                    mapResizeView.CloseForm();
+                };
+        }
+
+        private void SubscribeTileResizeViewEvents()
+        {
+            if (tileResizeView == null)
+                return;
+
+            tileResizeView.OnConfirm += (sender, e) =>
+                {
+                    // TODO: resize tiles
+                };
+
+            tileResizeView.OnCancel += (sender, e) =>
+                {
+                    tileResizeView.CloseForm();
+                };
+        }
         #endregion             
 
         #region Methods

@@ -18,7 +18,7 @@ namespace MapEditor.Presenters
         void InitializeMap(string texturePath, int tileWidth, int tileHeight, int mapWidth, int mapHeight, CheckedListBox checkedListBox);
         void AddTileset(string path, int tileWidth, int tileHeight);
         void RemoveTileset();
-        void AddLayer(CheckedListBox checkedListBox);
+        void AddLayer(CheckedListBox checkedListBox, int mapWidth, int mapHeight);
         void RemoveLayer(CheckedListBox checkedListBox);
         void CloneLayer(CheckedListBox checkedListBox);
         void SetLayerVisibility(bool isVisible);
@@ -28,8 +28,6 @@ namespace MapEditor.Presenters
         void CutSelection();
         void OffsetMap(int offsetX, int offsetY);
         void Undo();
-        void Redo();
-
-    
+        void Redo();    
     }
 }

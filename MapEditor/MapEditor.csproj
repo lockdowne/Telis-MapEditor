@@ -110,12 +110,16 @@
     <Compile Include="Presenters\Classes\TilesetPresenter.cs" />
     <Compile Include="Presenters\Classes\TilesetRenderPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\Classes\TileResizeView.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UI\Classes\MapResizeView.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\Classes\FileNewView.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\Interfaces\ITileResizeview.cs" />
     <Compile Include="UI\Interfaces\ILayerView.cs" />
     <Compile Include="UI\Interfaces\IMapResizeView.cs" />
     <Compile Include="UI\Interfaces\IOffsetView.cs" />
@@ -148,6 +152,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UI\Classes\TileResizeView.resx">
+      <DependentUpon>TileResizeView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Classes\MapResizeView.resx">
       <DependentUpon>MapResizeView.cs</DependentUpon>
     </EmbeddedResource>

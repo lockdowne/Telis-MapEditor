@@ -44,10 +44,10 @@ namespace MapEditor.Presenters
         public int LayerIndex {  get; set; }
         public int TilesetIndex { get; set; }
 
-        public int MapWidth { get; private set; }
+        /*public int MapWidth { get; private set; }
         public int MapHeight { get; private set; }
         public int TileWidth { get; private set; }
-        public int TileHeight { get; private set; }
+        public int TileHeight { get; private set; }*/
 
         public List<Tileset> Tilesets = new List<Tileset>();
         public List<Layer> Layers = new List<Layer>();
@@ -153,15 +153,34 @@ namespace MapEditor.Presenters
 
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.CameraTransformation);
 
+            int tileWidth = 0;
+            int tileHeight = 0;
+            int mapWidth = 0;
+            int mapHeight = 0;
+
+            if (Tilesets.Count > 0)
+            {
+                tileWidth = Tilesets.FirstOrDefault().TileWidth;
+                tileHeight = Tilesets.FirstOrDefault().TileHeight;
+            }
+
+            if (Layers.Count > 0)
+            {
+                mapWidth = Tilesets.FirstOrDefault().TileWidth;
+                mapHeight = Tilesets.FirstOrDefault().TileHeight;
+            }
+
+            if (tileWidth <= 0 || tileHeight <= 0)
+                return;
 
             // Draw only viewport
-            int left = (int)Math.Floor(camera.Position.X / TileWidth);
-            int right = TileWidth + left + spriteBatch.GraphicsDevice.Viewport.Width / TileWidth;
-            right = Math.Min(right, MapWidth);
+            int left = (int)Math.Floor(camera.Position.X / tileWidth);
+            int right = tileWidth + left + spriteBatch.GraphicsDevice.Viewport.Width / tileWidth;
+            right = Math.Min(right, mapWidth);
 
-            int top = (int)Math.Floor(camera.Position.Y / TileHeight);
-            int bottom = TileHeight + top + spriteBatch.GraphicsDevice.Viewport.Height / TileHeight;
-            bottom = Math.Min(bottom, MapHeight);
+            int top = (int)Math.Floor(camera.Position.Y / tileHeight);
+            int bottom = tileHeight + top + spriteBatch.GraphicsDevice.Viewport.Height / tileHeight;
+            bottom = Math.Min(bottom, mapHeight);
 
             for (int y = top; y < bottom; y++)
             {
@@ -249,11 +268,6 @@ namespace MapEditor.Presenters
 
             Layers.Add(new Layer(mapWidth, mapHeight));
 
-            this.MapWidth = mapWidth;
-            this.MapHeight = mapHeight;
-            this.TileWidth = tileWidth;
-            this.TileHeight = tileHeight;
-
             checkedListBox.Items.Add("Layer" + checkedListBox.Items.Count, true);
             //checkedListBox.SelectedIndex++;
         }
@@ -282,11 +296,20 @@ namespace MapEditor.Presenters
         /// </summary>
         public void CopySelection()
         {
+            int tileWidth = 0;
+            int tileHeight = 0;
+
+            if (Tilesets.Count > 0)
+            {
+                tileWidth = Tilesets.FirstOrDefault().TileWidth;
+                tileHeight = Tilesets.FirstOrDefault().TileHeight;
+            }
+
             if (currentPaintTool == PaintTool.Select)
             {
                 if (!SelectionBox.IsEmpty)
                 {
-                    commandManager.ExecuteEditCopyCommand(Layers[LayerIndex], SelectionBox, TileWidth, TileHeight, Clipboard);
+                    commandManager.ExecuteEditCopyCommand(Layers[LayerIndex], SelectionBox, tileWidth, tileHeight, Clipboard);
 
                     TileBrushValues = Clipboard.FirstOrDefault();
 
@@ -305,11 +328,20 @@ namespace MapEditor.Presenters
         /// </summary>
         public void CutSelection()
         {
+            int tileWidth = 0;
+            int tileHeight = 0;
+
+            if (Tilesets.Count > 0)
+            {
+                tileWidth = Tilesets.FirstOrDefault().TileWidth;
+                tileHeight = Tilesets.FirstOrDefault().TileHeight;
+            }
+
             if (currentPaintTool == PaintTool.Select)
             {
                 if (!SelectionBox.IsEmpty)
                 {
-                    commandManager.ExecuteEditCutCommand(Layers[LayerIndex], SelectionBox, TileWidth, TileHeight, Clipboard);
+                    commandManager.ExecuteEditCutCommand(Layers[LayerIndex], SelectionBox, tileWidth, tileHeight, Clipboard);
 
                     TileBrushValues = Clipboard.FirstOrDefault();
 
@@ -326,9 +358,9 @@ namespace MapEditor.Presenters
         /// Add layer to map
         /// </summary>
         /// <param name="checkedListBox"></param>
-        public void AddLayer(CheckedListBox checkedListBox)
+        public void AddLayer(CheckedListBox checkedListBox, int mapWidth, int mapHeight)
         {
-            commandManager.ExecuteLayerAddCommand(Layers, MapWidth, MapHeight, checkedListBox);
+            commandManager.ExecuteLayerAddCommand(Layers, mapWidth, mapHeight, checkedListBox);
         }
 
         /// <summary>
@@ -453,8 +485,27 @@ namespace MapEditor.Presenters
         /// <returns></returns>
         public Vector2 SnapToGrid(Vector2 position)
         {
-            int tileWidth = Tilesets.FirstOrDefault().TileWidth;
-            int tileHeight = Tilesets.FirstOrDefault().TileHeight;
+            int tileWidth = 0;
+            int tileHeight = 0;
+            int mapWidth = 0;
+            int mapHeight = 0;
+
+            if (Tilesets.Count > 0)
+            {
+                tileWidth = Tilesets.FirstOrDefault().TileWidth;
+                tileHeight = Tilesets.FirstOrDefault().TileHeight;
+            }
+
+            if (Layers.Count > 0)
+            {
+                mapWidth = Tilesets.FirstOrDefault().TileWidth;
+                mapHeight = Tilesets.FirstOrDefault().TileHeight;
+            }
+
+            if (tileWidth <= 0)
+                return Vector2.Zero;
+            if (tileHeight <= 0)
+                return Vector2.Zero;
 
             int x = (int)position.X / tileWidth;
             int y = (int)position.Y / tileHeight;
@@ -470,8 +521,22 @@ namespace MapEditor.Presenters
         /// <returns></returns>
         public Vector2 CoordinateToPixels(int x, int y)
         {
-            int tileWidth = Tilesets.FirstOrDefault().TileWidth;
-            int tileHeight = Tilesets.FirstOrDefault().TileHeight;
+            int tileWidth = 0;
+            int tileHeight = 0;
+            int mapWidth = 0;
+            int mapHeight = 0;
+
+            if (Tilesets.Count > 0)
+            {
+                tileWidth = Tilesets.FirstOrDefault().TileWidth;
+                tileHeight = Tilesets.FirstOrDefault().TileHeight;
+            }
+
+            if (Layers.Count > 0)
+            {
+                mapWidth = Tilesets.FirstOrDefault().TileWidth;
+                mapHeight = Tilesets.FirstOrDefault().TileHeight;
+            }
 
             return new Vector2(x * tileWidth, y * tileHeight);
         }
@@ -483,8 +548,27 @@ namespace MapEditor.Presenters
         /// <returns></returns>
         public Vector2 PixelsToCoordinate(Vector2 position)
         {
-            int tileWidth = Tilesets.FirstOrDefault().TileWidth;
-            int tileHeight = Tilesets.FirstOrDefault().TileHeight;
+            int tileWidth = 0;
+            int tileHeight = 0;
+            int mapWidth = 0;
+            int mapHeight = 0;
+
+            if (Tilesets.Count > 0)
+            {
+                tileWidth = Tilesets.FirstOrDefault().TileWidth;
+                tileHeight = Tilesets.FirstOrDefault().TileHeight;
+            }
+
+            if (Layers.Count > 0)
+            {
+                mapWidth = Tilesets.FirstOrDefault().TileWidth;
+                mapHeight = Tilesets.FirstOrDefault().TileHeight;
+            }
+
+            if (tileWidth <= 0)
+                return Vector2.Zero;
+            if (tileHeight <= 0)
+                return Vector2.Zero;
 
             return new Vector2((int)position.X / tileWidth, (int)position.Y / tileHeight);
         }

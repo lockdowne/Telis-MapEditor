@@ -20,7 +20,14 @@ namespace MapEditor.Core
             
             IMainView view = new MainView();
             
-            MainPresenter presenter = new MainPresenter(view, new LayerView(), new OffsetView(), new MapResizeView(), new FileNewView(), new TilesetView());
+            MainPresenter presenter = new MainPresenter(view,
+                new LayerView(),
+                new OffsetView(),
+                new MapResizeView(),
+                new FileNewView(),
+                new TilesetView(),
+                new TileResizeView());
+
             Application.Run((MainView)view);                        
         }
     }
