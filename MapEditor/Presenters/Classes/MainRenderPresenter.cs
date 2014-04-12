@@ -112,18 +112,55 @@ namespace MapEditor.Presenters
 
         #endregion
 
+
+        //TESTING
+        bool isMiddle;
+
+        /*public Vector2 CameraPosition
+        {
+            get { return cameraPosition; }
+            set
+            {
+                cameraPosition = new Vector2(MathHelper.Clamp(value.X, 0, 3200), MathHelper.Clamp(value.Y, 0, 3200));
+            }
+        }*/
+
         #region Events
 
         void view_OnXnaMove(object sender, MouseEventArgs e)
         {
             paintTools[(int)currentPaintTool].OnMouseMove(sender, e);
 
+            if (isMiddle)
+            {
+                currentMousePosition = InvertCameraMatrix(e.Location);
+
+                Vector2 difference = currentMousePosition - previousMousePosition;
+
+                Console.WriteLine(difference.ToString());
+
+                cameraPosition += new Vector2((int)difference.X, (int)difference.Y);
+
+                ScrollCamera(cameraPosition);
+                /*
+                 * return new Rectangle((int)Math.Min(BeginSelectionBox.Value.X, EndSelectionBox.Value.X),
+                   (int)Math.Min(BeginSelectionBox.Value.Y, EndSelectionBox.Value.Y),
+                   (int)Math.Abs(BeginSelectionBox.Value.X - EndSelectionBox.Value.X),
+                   (int)Math.Abs(BeginSelectionBox.Value.Y - EndSelectionBox.Value.Y));
+                 * 
+                 * 
+                 * 
+                 * */
+            }
             
         }
 
         void view_OnXnaUp(object sender, MouseEventArgs e)
         {
             paintTools[(int)currentPaintTool].OnMouseUp(sender, e);
+
+            if (e.Button == MouseButtons.Middle)
+                isMiddle = false;
         }
        
         void view_OnXnaDown(object sender, MouseEventArgs e)
@@ -137,6 +174,18 @@ namespace MapEditor.Presenters
             }
 
             paintTools[(int)currentPaintTool].OnMouseDown(sender, e);
+
+            // Testing
+
+            if (e.Button == MouseButtons.Middle)
+            {
+                currentMousePosition = InvertCameraMatrix(e.Location);
+                previousMousePosition = InvertCameraMatrix(e.Location);
+
+                isMiddle = true;
+            }
+
+
         }
 
         void view_OnInitialize()
@@ -226,6 +275,59 @@ namespace MapEditor.Presenters
         #endregion
 
         #region Methods
+
+        public void ScrollCamera(Vector2 vector)
+        {
+
+            // Calculate the side edges of the screen.
+            float marginWidth = camera.ViewportWidth; // * 0.5f
+            float marginLeft = camera.Position.X + marginWidth;
+            float marginRight = camera.Position.X + camera.ViewportWidth - marginWidth;
+
+            // Calculate the top and bottom edges of the screen.
+            float marginHeight = camera.ViewportHeight; // * 0.5f
+            float marginTop = camera.Position.Y + marginHeight;
+            float marginBottom = camera.Position.Y + camera.ViewportHeight - marginHeight;
+
+            // Calculate how far to scroll when the vector is near the edges of the screen.
+            float cameraMovementX = 0.0f;
+            float cameraMovementY = 0.0f;
+
+            if (vector.X < marginLeft)
+                cameraMovementX = vector.X - marginLeft;
+            else if (vector.X > marginRight)
+                cameraMovementX = vector.X - marginRight;
+
+            if (vector.Y < marginTop)
+                cameraMovementY = vector.Y - marginTop;
+            else if (vector.Y > marginBottom)
+                cameraMovementY = vector.Y - marginBottom;
+
+            int tileWidth = 0;
+            int tileHeight = 0;
+            int mapWidth = 0;
+            int mapHeight = 0;
+
+            if (Tilesets.Count > 0)
+            {
+                tileWidth = Tilesets.FirstOrDefault().TileWidth;
+                tileHeight = Tilesets.FirstOrDefault().TileHeight;
+            }
+
+            if (Layers.Count > 0)
+            {
+                mapWidth = Layers.FirstOrDefault().MapWidth;
+                mapHeight = Layers.FirstOrDefault().MapHeight;
+            }
+
+            // Update the camera position, but prevent scrolling off the ends of the level.
+            float maxCameraPositionX = tileWidth * mapWidth - camera.ViewportWidth;
+            float maxCameraPositionY = tileHeight * mapHeight - camera.ViewportHeight;
+
+            camera.Position = new Vector2(MathHelper.Clamp(camera.Position.X + cameraMovementX, 0.0f, maxCameraPositionX),
+                 MathHelper.Clamp(camera.Position.Y + cameraMovementY, 0.0f, maxCameraPositionY));
+        }
+
 
         /// <summary>
         /// Sets current paint tool
