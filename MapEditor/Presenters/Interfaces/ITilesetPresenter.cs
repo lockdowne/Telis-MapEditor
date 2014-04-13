@@ -11,8 +11,10 @@ namespace MapEditor.Presenters
         event Action<int[,]> SendTileBrushValues;
 
         ITilesetRenderPresenter CurrentPresenter { get; }
+        List<ITilesetRenderPresenter> AllPresenters { get; }
 
-        void AddPresenter(string name, IXnaRenderView renderView, string path, int tileWidth, int tileHeight);
+        void AddPresenter(IXnaRenderView renderView, string path, int tileWidth, int tileHeight);
+        void RemovePresenter(string key);
         void LoadForm(IMainView parent);
         
         

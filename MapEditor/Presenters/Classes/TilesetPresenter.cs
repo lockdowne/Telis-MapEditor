@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MapEditor.Core.Controls;
@@ -39,6 +40,17 @@ namespace MapEditor.Presenters
             }
         }
 
+        public List<ITilesetRenderPresenter> AllPresenters
+        {
+            get
+            {
+                if (Presenters.Count > 0)
+                    return Presenters.Values.ToList();
+
+                return null;
+            }
+        }
+
         #endregion
 
         #region Initialize
@@ -60,8 +72,10 @@ namespace MapEditor.Presenters
         /// <param name="tilesetPath"></param>
         /// <param name="tileWidth"></param>
         /// <param name="tileHeight"></param>
-        public void AddPresenter(string name, IXnaRenderView renderView, string tilesetPath, int tileWidth, int tileHeight)
+        public void AddPresenter(IXnaRenderView renderView, string tilesetPath, int tileWidth, int tileHeight)
         {
+            string name = Path.GetFileName(tilesetPath).Split('.')[0];
+
             if (Presenters.ContainsKey(name))
                 return;
 
@@ -75,9 +89,15 @@ namespace MapEditor.Presenters
             Presenters.Add(name, presenter);            
         }
 
-        public void RemovePresenter(ITilesetRenderPresenter presenter)
+        public void RemovePresenter(string key)
         {
+            if (Presenters.Count < 0)
+                return;
+            if (!Presenters.ContainsKey(key))
+                return;
 
+            Presenters.Remove(key);
+            
         }
 
         /// <summary>

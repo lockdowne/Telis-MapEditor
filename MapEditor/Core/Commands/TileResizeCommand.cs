@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using MapEditor.Core.Controls;
 using MapEditor.Models;
 
@@ -24,11 +25,13 @@ namespace MapEditor.Core.Commands
         private NumericUpDownEx tileWidthNumeric;
         private NumericUpDownEx tileHeightNumeric;
 
+        private List<Action<int,int>> setTileDimensions;
+
         #endregion
 
         #region Initialize
 
-        public TileResizeCommand(List<Tileset> tilesets, int tileWidth, int tileHeight, NumericUpDownEx tileWidthNumeric, NumericUpDownEx tileHeightNumeric)
+        public TileResizeCommand(List<Tileset> tilesets, int tileWidth, int tileHeight, NumericUpDownEx tileWidthNumeric, NumericUpDownEx tileHeightNumeric, List<Action<int, int>> setTileDimensions)
         {
             if (tilesets == null)
                 return;
@@ -37,14 +40,18 @@ namespace MapEditor.Core.Commands
 
             this.currentTileWidth = tileWidth;
             this.currentTileHeight = tileHeight;
-            
+
             // TODO: Check bounds
             this.previousTileWidth = tilesets.FirstOrDefault().TileWidth;
             this.previousTileHeight = tilesets.FirstOrDefault().TileHeight;
 
             this.tileWidthNumeric = tileWidthNumeric;
             this.tileHeightNumeric = tileHeightNumeric;
+
+            this.setTileDimensions = setTileDimensions;
+
         }
+            
 
         #endregion
 
@@ -59,6 +66,8 @@ namespace MapEditor.Core.Commands
 
             tileWidthNumeric.Value = currentTileWidth;
             tileHeightNumeric.Value = currentTileHeight;
+
+            setTileDimensions.ForEach(tile => tile(currentTileWidth, currentTileHeight));
         }
 
         /// <summary>
@@ -70,6 +79,8 @@ namespace MapEditor.Core.Commands
 
             tileWidthNumeric.Value = previousTileWidth;
             tileHeightNumeric.Value = previousTileHeight;
+
+            setTileDimensions.ForEach(tile => tile(previousTileWidth, previousTileHeight));
         }
 
         #endregion

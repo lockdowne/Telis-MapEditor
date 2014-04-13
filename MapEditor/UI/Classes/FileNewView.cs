@@ -53,6 +53,7 @@ namespace MapEditor.UI
         public string TilesetPath
         {
             get { return textBoxTileset.Text; }
+            set { textBoxTileset.Text = value; }
         }
 
         public string Display
@@ -475,11 +476,6 @@ namespace MapEditor.UI
         public void DisplayMessage(string message)
         {
             MessageBox.Show(message);
-        }
-
-        public void SetTilesetPath(string path)
-        {
-            textBoxTileset.Text = path;
         }
 
         #endregion        

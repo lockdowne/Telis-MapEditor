@@ -45,6 +45,8 @@ namespace MapEditor.UI
         event EventHandler MapOffset;
         event EventHandler MapResize;
         event EventHandler TileResize;
+        event EventHandler AddTileset;
+        event EventHandler RemoveTileset;
 
         event FormClosingEventHandler ViewClosing;
 

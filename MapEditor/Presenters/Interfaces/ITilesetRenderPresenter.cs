@@ -15,5 +15,6 @@ namespace MapEditor.Presenters
 
         void LoadTexture(string path);
         void SetTileDimesions(int width, int height);
+        void ClearSelectionBox();
     }
 }

@@ -18,7 +18,7 @@ namespace MapEditor.UI
         event EventHandler ValueChanged;
 
         string FileName { get; }
-        string TilesetPath { get; }
+        string TilesetPath { get; set; }
         string Display { set; }
 
         int MapWidth { get; }
@@ -30,6 +30,5 @@ namespace MapEditor.UI
 
         void CloseForm();
         void DisplayMessage(string message);
-        void SetTilesetPath(string path);
     }
 }

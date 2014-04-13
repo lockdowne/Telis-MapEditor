@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MapEditor.Core.Controls;
 using MapEditor.Models;
+using MapEditor.UI;
 
 namespace MapEditor.Core.Commands
 {
@@ -166,9 +167,18 @@ namespace MapEditor.Core.Commands
             RedoCommands.Clear();
         }
 
-        public void ExecuteTileResize(List<Tileset> tilesets, int tileWidth, int tileHeight, NumericUpDownEx tileWidthNumeric, NumericUpDownEx tileHeightNumeric)
+        public void ExecuteTileResize(List<Tileset> tilesets, int tileWidth, int tileHeight, NumericUpDownEx tileWidthNumeric, NumericUpDownEx tileHeightNumeric, List<Action<int, int>> setTileDimensions)
         {
-            ICommand command = new TileResizeCommand(tilesets, tileWidth, tileHeight, tileWidthNumeric, tileHeightNumeric);
+            ICommand command = new TileResizeCommand(tilesets, tileWidth, tileHeight, tileWidthNumeric, tileHeightNumeric, setTileDimensions);
+            command.Execute();
+
+            UndoCommands.Push(command);
+            RedoCommands.Clear();
+        }
+
+        public void ExecuteMapAddTileset(List<Tileset> tilesets, string texturePath, int tileWidth, int tileHeight, GraphicsDevice graphicsDevice, Action<IXnaRenderView, string, int, int> createTileset, Action<string> removeTileset)
+        {
+            ICommand command = new MapAddTilesetCommand(tilesets, texturePath, tileWidth, tileHeight, graphicsDevice, createTileset, removeTileset);
             command.Execute();
 
             UndoCommands.Push(command);

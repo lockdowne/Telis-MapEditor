@@ -17,9 +17,6 @@ namespace MapEditor.UI
     {
         #region Fields
 
-        public event EventHandler OnConfirm;
-        public event EventHandler OnCancel;
-
         private GroupBox groupBox1;
         private NumericUpDownEx numericUpDownEx2;
         private NumericUpDownEx numericUpDownEx1;
@@ -33,6 +30,9 @@ namespace MapEditor.UI
         #endregion
 
         #region Properties
+
+        public event EventHandler OnConfirm;
+        public event EventHandler OnCancel;
 
         public int MapWidth
         {

@@ -26,7 +26,8 @@ namespace MapEditor.Core
                 new MapResizeView(),
                 new FileNewView(),
                 new TilesetView(),
-                new TileResizeView());
+                new TileResizeView(),
+                new AddTilesetView());
 
             Application.Run((MainView)view);                        
         }

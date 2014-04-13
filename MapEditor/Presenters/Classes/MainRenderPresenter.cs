@@ -325,11 +325,6 @@ namespace MapEditor.Presenters
 
         }
 
-        public void AddTileset(string texturePath, int tileWidth, int tileHeight)
-        {
-            
-        }
-
         /// <summary>
         /// Sets the selection box to empty
         /// </summary>
@@ -515,9 +510,9 @@ namespace MapEditor.Presenters
         /// </summary>
         /// <param name="tileWidth"></param>
         /// <param name="tileHeight"></param>
-        public void ResizeTiles(int tileWidth, int tileHeight, NumericUpDownEx tileWidthNumeric, NumericUpDownEx tileHeightNumeric)
+        public void ResizeTiles(int tileWidth, int tileHeight, NumericUpDownEx tileWidthNumeric, NumericUpDownEx tileHeightNumeric, List<Action<int, int>> setTileDimensions)
         {
-            commandManager.ExecuteTileResize(Tilesets, tileWidth, tileHeight, tileWidthNumeric, tileHeightNumeric);
+            commandManager.ExecuteTileResize(Tilesets, tileWidth, tileHeight, tileWidthNumeric, tileHeightNumeric, setTileDimensions);
         }
 
         /// <summary>
@@ -534,6 +529,11 @@ namespace MapEditor.Presenters
         public void Redo()
         {
             commandManager.Redo();
+        }
+
+        public void AddTileset(string texturePath, int tileWidth, int tileHeight, Action<IXnaRenderView, string, int, int> createTileset, Action<string> removeTileset)
+        {
+            commandManager.ExecuteMapAddTileset(Tilesets, texturePath, tileWidth, tileHeight, view.GetGraphicsDevice, createTileset, removeTileset);
         }
 
         /// <summary>

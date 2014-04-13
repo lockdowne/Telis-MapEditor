@@ -77,6 +77,9 @@ namespace MapEditor.UI
         private ToolStripMenuItem tilesetToolStripMenuItem;
         private ToolStripMenuItem layersToolStripMenuItem;
         private ToolStripMenuItem minimapToolStripMenuItem;
+        private ToolStripMenuItem addTilesetToolStripMenuItem;
+        private ToolStripMenuItem removeTilesetToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator10;
 
         /// <summary>
         /// Required designer variable.
@@ -122,6 +125,8 @@ namespace MapEditor.UI
         public event EventHandler MapOffset;
         public event EventHandler MapResize;
         public event EventHandler TileResize;
+        public event EventHandler AddTileset;
+        public event EventHandler RemoveTileset;
 
         public event FormClosingEventHandler ViewClosing;
 
@@ -223,6 +228,9 @@ namespace MapEditor.UI
             this.toolStripButton8 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton12 = new System.Windows.Forms.ToolStripButton();
             this.closableTabControl1 = new MapEditor.Core.Controls.ClosableTabControl();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+            this.addTilesetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeTilesetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -480,6 +488,9 @@ namespace MapEditor.UI
             // mapToolStripMenuItem
             // 
             this.mapToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addTilesetToolStripMenuItem,
+            this.removeTilesetToolStripMenuItem,
+            this.toolStripSeparator10,
             this.resizeMapToolStripMenuItem,
             this.resizeTilesToolStripMenuItem,
             this.offsetMapToolStripMenuItem});
@@ -490,21 +501,21 @@ namespace MapEditor.UI
             // resizeMapToolStripMenuItem
             // 
             this.resizeMapToolStripMenuItem.Name = "resizeMapToolStripMenuItem";
-            this.resizeMapToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.resizeMapToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.resizeMapToolStripMenuItem.Text = "Resize Map";
             this.resizeMapToolStripMenuItem.Click += new System.EventHandler(this.resizeMapToolStripMenuItem_Click);
             // 
             // resizeTilesToolStripMenuItem
             // 
             this.resizeTilesToolStripMenuItem.Name = "resizeTilesToolStripMenuItem";
-            this.resizeTilesToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.resizeTilesToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.resizeTilesToolStripMenuItem.Text = "Resize Tiles";
             this.resizeTilesToolStripMenuItem.Click += new System.EventHandler(this.resizeTilesToolStripMenuItem_Click);
             // 
             // offsetMapToolStripMenuItem
             // 
             this.offsetMapToolStripMenuItem.Name = "offsetMapToolStripMenuItem";
-            this.offsetMapToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.offsetMapToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.offsetMapToolStripMenuItem.Text = "Offset Map";
             this.offsetMapToolStripMenuItem.Click += new System.EventHandler(this.offsetMapToolStripMenuItem_Click);
             // 
@@ -743,6 +754,25 @@ namespace MapEditor.UI
             this.closableTabControl1.Size = new System.Drawing.Size(373, 285);
             this.closableTabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.closableTabControl1.TabIndex = 2;
+            // 
+            // toolStripSeparator10
+            // 
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            this.toolStripSeparator10.Size = new System.Drawing.Size(151, 6);
+            // 
+            // addTilesetToolStripMenuItem
+            // 
+            this.addTilesetToolStripMenuItem.Name = "addTilesetToolStripMenuItem";
+            this.addTilesetToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.addTilesetToolStripMenuItem.Text = "Add Tileset";
+            this.addTilesetToolStripMenuItem.Click += new System.EventHandler(this.addTilesetToolStripMenuItem_Click);
+            // 
+            // removeTilesetToolStripMenuItem
+            // 
+            this.removeTilesetToolStripMenuItem.Name = "removeTilesetToolStripMenuItem";
+            this.removeTilesetToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.removeTilesetToolStripMenuItem.Text = "Remove Tileset";
+            this.removeTilesetToolStripMenuItem.Click += new System.EventHandler(this.removeTilesetToolStripMenuItem_Click);
             // 
             // MainView
             // 
@@ -1013,6 +1043,18 @@ namespace MapEditor.UI
                 ViewShowGrid(sender, e);
         }
 
+        private void addTilesetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (AddTileset != null)
+                AddTileset(sender, e);
+        }
+
+        private void removeTilesetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (RemoveTileset != null)
+                RemoveTileset(sender, e);
+        }
+
         #endregion
 
         #region Methods
@@ -1046,6 +1088,6 @@ namespace MapEditor.UI
             closableTabControl1.TabPages.Add(tab);
         }
 
-        #endregion
+        #endregion       
     }
 }

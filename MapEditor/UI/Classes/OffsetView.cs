@@ -16,9 +16,6 @@ namespace MapEditor.UI
     {
         #region Fields
 
-        public event EventHandler OnConfirm;
-        public event EventHandler OnCancel;
-
         private System.Windows.Forms.GroupBox groupBox1;
         private Core.Controls.NumericUpDownEx numericUpDownEx2;
         private Core.Controls.NumericUpDownEx numericUpDownEx1;
@@ -32,6 +29,9 @@ namespace MapEditor.UI
         #endregion
 
         #region Properties
+
+        public event EventHandler OnConfirm;
+        public event EventHandler OnCancel;
 
         public int OffsetX
         {

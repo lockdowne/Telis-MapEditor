@@ -249,6 +249,14 @@ namespace MapEditor.Presenters
             tileHeight = height;
         }
 
+        /// <summary>
+        /// Clear selection box vectors
+        /// </summary>
+        public void ClearSelectionBox()
+        {
+            beginSelectionBox = null;
+            endSelectionBox = null;
+        }
 
         /// <summary>
         /// Rounds off position to fit with the map
