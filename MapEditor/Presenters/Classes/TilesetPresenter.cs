@@ -84,7 +84,11 @@ namespace MapEditor.Presenters
             ITilesetRenderPresenter presenter = new TilesetRenderPresenter(renderView);
             presenter.LoadTexture(tilesetPath);
             presenter.SetTileDimesions(tileWidth, tileHeight);
-            presenter.SendTileBrushValues += (values) => { if (SendTileBrushValues != null) SendTileBrushValues(values); };
+            presenter.SendTileBrushValues += (values) =>
+            {
+                if (SendTileBrushValues != null)
+                    SendTileBrushValues(values);
+            };
 
             Presenters.Add(name, presenter);            
         }
