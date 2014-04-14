@@ -32,6 +32,7 @@ namespace MapEditor.Presenters
         private CommandManager commandManager;
 
         private bool isMouseLeftPressed;
+        private bool isMouseMiddlePressed;
 
         #endregion
 
@@ -122,9 +123,25 @@ namespace MapEditor.Presenters
         
         #region Events
 
+      
+
         void view_OnXnaMove(object sender, MouseEventArgs e)
         {
             paintTools[(int)currentPaintTool].OnMouseMove(sender, e);
+
+            if (isMouseMiddlePressed)
+            {
+                currentMousePosition = InvertCameraMatrix(e.Location);
+
+                Console.WriteLine(currentMousePosition.ToString());
+
+                Vector2 difference = currentMousePosition - previousMousePosition;
+
+                cameraPosition += -difference;
+                cameraPosition.Normalize();
+
+                ScrollCamera(cameraPosition * 50);               
+            }
         }
 
         void view_OnXnaUp(object sender, MouseEventArgs e)
@@ -137,7 +154,12 @@ namespace MapEditor.Presenters
 
                 if (MapChanged != null)
                     MapChanged();
-            }            
+            }
+
+            if (isMouseMiddlePressed)
+            {
+                isMouseMiddlePressed = false;
+            }
         }
        
         void view_OnXnaDown(object sender, MouseEventArgs e)
@@ -151,7 +173,11 @@ namespace MapEditor.Presenters
                     break;
                 case MouseButtons.Right:
                     SetPaintTool(PaintTool.Select);
-                    break;                    
+                    break;             
+                case MouseButtons.Middle:
+                    isMouseMiddlePressed = true;
+                    previousMousePosition = InvertCameraMatrix(e.Location);
+                    break;
             }            
         }
 
@@ -173,14 +199,14 @@ namespace MapEditor.Presenters
 
             if (Tilesets.Count > 0)
             {
-                tileWidth = Tilesets.FirstOrDefault().TileWidth;
-                tileHeight = Tilesets.FirstOrDefault().TileHeight;
+                tileWidth = Tilesets.First().TileWidth;
+                tileHeight = Tilesets.First().TileHeight;
             }
 
             if (Layers.Count > 0)
             {
-                mapWidth = Layers.FirstOrDefault().MapWidth;
-                mapHeight = Layers.FirstOrDefault().MapHeight;
+                mapWidth = Layers.First().MapWidth;
+                mapHeight = Layers.First().MapHeight;
             }
 
             if (tileWidth <= 0 || tileHeight <= 0)
@@ -247,55 +273,16 @@ namespace MapEditor.Presenters
 
         #region Methods
 
-        public void ScrollCamera(Vector2 vector)
+        private void ScrollCamera(Vector2 position)
         {
-            // Calculate the side edges of the screen.
-            float marginWidth = camera.ViewportWidth * 0.5f; // * 0.5f
-            float marginLeft = camera.Position.X + marginWidth;
-            float marginRight = camera.Position.X + camera.ViewportWidth - marginWidth;
+            int tileWidth = Tilesets.First().TileWidth;
+            int tileHeight = Tilesets.First().TileHeight;
 
-            // Calculate the top and bottom edges of the screen.
-            float marginHeight = camera.ViewportHeight * 0.5f; // * 0.5f
-            float marginTop = camera.Position.Y + marginHeight;
-            float marginBottom = camera.Position.Y + camera.ViewportHeight - marginHeight;
+            int mapWidth = Layers.First().MapWidth;
+            int mapHeight = Layers.First().MapHeight;
 
-            // Calculate how far to scroll when the vector is near the edges of the screen.
-            float cameraMovementX = 0;
-            float cameraMovementY = 0;
-
-            if (vector.X < marginLeft)
-                cameraMovementX = vector.X - marginLeft;
-            else if (vector.X > marginRight)
-                cameraMovementX = vector.X - marginRight;
-
-            if (vector.Y < marginTop)
-                cameraMovementY = vector.Y - marginTop;
-            else if (vector.Y > marginBottom)
-                cameraMovementY = vector.Y - marginBottom;
-
-            int tileWidth = 0;
-            int tileHeight = 0;
-            int mapWidth = 0;
-            int mapHeight = 0;
-
-            if (Tilesets.Count > 0)
-            {
-                tileWidth = Tilesets.FirstOrDefault().TileWidth;
-                tileHeight = Tilesets.FirstOrDefault().TileHeight;
-            }
-
-            if (Layers.Count > 0)
-            {
-                mapWidth = Layers.FirstOrDefault().MapWidth;
-                mapHeight = Layers.FirstOrDefault().MapHeight;
-            }
-
-            // Update the camera position, but prevent scrolling off the ends of the level.
-            float maxCameraPositionX = tileWidth * mapWidth - camera.ViewportWidth;
-            float maxCameraPositionY = tileHeight * mapHeight - camera.ViewportHeight;
-
-            camera.Position = new Vector2(MathHelper.Clamp(camera.Position.X + cameraMovementX, 0, maxCameraPositionX),
-                 MathHelper.Clamp(camera.Position.Y + cameraMovementY, 0, maxCameraPositionY));
+            camera.Position = new Vector2(MathHelper.Clamp((int)(camera.Position.X + position.X), 0, tileWidth * mapWidth - view.GetGraphicsDevice.Viewport.Width),
+              (MathHelper.Clamp((int)(camera.Position.Y + position.Y), 0, tileHeight * mapHeight - view.GetGraphicsDevice.Viewport.Height)));
         }
 
 
@@ -365,8 +352,8 @@ namespace MapEditor.Presenters
 
             if (Tilesets.Count > 0)
             {
-                tileWidth = Tilesets.FirstOrDefault().TileWidth;
-                tileHeight = Tilesets.FirstOrDefault().TileHeight;
+                tileWidth = Tilesets.First().TileWidth;
+                tileHeight = Tilesets.First().TileHeight;
             }
 
             if (currentPaintTool == PaintTool.Select)
@@ -397,8 +384,8 @@ namespace MapEditor.Presenters
 
             if (Tilesets.Count > 0)
             {
-                tileWidth = Tilesets.FirstOrDefault().TileWidth;
-                tileHeight = Tilesets.FirstOrDefault().TileHeight;
+                tileWidth = Tilesets.First().TileWidth;
+                tileHeight = Tilesets.First().TileHeight;
             }
 
             if (currentPaintTool == PaintTool.Select)

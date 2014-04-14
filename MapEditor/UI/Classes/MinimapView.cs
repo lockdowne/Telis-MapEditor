@@ -122,7 +122,7 @@ namespace MapEditor.UI
         }
 
         public void SetFormSize(int width, int height)
-        {
+        {           
             this.Width = width;
             this.Height = height;
         }

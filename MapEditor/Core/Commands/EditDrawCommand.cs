@@ -76,7 +76,7 @@ namespace MapEditor.Core.Commands
         }
 
         /// <summary>
-        /// Invert execute method
+        /// Inverse of execute method
         /// </summary>
         public void UnExecute()
         {

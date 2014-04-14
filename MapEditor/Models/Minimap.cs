@@ -16,7 +16,7 @@ namespace MapEditor.Models
         {
             textures.ForEach(texture =>
                 {
-                    spriteBatch.Draw(texture, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2f, SpriteEffects.None, 1f);
+                    spriteBatch.Draw(texture, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
                 });
         }
 
