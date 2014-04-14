@@ -31,6 +31,8 @@ namespace MapEditor.Presenters
 
         private CommandManager commandManager;
 
+        private bool isMouseLeftPressed;
+
         #endregion
 
         #region Properties
@@ -47,11 +49,13 @@ namespace MapEditor.Presenters
         public int TileWidth { get; private set; }
         public int TileHeight { get; private set; }*/
 
-        public List<Tileset> Tilesets = new List<Tileset>();
-        public List<Layer> Layers = new List<Layer>();
+        public List<Tileset> Tilesets { get; set; }
+        public List<Layer> Layers { get; set; }
 
         public Vector2? BeginSelectionBox { get; set; }
-        public Vector2? EndSelectionBox { get; set; }        
+        public Vector2? EndSelectionBox { get; set; }
+
+        public event Action MapChanged;
 
         private IPaintTool[] paintTools;
 
@@ -86,6 +90,9 @@ namespace MapEditor.Presenters
             view.OnXnaDown += new MouseEventHandler(view_OnXnaDown);
             view.OnXnaUp += new MouseEventHandler(view_OnXnaUp);
             view.OnXnaMove += new MouseEventHandler(view_OnXnaMove);
+
+            Tilesets = new List<Tileset>();
+            Layers = new List<Layer>();
 
             // Move to initialize method
             camera = new Camera()
@@ -123,19 +130,29 @@ namespace MapEditor.Presenters
         void view_OnXnaUp(object sender, MouseEventArgs e)
         {
             paintTools[(int)currentPaintTool].OnMouseUp(sender, e);
+
+            if (isMouseLeftPressed)
+            {
+                isMouseLeftPressed = false;
+
+                if (MapChanged != null)
+                    MapChanged();
+            }            
         }
        
         void view_OnXnaDown(object sender, MouseEventArgs e)
         {
+            paintTools[(int)currentPaintTool].OnMouseDown(sender, e);
+
             switch (e.Button)
             {
+                case MouseButtons.Left:
+                    isMouseLeftPressed = true;
+                    break;
                 case MouseButtons.Right:
                     SetPaintTool(PaintTool.Select);
-                    break;
-                    
-            }
-
-            paintTools[(int)currentPaintTool].OnMouseDown(sender, e);
+                    break;                    
+            }            
         }
 
         void view_OnInitialize()
@@ -218,6 +235,10 @@ namespace MapEditor.Presenters
 
             if (paintTools[(int)currentPaintTool] != null)
                 paintTools[(int)currentPaintTool].Draw(spriteBatch);
+
+            // This should only be called reactively 
+            /*if (MapChanged != null)
+                MapChanged();*/
 
             spriteBatch.End();
         }

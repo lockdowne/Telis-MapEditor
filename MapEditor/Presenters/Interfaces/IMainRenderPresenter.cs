@@ -5,12 +5,18 @@ using System.Text;
 using System.Windows.Forms;
 using MapEditor.Core.Controls;
 using MapEditor.Core.PaintTools;
+using MapEditor.Models;
 using MapEditor.UI;
 
 namespace MapEditor.Presenters
 {
     public interface IMainRenderPresenter
     {
+        List<Tileset> Tilesets { get; set; }
+        List<Layer> Layers { get; set; }
+
+        event Action MapChanged;
+
         int[,] TileBrushValues { get; set; }
 
         int LayerIndex {  get; set; }

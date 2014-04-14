@@ -35,6 +35,23 @@ namespace MapEditor.Models
             return new Rectangle(tileX * TileWidth, tileY * TileHeight, TileWidth, TileHeight);
         }
 
+        public Color GetCenterPixelColor(int tileIndex)
+        {
+            if (Texture == null)
+                return Color.Transparent;
+
+            if (tileIndex < 0)
+                return Color.Transparent;
+
+            Rectangle sourceRectangle = GetSourceRectangle(tileIndex);
+
+            Color[] tileColors = new Color[sourceRectangle.Width * sourceRectangle.Height];
+
+            Texture.GetData(0, sourceRectangle, tileColors, 0, tileColors.Length);
+
+            return tileColors[(sourceRectangle.Width * sourceRectangle.Height) / 2];           
+        }
+
         #endregion
     }
 }

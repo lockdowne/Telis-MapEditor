@@ -28,6 +28,7 @@ namespace MapEditor.Presenters
         private readonly ITilesetPresenter tilesetPresenter;
         private readonly ITileResizeView tileResizeView;
         private readonly IAddTilesetView addTilesetView;
+        private readonly IMinimapPresenter minimapPresenter;
 
         private Dictionary<string, IMainRenderPresenter> MainPresenters = new Dictionary<string, IMainRenderPresenter>();
 
@@ -55,7 +56,9 @@ namespace MapEditor.Presenters
 
         #region Initialize
 
-        public MainPresenter(IMainView mainView, ILayerView layerView, IOffsetView offsetView, IMapResizeView mapResizeView, IFileNewView fileNewView, ITilesetView tilesetView, ITileResizeView tileResizeView, IAddTilesetView addTilesetView)
+        public MainPresenter(IMainView mainView, ILayerView layerView, IOffsetView offsetView,
+            IMapResizeView mapResizeView, IFileNewView fileNewView, ITilesetView tilesetView,
+            ITileResizeView tileResizeView, IAddTilesetView addTilesetView, IMinimapView minimapView)
         {
             this.mainView = mainView;
             this.layerView = layerView;
@@ -65,15 +68,17 @@ namespace MapEditor.Presenters
             this.tilesetPresenter = new TilesetPresenter(tilesetView);
             this.tileResizeView = tileResizeView;
             this.addTilesetView = addTilesetView;
+            this.minimapPresenter = new MinimapPresenter(minimapView);
 
             SubscribeMainViewEvents();
             SubscribeLayerViewEvents();
             SubscribeOffsetViewEvents();
             SubscribeFileNewViewEvents();
-            SubscribeTilesetViewEvents();
+            SubscribeTilesetPresenterEvents();
             SubscribeMapResizeViewEvents();
             SubscribeTileResizeViewEvents();
             SubscribeAddTilesetViewEvents();
+            SubscribeMinimapPresenterEvents();
         }
 
 
@@ -359,9 +364,10 @@ namespace MapEditor.Presenters
                 fileNewView.CloseForm();
 
                 // TODO: Change below code accordingly 
-
+                
                 tilesetPresenter.LoadForm(mainView);
                 layerView.ShowForm(mainView);
+                minimapPresenter.ShowForm(mainView);
 
                 AddMainPresenter(fileNewView.FileName, new XnaRenderView(), fileNewView.TilesetPath, fileNewView.TileWidth, fileNewView.TileHeight, fileNewView.MapWidth, fileNewView.MapHeight);
                 tilesetPresenter.AddPresenter(new XnaRenderView(), fileNewView.TilesetPath, fileNewView.TileWidth, fileNewView.TileHeight);
@@ -370,7 +376,10 @@ namespace MapEditor.Presenters
 
                 layerView.CheckedListBox.SelectedIndex = 0;
                 mapResizeView.MapWidth = fileNewView.MapWidth;
-                mapResizeView.MapHeight = fileNewView.MapHeight;
+                mapResizeView.MapHeight = fileNewView.MapHeight;                
+
+                minimapPresenter.GenerateMinimap(CurrentMainPresenter.Layers, CurrentMainPresenter.Tilesets);
+                minimapPresenter.SetFormSize(mapResizeView.MapWidth, mapResizeView.MapHeight);
             };
 
             fileNewView.Cancel += (sender, e) =>
@@ -384,7 +393,7 @@ namespace MapEditor.Presenters
             };
         }
 
-        private void SubscribeTilesetViewEvents()
+        private void SubscribeTilesetPresenterEvents()
         {
             if (tilesetPresenter == null)
                 return;
@@ -406,7 +415,12 @@ namespace MapEditor.Presenters
                     mapResizeView.CloseForm();
 
                     if (CurrentMainPresenter != null)
+                    {
                         CurrentMainPresenter.ResizeMap(mapResizeView.MapWidth, mapResizeView.MapHeight, mapResizeView.MapWidthNumeric, mapResizeView.MapHeightNumeric);
+
+                        if(minimapPresenter != null)
+                            minimapPresenter.SetFormSize(mapResizeView.MapWidth, mapResizeView.MapHeight);
+                    }
                 };
 
             mapResizeView.OnCancel += (sender, e) =>
@@ -472,6 +486,14 @@ namespace MapEditor.Presenters
                 };
         }
 
+        private void SubscribeMinimapPresenterEvents()
+        {
+            if (minimapPresenter == null)
+                return;
+
+            
+        }
+
         #endregion             
 
         #region Methods
@@ -495,6 +517,10 @@ namespace MapEditor.Presenters
 
             IMainRenderPresenter presenter = new MainRenderPresenter(renderView);
             presenter.InitializeMap(tilesetPath, tileWidth, tileHeight, mapWidth, mapHeight, layerView.CheckedListBox);
+            presenter.MapChanged += () =>
+                {                    
+                    minimapPresenter.GenerateMinimap(CurrentMainPresenter.Layers, CurrentMainPresenter.Tilesets);
+                };
            // presenter.AddLayer(mapWidth, mapHeight);
             //presenter.SetMapDimesions(mapWidth, mapHeight);
             //presenter.SetTileDimensions(tileWidth, tileHeight);

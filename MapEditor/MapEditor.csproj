@@ -87,9 +87,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Core\Helpers\ServiceContainer.cs" />
-    <Compile Include="Core\Controls\TESTXnaRenderer.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Core\PaintTools\DrawPaintTool.cs" />
     <Compile Include="Core\PaintTools\ErasePaintTool.cs" />
     <Compile Include="Core\PaintTools\SelectPaintTool.cs" />
@@ -99,9 +96,11 @@
     <Compile Include="Models\DrawingTool.cs" />
     <Compile Include="Models\Layer.cs" />
     <Compile Include="Core\PaintTools\IPaintTool.cs" />
+    <Compile Include="Models\Minimap.cs" />
     <Compile Include="Models\TileBrush.cs" />
     <Compile Include="Models\TileBrushCollection.cs" />
     <Compile Include="Models\Tileset.cs" />
+    <Compile Include="Presenters\IMinimapPresenter.cs" />
     <Compile Include="Presenters\Interfaces\IMainRenderPresenter.cs" />
     <Compile Include="Presenters\Interfaces\ITilesetPresenter.cs" />
     <Compile Include="Presenters\Interfaces\ITilesetRenderPresenter.cs" />
@@ -109,8 +108,12 @@
     <Compile Include="Presenters\Classes\MainRenderPresenter.cs" />
     <Compile Include="Presenters\Classes\TilesetPresenter.cs" />
     <Compile Include="Presenters\Classes\TilesetRenderPresenter.cs" />
+    <Compile Include="Presenters\MinimapPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\Classes\AddTilesetView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Classes\MinimapView.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\Classes\TileResizeView.cs">
@@ -122,6 +125,7 @@
     <Compile Include="UI\Classes\FileNewView.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\IMinimapView.cs" />
     <Compile Include="UI\Interfaces\IAddTilesetView.cs" />
     <Compile Include="UI\Interfaces\ITileResizeview.cs" />
     <Compile Include="UI\Interfaces\ILayerView.cs" />
@@ -158,6 +162,9 @@
     </Compile>
     <EmbeddedResource Include="UI\Classes\AddTilesetView.resx">
       <DependentUpon>AddTilesetView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Classes\MinimapView.resx">
+      <DependentUpon>MinimapView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Classes\TileResizeView.resx">
       <DependentUpon>TileResizeView.cs</DependentUpon>
