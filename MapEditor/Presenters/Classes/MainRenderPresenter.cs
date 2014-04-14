@@ -119,28 +119,29 @@ namespace MapEditor.Presenters
             paintTools = new IPaintTool[] { new DrawPaintTool(this), new ErasePaintTool(this), new SelectPaintTool(this) };
         }
 
+       
+
         #endregion
         
         #region Events
-
-      
 
         void view_OnXnaMove(object sender, MouseEventArgs e)
         {
             paintTools[(int)currentPaintTool].OnMouseMove(sender, e);
 
+
             if (isMouseMiddlePressed)
             {
                 currentMousePosition = InvertCameraMatrix(e.Location);
 
-                Console.WriteLine(currentMousePosition.ToString());
-
                 Vector2 difference = currentMousePosition - previousMousePosition;
-
+                
                 cameraPosition += -difference;
-                cameraPosition.Normalize();
+                //cameraPosition.Normalize();
 
-                ScrollCamera(cameraPosition * 50);               
+                Console.WriteLine(cameraPosition.ToString());
+
+                ScrollCamera(cameraPosition);
             }
         }
 
@@ -281,8 +282,13 @@ namespace MapEditor.Presenters
             int mapWidth = Layers.First().MapWidth;
             int mapHeight = Layers.First().MapHeight;
 
-            camera.Position = new Vector2(MathHelper.Clamp((int)(camera.Position.X + position.X), 0, tileWidth * mapWidth - view.GetGraphicsDevice.Viewport.Width),
+
+            /*camera.Position = new Vector2(MathHelper.Clamp((int)(camera.Position.X + position.X), 0, tileWidth * mapWidth - view.GetGraphicsDevice.Viewport.Width),
               (MathHelper.Clamp((int)(camera.Position.Y + position.Y), 0, tileHeight * mapHeight - view.GetGraphicsDevice.Viewport.Height)));
+             * */
+            camera.Position = new Vector2(MathHelper.Clamp((int)( position.X), 0, tileWidth * mapWidth - view.GetGraphicsDevice.Viewport.Width),
+              (MathHelper.Clamp((int)(position.Y), 0, tileHeight * mapHeight - view.GetGraphicsDevice.Viewport.Height)));
+
         }
 
 

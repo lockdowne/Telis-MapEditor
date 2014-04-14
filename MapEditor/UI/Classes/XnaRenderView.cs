@@ -49,7 +49,7 @@ namespace MapEditor.UI
         {
             MouseDown += (sender, e) => { if (OnXnaDown != null) OnXnaDown(sender, e); };
             MouseUp += (sender, e) => { if (OnXnaUp != null) OnXnaUp(sender, e); };
-            MouseMove += (sender, e) => { if (OnXnaMove != null) OnXnaMove(sender, e); };            
+            MouseMove += (sender, e) => { if (OnXnaMove != null) OnXnaMove(sender, e); };
         }  
 
         protected override void Initialize()
