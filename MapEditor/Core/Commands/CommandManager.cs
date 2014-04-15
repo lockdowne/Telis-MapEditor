@@ -176,7 +176,7 @@ namespace MapEditor.Core.Commands
             RedoCommands.Clear();
         }
 
-        public void ExecuteMapAddTileset(List<Tileset> tilesets, string texturePath, int tileWidth, int tileHeight, GraphicsDevice graphicsDevice, Action<IXnaRenderView, string, int, int> createTileset, Action<string> removeTileset)
+        public void ExecuteMapAddTileset(List<Tileset> tilesets, string texturePath, int tileWidth, int tileHeight, GraphicsDevice graphicsDevice, Action<string, int, int> createTileset, Action<string> removeTileset)
         {
             ICommand command = new MapAddTilesetCommand(tilesets, texturePath, tileWidth, tileHeight, graphicsDevice, createTileset, removeTileset);
             command.Execute();

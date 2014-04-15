@@ -11,33 +11,23 @@ namespace MapEditor.Core.Commands
     {
         #region Fields
 
-        private List<Layer> layers;
+        private  Dictionary<string, Layer> layers;
 
         private Layer layer;
 
-        private int layerIndex;
-
-        private object checkedListBoxItem;
-
-        private CheckedListBox checkedListBox;
+        private string key;
 
         #endregion 
 
         #region Initialize
 
-        public LayerCloneCommand(List<Layer> layers, int layerIndex, CheckedListBox checkedListBox)
+        public LayerCloneCommand(Dictionary<string, Layer> layers, string key)
         {
             this.layers = layers;
 
-            this.layer = layers[layerIndex];
+            this.layer = layers[key];
 
-            this.layerIndex = layerIndex;
-
-            int number = checkedListBox.Items.Count + 1;
-
-            this.checkedListBoxItem = "Layer" + number;
-
-            this.checkedListBox = checkedListBox;
+            this.key = key;
         }
 
         #endregion
@@ -49,9 +39,7 @@ namespace MapEditor.Core.Commands
         /// </summary>
         public void Execute()
         {
-            layers.Add(layer);
-
-            checkedListBox.Items.Add(checkedListBoxItem);
+            layers.Add(key, layer);
         }
 
 
@@ -60,9 +48,7 @@ namespace MapEditor.Core.Commands
         /// </summary>
         public void UnExecute()
         {
-            layers.Remove(layer);
-
-            checkedListBox.Items.Remove(checkedListBoxItem);
+            layers.Remove(key);
         }
 
         #endregion

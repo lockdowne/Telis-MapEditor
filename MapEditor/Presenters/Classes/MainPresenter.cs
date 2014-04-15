@@ -369,10 +369,8 @@ namespace MapEditor.Presenters
                 layerView.ShowForm(mainView);
                 minimapPresenter.ShowForm(mainView);
 
-                AddMainPresenter(fileNewView.FileName, new XnaRenderView(), fileNewView.TilesetPath, fileNewView.TileWidth, fileNewView.TileHeight, fileNewView.MapWidth, fileNewView.MapHeight);
-                tilesetPresenter.AddPresenter(new XnaRenderView(), fileNewView.TilesetPath, fileNewView.TileWidth, fileNewView.TileHeight);
-                
-                
+                AddMainPresenter(fileNewView.FileName, fileNewView.TilesetPath, fileNewView.TileWidth, fileNewView.TileHeight, fileNewView.MapWidth, fileNewView.MapHeight);
+                tilesetPresenter.AddPresenter(fileNewView.TilesetPath, fileNewView.TileWidth, fileNewView.TileHeight);
 
                 layerView.CheckedListBox.SelectedIndex = 0;
                 mapResizeView.MapWidth = fileNewView.MapWidth;
@@ -508,10 +506,12 @@ namespace MapEditor.Presenters
         /// <param name="tileHeight"></param>
         /// <param name="mapWidth"></param>
         /// <param name="mapHeight"></param>
-        public void AddMainPresenter(string name, IXnaRenderView renderView, string tilesetPath, int tileWidth, int tileHeight, int mapWidth, int mapHeight)
+        public void AddMainPresenter(string name, string tilesetPath, int tileWidth, int tileHeight, int mapWidth, int mapHeight)
         {
             if (MainPresenters.ContainsKey(name))
                 return;
+
+            IXnaRenderView renderView = new XnaRenderView();
 
             mainView.AddView(name, renderView);
 
@@ -526,6 +526,11 @@ namespace MapEditor.Presenters
             //presenter.SetTileDimensions(tileWidth, tileHeight);
 
             MainPresenters.Add(name, presenter);
+        }
+
+        private void UpdateViews()
+        {
+            
         }
 
         #endregion

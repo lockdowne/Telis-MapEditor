@@ -24,10 +24,10 @@ namespace MapEditor.Core.Commands
 
         private GraphicsDevice graphicsDevice;
 
-        private Action<IXnaRenderView, string, int, int> createTileset;
+        private Action<string, int, int> createTileset;
         private Action<string> removeTileset;
 
-        public MapAddTilesetCommand(List<Tileset> tilesets, string texturePath, int tileWidth, int tileHeight, GraphicsDevice graphicsDevice, Action<IXnaRenderView, string, int, int> createTileset, Action<string> removeTileset)
+        public MapAddTilesetCommand(List<Tileset> tilesets, string texturePath, int tileWidth, int tileHeight, GraphicsDevice graphicsDevice, Action<string, int, int> createTileset, Action<string> removeTileset)
         {
             this.tilesets = tilesets;
 
@@ -61,7 +61,7 @@ namespace MapEditor.Core.Commands
 
             tilesets.Add(tileset);
 
-            createTileset(new XnaRenderView(), texturePath, tileWidth, tileHeight);
+            createTileset(texturePath, tileWidth, tileHeight);
         }
 
         public void UnExecute()

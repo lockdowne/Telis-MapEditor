@@ -24,7 +24,7 @@ namespace MapEditor.Presenters
 
         void SetPaintTool(PaintTool paintTool);
         void InitializeMap(string texturePath, int tileWidth, int tileHeight, int mapWidth, int mapHeight, CheckedListBox checkedListBox);
-        void AddTileset(string texturePath, int tileWidth, int tileHeight, Action<IXnaRenderView, string, int, int> createTileset, Action<string> removeTileset);
+        void AddTileset(string texturePath, int tileWidth, int tileHeight, Action<string, int, int> createTileset, Action<string> removeTileset);
         void RemoveTileset();
         void AddLayer(CheckedListBox checkedListBox, int mapWidth, int mapHeight);
         void RemoveLayer(CheckedListBox checkedListBox);

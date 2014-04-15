@@ -13,9 +13,9 @@ namespace MapEditor.Presenters
         ITilesetRenderPresenter CurrentPresenter { get; }
         List<ITilesetRenderPresenter> AllPresenters { get; }
 
-        void AddPresenter(IXnaRenderView renderView, string path, int tileWidth, int tileHeight);
+        void AddPresenter(string path, int tileWidth, int tileHeight);
         void RemovePresenter(string key);
-        void LoadForm(IMainView parent);
+        void LoadForm(IMainView view);
         
         
     }

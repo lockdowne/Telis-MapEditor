@@ -8,31 +8,29 @@ using MapEditor.Models;
 namespace MapEditor.Core.Commands
 {
     /// <summary>
-    /// Command that adds a layer to map and layer view
+    /// Command that adds a layer to map
     /// </summary>
     public class LayerAddCommand : ICommand
     {
         #region Fields
 
-        private List<Layer> currentLayers;
+        private Dictionary<string, Layer> layers;
 
-        private Layer currentLayer;
+        private Layer layer;
 
-        private CheckedListBox checkedListBox;
-
-        private object currentCheckedListBoxItem;
+        private string key;
 
         #endregion
 
         #region Initialize
 
-        public LayerAddCommand(List<Layer> layers, int width, int height, CheckedListBox box)
+        public LayerAddCommand(Dictionary<string, Layer> layers, string key,  int width, int height)
         {
-            currentLayers = layers;
+            this.layers = layers;
 
-            currentLayer = new Layer(width, height);
+            this.layer = new Layer(width, height);
 
-            checkedListBox = box;
+            this.key = key;
         }
 
         #endregion
@@ -40,25 +38,19 @@ namespace MapEditor.Core.Commands
         #region Methods
 
         /// <summary>
-        /// Create layer for map and object for layer view
+        /// Create layer for map
         /// </summary>
         public void Execute()
         {
-            currentLayers.Add(currentLayer);
-
-            currentCheckedListBoxItem = "Layer" + checkedListBox.Items.Count;
-
-            checkedListBox.Items.Add(currentCheckedListBoxItem, true);
+            layers.Add(key, layer);
         }
 
         /// <summary>
-        /// Invert execute method
+        /// Inverse of execute method
         /// </summary>
         public void UnExecute()
         {
-            currentLayers.Remove(currentLayer);
-
-            checkedListBox.Items.Remove(currentCheckedListBoxItem);
+            layers.Remove(key);
         }
 
         #endregion

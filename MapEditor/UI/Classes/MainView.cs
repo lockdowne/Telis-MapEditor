@@ -129,6 +129,7 @@ namespace MapEditor.UI
         public event EventHandler RemoveTileset;
 
         public event FormClosingEventHandler ViewClosing;
+        public event Action ViewChanged;
 
 
 
@@ -140,8 +141,13 @@ namespace MapEditor.UI
             get
             {
                 if(closableTabControl1.SelectedTab != null)
-                    if(closableTabControl1.SelectedTab.Controls.Count > 0)
+                    if (closableTabControl1.SelectedTab.Controls.Count > 0)
+                    {
+                        if (ViewChanged != null)
+                            ViewChanged();
+
                         return (IXnaRenderView)closableTabControl1.SelectedTab.Controls[0];
+                    }
 
                 return null;
             }
@@ -1078,10 +1084,8 @@ namespace MapEditor.UI
             view.Name = name;  
             view.Dock = DockStyle.Fill;
             
-
             TabPage tab = new TabPage(name);
             tab.Name = name;
-            // tab.AutoScroll = true; ? wont work
             
             tab.Controls.Add(view);
 

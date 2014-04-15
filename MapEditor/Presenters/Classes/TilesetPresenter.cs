@@ -72,12 +72,13 @@ namespace MapEditor.Presenters
         /// <param name="tilesetPath"></param>
         /// <param name="tileWidth"></param>
         /// <param name="tileHeight"></param>
-        public void AddPresenter(IXnaRenderView renderView, string tilesetPath, int tileWidth, int tileHeight)
+        public void AddPresenter(string tilesetPath, int tileWidth, int tileHeight)
         {
             string name = Path.GetFileName(tilesetPath).Split('.')[0];
 
             if (Presenters.ContainsKey(name))
                 return;
+            IXnaRenderView renderView = new XnaRenderView();
 
             view.AddView(name, renderView);
 

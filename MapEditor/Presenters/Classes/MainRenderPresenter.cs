@@ -15,6 +15,9 @@ using MapEditor.Models;
 
 namespace MapEditor.Presenters
 {
+    // TODO: Changing layer to dictionary to have unique key, can change commands to have no need of UI.
+    // Have it invoke an event and have layers UI update from current layers.
+    // This will change many classes.
     public class MainRenderPresenter : IMainRenderPresenter
     {
         #region Fields
@@ -42,8 +45,10 @@ namespace MapEditor.Presenters
 
         public List<int[,]> Clipboard;
 
-        public int LayerIndex {  get; set; }
+        //public int LayerIndex {  get; set; }
         public int TilesetIndex { get; set; }
+
+        public string LayerKey { get; set; }
 
         /*public int MapWidth { get; private set; }
         public int MapHeight { get; private set; }
@@ -51,7 +56,9 @@ namespace MapEditor.Presenters
         public int TileHeight { get; private set; }*/
 
         public List<Tileset> Tilesets { get; set; }
-        public List<Layer> Layers { get; set; }
+        //public List<Layer> Layers { get; set; }
+
+        public Dictionary<string, Layer> Layers { get; set; }
 
         public Vector2? BeginSelectionBox { get; set; }
         public Vector2? EndSelectionBox { get; set; }
@@ -93,7 +100,9 @@ namespace MapEditor.Presenters
             view.OnXnaMove += new MouseEventHandler(view_OnXnaMove);
 
             Tilesets = new List<Tileset>();
-            Layers = new List<Layer>();
+            //Layers = new List<Layer>();
+
+            Layers = new Dictionary<string, Layer>();
 
             // Move to initialize method
             camera = new Camera()
@@ -279,8 +288,8 @@ namespace MapEditor.Presenters
             int tileWidth = Tilesets.First().TileWidth;
             int tileHeight = Tilesets.First().TileHeight;
 
-            int mapWidth = Layers.First().MapWidth;
-            int mapHeight = Layers.First().MapHeight;
+            int mapWidth = Layers.First().Value.MapWidth;
+            int mapHeight = Layers.First().Value.MapHeight;
 
 
             /*camera.Position = new Vector2(MathHelper.Clamp((int)(camera.Position.X + position.X), 0, tileWidth * mapWidth - view.GetGraphicsDevice.Viewport.Width),
@@ -328,9 +337,9 @@ namespace MapEditor.Presenters
                     TileHeight = tileHeight,
                 });
 
-            Layers.Add(new Layer(mapWidth, mapHeight));
+            Layers.Add("Layer 1", new Layer(mapWidth, mapHeight));
 
-            checkedListBox.Items.Add("Layer" + checkedListBox.Items.Count, true);
+            checkedListBox.Items.Add("Layer 1", true);
             //checkedListBox.SelectedIndex++;
         }
 
@@ -366,7 +375,7 @@ namespace MapEditor.Presenters
             {
                 if (!SelectionBox.IsEmpty)
                 {
-                    commandManager.ExecuteEditCopyCommand(Layers[LayerIndex], SelectionBox, tileWidth, tileHeight, Clipboard);
+                    commandManager.ExecuteEditCopyCommand(Layers[LayerKey], SelectionBox, tileWidth, tileHeight, Clipboard);
 
                     TileBrushValues = Clipboard.FirstOrDefault();
 
@@ -398,7 +407,7 @@ namespace MapEditor.Presenters
             {
                 if (!SelectionBox.IsEmpty)
                 {
-                    commandManager.ExecuteEditCutCommand(Layers[LayerIndex], SelectionBox, tileWidth, tileHeight, Clipboard);
+                    commandManager.ExecuteEditCutCommand(Layers[LayerKey], SelectionBox, tileWidth, tileHeight, Clipboard);
 
                     TileBrushValues = Clipboard.FirstOrDefault();
 
@@ -426,7 +435,7 @@ namespace MapEditor.Presenters
         /// <param name="checkedListBox"></param>
         public void RemoveLayer(CheckedListBox checkedListBox)
         {
-            commandManager.ExecuteLayerRemoveCommand(Layers, LayerIndex, checkedListBox);
+            commandManager.ExecuteLayerRemoveCommand(Layers, LayerKey, checkedListBox);
         }
 
         /// <summary>
@@ -434,7 +443,7 @@ namespace MapEditor.Presenters
         /// </summary>
         public void CloneLayer(CheckedListBox checkedListBox)
         {
-            commandManager.ExecuteLayerClone(Layers, LayerIndex, checkedListBox);
+            commandManager.ExecuteLayerClone(Layers, LayerKey, checkedListBox);
         }
 
         /// <summary>
@@ -446,7 +455,7 @@ namespace MapEditor.Presenters
             if (LayerIndex <= 0)
                 return;
 
-            commandManager.ExecuteLayerRaise(Layers, LayerIndex, checkedListBox);
+            commandManager.ExecuteLayerRaise(Layers, LayerKey, checkedListBox);
         }
 
         /// <summary>
@@ -458,7 +467,7 @@ namespace MapEditor.Presenters
             if (LayerIndex >= Layers.Count - 1)
                 return;
 
-            commandManager.ExecuteLayerLower(Layers, LayerIndex, checkedListBox);
+            commandManager.ExecuteLayerLower(Layers, LayerKey, checkedListBox);
         }
 
         /// <summary>
@@ -470,7 +479,7 @@ namespace MapEditor.Presenters
             if (Layers.Count <= 0)
                 return;
 
-            commandManager.ExecuteLayerVisibility(Layers[LayerIndex], isVisible);
+            commandManager.ExecuteLayerVisibility(Layers[LayerKey], isVisible);
         }
 
         /// <summary>
@@ -484,7 +493,7 @@ namespace MapEditor.Presenters
 
             // TODO: Check if layer is selected
 
-            commandManager.ExecuteEditDrawCommand(Layers[LayerIndex], tileBrushes.TileBrushes); 
+            commandManager.ExecuteEditDrawCommand(Layers[LayerKey], tileBrushes.TileBrushes); 
         } 
         
         /// <summary>
@@ -496,7 +505,7 @@ namespace MapEditor.Presenters
             if (Layers.Count <= 0)
                 return;
 
-            commandManager.ExecuteEditRemoveCommand(Layers[LayerIndex], tileBrushes.TileBrushes);
+            commandManager.ExecuteEditRemoveCommand(Layers[LayerKey], tileBrushes.TileBrushes);
         }
 
         /// <summary>
@@ -545,7 +554,7 @@ namespace MapEditor.Presenters
             commandManager.Redo();
         }
 
-        public void AddTileset(string texturePath, int tileWidth, int tileHeight, Action<IXnaRenderView, string, int, int> createTileset, Action<string> removeTileset)
+        public void AddTileset(string texturePath, int tileWidth, int tileHeight, Action<string, int, int> createTileset, Action<string> removeTileset)
         {
             commandManager.ExecuteMapAddTileset(Tilesets, texturePath, tileWidth, tileHeight, view.GetGraphicsDevice, createTileset, removeTileset);
         }
