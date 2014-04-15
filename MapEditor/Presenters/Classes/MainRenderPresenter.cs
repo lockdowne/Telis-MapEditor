@@ -173,9 +173,9 @@ namespace MapEditor.Presenters
             float zoom = camera.Zoom;
 
             if (e.Delta > 0)
-                zoom += 0.075f;
+                zoom += 0.1f;
             else if (e.Delta < 0)
-                zoom -= 0.075f;
+                zoom -= 0.1f;
 
             camera.Zoom = MathHelper.Clamp(zoom, 0.5f, 2f);
 
