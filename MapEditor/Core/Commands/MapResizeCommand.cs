@@ -47,7 +47,7 @@ namespace MapEditor.Core.Commands
 
             currentLayers.ForEach(layer =>
                 {
-                    Layer tempLayer = new Layer(mapWidth, mapHeight);
+                    Layer tempLayer = new Layer(layer.LayerName, mapWidth, mapHeight);
 
                     for (int y = 0; y < mapHeight; y++)
                     {

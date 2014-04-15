@@ -11,23 +11,19 @@ namespace MapEditor.Core.Commands
     {
         #region Fields
 
-        private  Dictionary<string, Layer> layers;
+        private  List<Layer> layers;
 
         private Layer layer;
-
-        private string key;
 
         #endregion 
 
         #region Initialize
 
-        public LayerCloneCommand(Dictionary<string, Layer> layers, string key)
+        public LayerCloneCommand(List<Layer> layers, int layerIndex)
         {
             this.layers = layers;
 
-            this.layer = layers[key];
-
-            this.key = key;
+            this.layer = layers[layerIndex];
         }
 
         #endregion
@@ -39,7 +35,7 @@ namespace MapEditor.Core.Commands
         /// </summary>
         public void Execute()
         {
-            layers.Add(key, layer);
+            layers.Add(layer);
         }
 
 
@@ -48,7 +44,7 @@ namespace MapEditor.Core.Commands
         /// </summary>
         public void UnExecute()
         {
-            layers.Remove(key);
+            layers.Remove(layer);
         }
 
         #endregion

@@ -21,6 +21,8 @@ namespace MapEditor.Models
 
         // Matrix
         public List<Row> Rows = new List<Row>();
+
+        public string LayerName { get; set; }
         
         // Layer width in tiles
         public int MapWidth { get; private set; }
@@ -34,8 +36,10 @@ namespace MapEditor.Models
 
         #region Initialize
 
-        public Layer(int width, int height)
+        public Layer(string layerName, int width, int height)
         {
+            LayerName = layerName;
+
             MapWidth = width;
             MapHeight = height;
 

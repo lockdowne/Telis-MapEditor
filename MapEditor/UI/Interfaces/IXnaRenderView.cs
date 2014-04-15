@@ -14,6 +14,7 @@ namespace MapEditor.UI
         event MouseEventHandler OnXnaDown;
         event MouseEventHandler OnXnaUp;
         event MouseEventHandler OnXnaMove;
+        event MouseEventHandler OnXnaWheel;
         
         event Action OnInitialize;
         event Action<SpriteBatch> OnDraw;        

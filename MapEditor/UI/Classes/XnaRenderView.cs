@@ -27,6 +27,7 @@ namespace MapEditor.UI
         public event MouseEventHandler OnXnaDown;
         public event MouseEventHandler OnXnaUp;
         public event MouseEventHandler OnXnaMove;
+        public event MouseEventHandler OnXnaWheel;
 
         public event Action OnInitialize;
         public event Action<SpriteBatch> OnDraw;   
@@ -50,6 +51,7 @@ namespace MapEditor.UI
             MouseDown += (sender, e) => { if (OnXnaDown != null) OnXnaDown(sender, e); };
             MouseUp += (sender, e) => { if (OnXnaUp != null) OnXnaUp(sender, e); };
             MouseMove += (sender, e) => { if (OnXnaMove != null) OnXnaMove(sender, e); };
+            MouseWheel += (sender, e) => { if (OnXnaWheel != null) OnXnaWheel(sender, e); };
         }  
 
         protected override void Initialize()

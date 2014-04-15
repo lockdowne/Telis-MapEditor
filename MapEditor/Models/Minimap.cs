@@ -10,13 +10,15 @@ namespace MapEditor.Models
 {
     public class Minimap
     {
-        private List<Texture2D> textures = new List<Texture2D>();    
+        private List<Texture2D> textures = new List<Texture2D>();
+
+        private Vector2 scale;
  
         public void Draw(SpriteBatch spriteBatch)
         {
             textures.ForEach(texture =>
                 {
-                    spriteBatch.Draw(texture, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+                    spriteBatch.Draw(texture, Vector2.Zero, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 1f);
                 });
         }
 
@@ -51,6 +53,8 @@ namespace MapEditor.Models
                             textures.Add(texture);
                         });
                 });
+
+            scale = new Vector2(300, 300) / new Vector2(textures.First().Width, textures.First().Height);
         }
     }
 }

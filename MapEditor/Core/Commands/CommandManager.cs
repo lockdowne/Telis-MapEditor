@@ -93,18 +93,18 @@ namespace MapEditor.Core.Commands
             //ICommand command = new MapAddTilesetCommand(
         }
 
-        public void ExecuteLayerAddCommand(List<Layer> layers, int width, int height, CheckedListBox checkedListBox)
+        public void ExecuteLayerAddCommand(List<Layer> layers, string layerName, int width, int height)
         {
-            ICommand command = new LayerAddCommand(layers, width, height, checkedListBox);
+            ICommand command = new LayerAddCommand(layers, layerName, width, height);
             command.Execute();
 
             UndoCommands.Push(command);
             RedoCommands.Clear();
         }
 
-        public void ExecuteLayerRemoveCommand(List<Layer> layers, int index, CheckedListBox checkedListBox)
+        public void ExecuteLayerRemoveCommand(List<Layer> layers, int index)
         {
-            ICommand command = new LayerRemoveCommand(layers, index, checkedListBox);
+            ICommand command = new LayerRemoveCommand(layers, index);
             command.Execute();
 
             UndoCommands.Push(command);
@@ -121,27 +121,27 @@ namespace MapEditor.Core.Commands
             //RedoCommands.Clear();
         }
 
-        public void ExecuteLayerClone(List<Layer> layers, int index, CheckedListBox checkedListBox)
+        public void ExecuteLayerClone(List<Layer> layers, int index)
         {
-            ICommand command = new LayerCloneCommand(layers, index, checkedListBox);
+            ICommand command = new LayerCloneCommand(layers, index);
             command.Execute();
 
             UndoCommands.Push(command);
             RedoCommands.Clear();
         }
 
-        public void ExecuteLayerRaise(List<Layer> layers, int index, CheckedListBox checkedListBox)
+        public void ExecuteLayerRaise(List<Layer> layers, int index)
         {
-            ICommand command = new LayerRaiseCommand(layers, index, checkedListBox);
+            ICommand command = new LayerRaiseCommand(layers, index);
             command.Execute();
 
             UndoCommands.Push(command);
             RedoCommands.Clear();
         }
 
-        public void ExecuteLayerLower(List<Layer> layers, int index, CheckedListBox checkedListBox)
+        public void ExecuteLayerLower(List<Layer> layers, int index)
         {
-            ICommand command = new LayerLowerCommand(layers, index, checkedListBox);
+            ICommand command = new LayerLowerCommand(layers, index);
             command.Execute();
 
             UndoCommands.Push(command);

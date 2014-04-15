@@ -14,23 +14,19 @@ namespace MapEditor.Core.Commands
     {
         #region Fields
 
-        private Dictionary<string, Layer> layers;
+        private List<Layer> layers;
 
         private Layer layer;
-
-        private string key;
 
         #endregion
 
         #region Initialize
 
-        public LayerAddCommand(Dictionary<string, Layer> layers, string key,  int width, int height)
+        public LayerAddCommand(List<Layer> layers, string layerName, int width, int height)
         {
             this.layers = layers;
 
-            this.layer = new Layer(width, height);
-
-            this.key = key;
+            this.layer = new Layer(layerName, width, height);
         }
 
         #endregion
@@ -42,7 +38,7 @@ namespace MapEditor.Core.Commands
         /// </summary>
         public void Execute()
         {
-            layers.Add(key, layer);
+            layers.Add(layer);
         }
 
         /// <summary>
@@ -50,7 +46,7 @@ namespace MapEditor.Core.Commands
         /// </summary>
         public void UnExecute()
         {
-            layers.Remove(key);
+            layers.Remove(layer);
         }
 
         #endregion

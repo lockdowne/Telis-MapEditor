@@ -11,6 +11,7 @@ using MapEditor.Core.PaintTools;
 using MapEditor.Models;
 using MapEditor.UI;
 
+// TODO: Hook up selected tab changed event for main view
 namespace MapEditor.Presenters
 {
     /// <summary>
@@ -206,36 +207,56 @@ namespace MapEditor.Presenters
             {
                 if (CurrentMainPresenter != null)
                     if (layerView != null)
-                        CurrentMainPresenter.CloneLayer(layerView.CheckedListBox);
+                    {
+                        CurrentMainPresenter.CloneLayer();
+
+                        UpdateLayerView();
+                    }
             };
 
             mainView.LayerAdd += (sender, e) =>
             {
                 if (CurrentMainPresenter != null)
                     if (layerView != null)
-                       if(mapResizeView != null)
-                            CurrentMainPresenter.AddLayer(layerView.CheckedListBox, mapResizeView.MapWidth, mapResizeView.MapHeight);
+                        if (mapResizeView != null)
+                        {
+                            CurrentMainPresenter.AddLayer(mapResizeView.MapWidth, mapResizeView.MapHeight);
+
+                            UpdateLayerView();
+                        }
             };
 
             mainView.LayerLower += (sender, e) =>
             {
                 if (CurrentMainPresenter != null)
                     if (layerView != null)
-                        CurrentMainPresenter.LowerLayer(layerView.CheckedListBox);
+                    {
+                        CurrentMainPresenter.LowerLayer();
+
+                        UpdateLayerView();
+                    }
             };
 
             mainView.LayerRaise += (sender, e) =>
             {
                 if (CurrentMainPresenter != null)
                     if (layerView != null)
-                        CurrentMainPresenter.RaiseLayer(layerView.CheckedListBox);
+                    {
+                        CurrentMainPresenter.RaiseLayer();
+
+                        UpdateLayerView();
+                    }
             };
 
             mainView.LayerRemove += (sender, e) =>
             {
                 if (CurrentMainPresenter != null)
                     if (layerView != null)
-                        CurrentMainPresenter.RemoveLayer(layerView.CheckedListBox);
+                    {
+                        CurrentMainPresenter.RemoveLayer();
+
+                        UpdateLayerView();
+                    }
             };
 
             mainView.MapOffset += (sender, e) =>
@@ -287,38 +308,63 @@ namespace MapEditor.Presenters
             layerView.AddLayerItem += (sender, e) =>
             {
                 if (CurrentMainPresenter != null)
-                    if(mapResizeView != null)
-                        CurrentMainPresenter.AddLayer(layerView.CheckedListBox, mapResizeView.MapWidth, mapResizeView.MapHeight);
+                    if (mapResizeView != null)
+                    {
+                        CurrentMainPresenter.AddLayer(mapResizeView.MapWidth, mapResizeView.MapHeight);
+
+                        UpdateLayerView();
+                    }
             };
 
             layerView.MoveLayerDown += (sender, e) =>
             {
                 if (CurrentMainPresenter != null)
-                    CurrentMainPresenter.LowerLayer(layerView.CheckedListBox);
+                {
+                    CurrentMainPresenter.LowerLayer();
+
+                    UpdateLayerView();
+                }
             };
 
             layerView.MoveLayerUp += (sender, e) =>
             {
                 if (CurrentMainPresenter != null)
-                    CurrentMainPresenter.RaiseLayer(layerView.CheckedListBox);
+                {
+                    CurrentMainPresenter.RaiseLayer();
+
+                    UpdateLayerView();
+
+                   
+                }
             };
 
             layerView.RemoveLayerItem += (sender, e) =>
             {
                 if (CurrentMainPresenter != null)
-                    CurrentMainPresenter.RemoveLayer(layerView.CheckedListBox);
-            };
+                {
+                    CurrentMainPresenter.RemoveLayer();
 
-            layerView.LayerIndexChanged += (sender, e) =>
-            {
-                // TODO: Need work around for finding check state of checkedBoxList item and to invoke layer visibility event               
+                    UpdateLayerView();
+                }
             };
 
             layerView.DuplicateLayer += (sender, e) =>
             {
                 if (CurrentMainPresenter != null)
-                    CurrentMainPresenter.CloneLayer(layerView.CheckedListBox);
+                {
+                    CurrentMainPresenter.CloneLayer();
+
+                    UpdateLayerView();
+                }
             };
+
+            layerView.LayerIndexChanged += (index) =>
+                {
+                    if (CurrentMainPresenter != null)
+                    {
+                        CurrentMainPresenter.LayerIndex = index;
+                    }
+                };
         }
 
         private void SubscribeOffsetViewEvents()
@@ -372,12 +418,13 @@ namespace MapEditor.Presenters
                 AddMainPresenter(fileNewView.FileName, fileNewView.TilesetPath, fileNewView.TileWidth, fileNewView.TileHeight, fileNewView.MapWidth, fileNewView.MapHeight);
                 tilesetPresenter.AddPresenter(fileNewView.TilesetPath, fileNewView.TileWidth, fileNewView.TileHeight);
 
-                layerView.CheckedListBox.SelectedIndex = 0;
                 mapResizeView.MapWidth = fileNewView.MapWidth;
                 mapResizeView.MapHeight = fileNewView.MapHeight;                
 
                 minimapPresenter.GenerateMinimap(CurrentMainPresenter.Layers, CurrentMainPresenter.Tilesets);
-                minimapPresenter.SetFormSize(mapResizeView.MapWidth, mapResizeView.MapHeight);
+                //minimapPresenter.SetFormSize(mapResizeView.MapWidth, mapResizeView.MapHeight);
+
+                UpdateLayerView();
             };
 
             fileNewView.Cancel += (sender, e) =>
@@ -516,7 +563,7 @@ namespace MapEditor.Presenters
             mainView.AddView(name, renderView);
 
             IMainRenderPresenter presenter = new MainRenderPresenter(renderView);
-            presenter.InitializeMap(tilesetPath, tileWidth, tileHeight, mapWidth, mapHeight, layerView.CheckedListBox);
+            presenter.InitializeMap(tilesetPath, tileWidth, tileHeight, mapWidth, mapHeight);
             presenter.MapChanged += () =>
                 {                    
                     minimapPresenter.GenerateMinimap(CurrentMainPresenter.Layers, CurrentMainPresenter.Tilesets);
@@ -528,9 +575,26 @@ namespace MapEditor.Presenters
             MainPresenters.Add(name, presenter);
         }
 
-        private void UpdateViews()
+        private void UpdateLayerView()
         {
+            if (layerView == null)
+                return;
+
+            if (CurrentMainPresenter == null)
+                return;
+
+            layerView.CheckedListBox.Items.Clear();
+
+            CurrentMainPresenter.Layers.ForEach(layer =>
+                {
+                    object item = layer.LayerName;
+
+                    layerView.CheckedListBox.Items.Add(item, layer.IsVisible);                    
+                });           
+
             
+            if(layerView.CheckedListBox.Items.Count > 0)
+                layerView.CheckedListBox.SelectedIndex = CurrentMainPresenter.LayerIndex;
         }
 
         #endregion

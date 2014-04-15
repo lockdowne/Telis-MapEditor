@@ -41,16 +41,33 @@ namespace MapEditor.UI
         public event EventHandler RemoveLayerItem;
         public event EventHandler AddLayerItem;
         public event EventHandler LayerItemChecked;
-        public event EventHandler LayerIndexChanged;
+        public event Action<int> LayerIndexChanged;
         public event EventHandler DuplicateLayer;
         
         /// <summary>
-        /// Get the check box list control
+        /// Sets entire checkedListBox control
         /// </summary>
         public CheckedListBox CheckedListBox
         {
             get { return checkedListBox1; }
+            set
+            {
+                if (LayerIndexChanged != null)
+                    LayerIndexChanged(checkedListBox1.SelectedIndex);
+
+                checkedListBox1 = value;
+            }
         }
+        /*public CheckedListBox CheckedListBox
+        {
+            set
+            {
+                checkedListBox1.Items.Clear();
+
+                checkedListBox1.Items.AddRange(value.Items);
+            }
+        }*/
+
 
         #endregion
 
@@ -198,9 +215,8 @@ namespace MapEditor.UI
 
         private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-           
             if (LayerIndexChanged != null)
-                LayerIndexChanged(sender, e);
+                LayerIndexChanged(checkedListBox1.SelectedIndex);
         }
 
         private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)

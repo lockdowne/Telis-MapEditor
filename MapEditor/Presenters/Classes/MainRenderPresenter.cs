@@ -15,9 +15,6 @@ using MapEditor.Models;
 
 namespace MapEditor.Presenters
 {
-    // TODO: Changing layer to dictionary to have unique key, can change commands to have no need of UI.
-    // Have it invoke an event and have layers UI update from current layers.
-    // This will change many classes.
     public class MainRenderPresenter : IMainRenderPresenter
     {
         #region Fields
@@ -34,6 +31,8 @@ namespace MapEditor.Presenters
 
         private CommandManager commandManager;
 
+        private int layerCounter;
+
         private bool isMouseLeftPressed;
         private bool isMouseMiddlePressed;
 
@@ -41,35 +40,24 @@ namespace MapEditor.Presenters
 
         #region Properties
 
+        public event Action MapChanged;
+
         public int[,] TileBrushValues { get; set; }
 
         public List<int[,]> Clipboard;
 
-        //public int LayerIndex {  get; set; }
+        public int LayerIndex {  get; set; }
         public int TilesetIndex { get; set; }
-
-        public string LayerKey { get; set; }
-
-        /*public int MapWidth { get; private set; }
-        public int MapHeight { get; private set; }
-        public int TileWidth { get; private set; }
-        public int TileHeight { get; private set; }*/
-
+        
         public List<Tileset> Tilesets { get; set; }
-        //public List<Layer> Layers { get; set; }
-
-        public Dictionary<string, Layer> Layers { get; set; }
+        public List<Layer> Layers { get; set; }
 
         public Vector2? BeginSelectionBox { get; set; }
-        public Vector2? EndSelectionBox { get; set; }
-
-        public event Action MapChanged;
+        public Vector2? EndSelectionBox { get; set; }        
 
         private IPaintTool[] paintTools;
 
         private PaintTool currentPaintTool;
-
-
 
         public Rectangle SelectionBox
         {
@@ -82,6 +70,50 @@ namespace MapEditor.Presenters
                    (int)Math.Min(BeginSelectionBox.Value.Y, EndSelectionBox.Value.Y),
                    (int)Math.Abs(BeginSelectionBox.Value.X - EndSelectionBox.Value.X),
                    (int)Math.Abs(BeginSelectionBox.Value.Y - EndSelectionBox.Value.Y));
+            }
+        }
+
+        public int MapWidth
+        {
+            get
+            {
+                if (Layers.Count <= 0)
+                    return 0;
+
+                return Layers.First().MapWidth;
+            }
+        }
+
+        public int MapHeight
+        {
+            get
+            {
+                if (Layers.Count <= 0)
+                    return 0;
+
+                return Layers.First().MapHeight;
+            }
+        }
+
+        public int TileWidth
+        {
+            get
+            {
+                if (Tilesets.Count <= 0)
+                    return 0;
+
+                return Tilesets.First().TileWidth;
+            }
+        }
+
+        public int TileHeight
+        {
+            get
+            {
+                if (Tilesets.Count <= 0)
+                    return 0;
+
+                return Tilesets.First().TileHeight;
             }
         }
 
@@ -98,11 +130,10 @@ namespace MapEditor.Presenters
             view.OnXnaDown += new MouseEventHandler(view_OnXnaDown);
             view.OnXnaUp += new MouseEventHandler(view_OnXnaUp);
             view.OnXnaMove += new MouseEventHandler(view_OnXnaMove);
+            view.OnXnaWheel += new MouseEventHandler(view_OnXnaWheel);
 
             Tilesets = new List<Tileset>();
-            //Layers = new List<Layer>();
-
-            Layers = new Dictionary<string, Layer>();
+            Layers = new List<Layer>();
 
             // Move to initialize method
             camera = new Camera()
@@ -128,11 +159,29 @@ namespace MapEditor.Presenters
             paintTools = new IPaintTool[] { new DrawPaintTool(this), new ErasePaintTool(this), new SelectPaintTool(this) };
         }
 
+      
        
 
         #endregion
         
         #region Events
+
+        void view_OnXnaWheel(object sender, MouseEventArgs e)
+        {
+            // Position => wheel up => zoom in
+            // Negative => wheel down => zoom out
+            float zoom = camera.Zoom;
+
+            if (e.Delta > 0)
+                zoom += 0.075f;
+            else if (e.Delta < 0)
+                zoom -= 0.075f;
+
+            camera.Zoom = MathHelper.Clamp(zoom, 0.5f, 2f);
+
+
+
+        }
 
         void view_OnXnaMove(object sender, MouseEventArgs e)
         {
@@ -282,14 +331,16 @@ namespace MapEditor.Presenters
         #endregion
 
         #region Methods
+  
+     
 
         private void ScrollCamera(Vector2 position)
         {
             int tileWidth = Tilesets.First().TileWidth;
             int tileHeight = Tilesets.First().TileHeight;
 
-            int mapWidth = Layers.First().Value.MapWidth;
-            int mapHeight = Layers.First().Value.MapHeight;
+            int mapWidth = Layers.First().MapWidth;
+            int mapHeight = Layers.First().MapHeight;
 
 
             /*camera.Position = new Vector2(MathHelper.Clamp((int)(camera.Position.X + position.X), 0, tileWidth * mapWidth - view.GetGraphicsDevice.Viewport.Width),
@@ -319,7 +370,7 @@ namespace MapEditor.Presenters
         /// <param name="mapWidth"></param>
         /// <param name="mapHeight"></param>
         /// <param name="checkedListBox"></param>
-        public void InitializeMap(string texturePath, int tileWidth, int tileHeight, int mapWidth, int mapHeight, CheckedListBox checkedListBox)
+        public void InitializeMap(string texturePath, int tileWidth, int tileHeight, int mapWidth, int mapHeight)
         {
             Texture2D texture;
 
@@ -337,10 +388,9 @@ namespace MapEditor.Presenters
                     TileHeight = tileHeight,
                 });
 
-            Layers.Add("Layer 1", new Layer(mapWidth, mapHeight));
+            layerCounter = 1;
 
-            checkedListBox.Items.Add("Layer 1", true);
-            //checkedListBox.SelectedIndex++;
+            Layers.Add(new Layer("Layer " + layerCounter.ToString(), mapWidth, mapHeight));
         }
 
         public void RemoveTileset()
@@ -375,7 +425,7 @@ namespace MapEditor.Presenters
             {
                 if (!SelectionBox.IsEmpty)
                 {
-                    commandManager.ExecuteEditCopyCommand(Layers[LayerKey], SelectionBox, tileWidth, tileHeight, Clipboard);
+                    commandManager.ExecuteEditCopyCommand(Layers[LayerIndex], SelectionBox, tileWidth, tileHeight, Clipboard);
 
                     TileBrushValues = Clipboard.FirstOrDefault();
 
@@ -407,7 +457,7 @@ namespace MapEditor.Presenters
             {
                 if (!SelectionBox.IsEmpty)
                 {
-                    commandManager.ExecuteEditCutCommand(Layers[LayerKey], SelectionBox, tileWidth, tileHeight, Clipboard);
+                    commandManager.ExecuteEditCutCommand(Layers[LayerIndex], SelectionBox, tileWidth, tileHeight, Clipboard);
 
                     TileBrushValues = Clipboard.FirstOrDefault();
 
@@ -424,50 +474,52 @@ namespace MapEditor.Presenters
         /// Add layer to map
         /// </summary>
         /// <param name="checkedListBox"></param>
-        public void AddLayer(CheckedListBox checkedListBox, int mapWidth, int mapHeight)
+        public void AddLayer(int mapWidth, int mapHeight)
         {
-            commandManager.ExecuteLayerAddCommand(Layers, mapWidth, mapHeight, checkedListBox);
+            layerCounter++;
+
+            commandManager.ExecuteLayerAddCommand(Layers, "Layer " + layerCounter.ToString(), mapWidth, mapHeight);
         }
 
         /// <summary>
         /// Remove layer from map
         /// </summary>
         /// <param name="checkedListBox"></param>
-        public void RemoveLayer(CheckedListBox checkedListBox)
+        public void RemoveLayer()
         {
-            commandManager.ExecuteLayerRemoveCommand(Layers, LayerKey, checkedListBox);
+            commandManager.ExecuteLayerRemoveCommand(Layers, LayerIndex);
         }
 
         /// <summary>
         /// Duplicate layer 
         /// </summary>
-        public void CloneLayer(CheckedListBox checkedListBox)
+        public void CloneLayer()
         {
-            commandManager.ExecuteLayerClone(Layers, LayerKey, checkedListBox);
+            commandManager.ExecuteLayerClone(Layers, LayerIndex);
         }
 
         /// <summary>
         /// Move layer one index up
         /// </summary>
         /// <param name="checkedListBox"></param>
-        public void RaiseLayer(CheckedListBox checkedListBox)
+        public void RaiseLayer()
         {
             if (LayerIndex <= 0)
                 return;
 
-            commandManager.ExecuteLayerRaise(Layers, LayerKey, checkedListBox);
+            commandManager.ExecuteLayerRaise(Layers, LayerIndex);
         }
 
         /// <summary>
         /// Move layer one index down
         /// </summary>
         /// <param name="checkedListBox"></param>
-        public void LowerLayer(CheckedListBox checkedListBox)
+        public void LowerLayer()
         {
             if (LayerIndex >= Layers.Count - 1)
                 return;
 
-            commandManager.ExecuteLayerLower(Layers, LayerKey, checkedListBox);
+            commandManager.ExecuteLayerLower(Layers, LayerIndex);
         }
 
         /// <summary>
@@ -479,7 +531,7 @@ namespace MapEditor.Presenters
             if (Layers.Count <= 0)
                 return;
 
-            commandManager.ExecuteLayerVisibility(Layers[LayerKey], isVisible);
+            commandManager.ExecuteLayerVisibility(Layers[LayerIndex], isVisible);
         }
 
         /// <summary>
@@ -493,7 +545,7 @@ namespace MapEditor.Presenters
 
             // TODO: Check if layer is selected
 
-            commandManager.ExecuteEditDrawCommand(Layers[LayerKey], tileBrushes.TileBrushes); 
+            commandManager.ExecuteEditDrawCommand(Layers[LayerIndex], tileBrushes.TileBrushes); 
         } 
         
         /// <summary>
@@ -505,7 +557,7 @@ namespace MapEditor.Presenters
             if (Layers.Count <= 0)
                 return;
 
-            commandManager.ExecuteEditRemoveCommand(Layers[LayerKey], tileBrushes.TileBrushes);
+            commandManager.ExecuteEditRemoveCommand(Layers[LayerIndex], tileBrushes.TileBrushes);
         }
 
         /// <summary>

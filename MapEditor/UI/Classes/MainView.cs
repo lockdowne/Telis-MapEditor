@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 using MapEditor.Core.Helpers;
 using MapEditor.UI;
 using MapEditor.Core.Controls;
@@ -15,9 +16,16 @@ namespace MapEditor.UI
     /// <summary>
     /// Main UI for entire project
     /// </summary>
-    public class MainView : Form, IMainView
+    public class MainView : Form, IMessageFilter, IMainView
     {
         #region Fields
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr WindowFromPoint(Point pt);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
+
 
         private MenuStrip menuStrip1;
         private ToolStripMenuItem fileToolStripMenuItem;
@@ -153,6 +161,29 @@ namespace MapEditor.UI
             }
         }
 
+        /// <summary>
+        /// http://social.msdn.microsoft.com/Forums/windows/en-US/eb922ed2-1036-41ca-bd15-49daed7b637c/outlookstyle-wheel-mouse-behavior?forum=winforms
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
+        public bool PreFilterMessage(ref Message m)
+        {
+            if (m.Msg == 0x20a)
+            {
+                Point pos = new Point(m.LParam.ToInt32() & 0xffff, m.LParam.ToInt32() >> 16);
+
+                IntPtr hWnd = WindowFromPoint(pos);
+
+                if (hWnd != IntPtr.Zero && hWnd != m.HWnd && Control.FromHandle(hWnd) != null)
+                {
+                    SendMessage(hWnd, m.Msg, m.WParam, m.LParam);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         #endregion
 
         #region Initialize
@@ -166,6 +197,8 @@ namespace MapEditor.UI
                 if (ViewClosing != null)
                     ViewClosing(sender, e);
             };
+
+            Application.AddMessageFilter(this);
         }
 
         #region Windows Form Designer generated code

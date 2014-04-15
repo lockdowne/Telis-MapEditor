@@ -16,10 +16,10 @@ namespace MapEditor.UI
         event EventHandler RemoveLayerItem;
         event EventHandler AddLayerItem;
         event EventHandler LayerItemChecked;
-        event EventHandler LayerIndexChanged;
+        event Action<int> LayerIndexChanged;
         event EventHandler DuplicateLayer;
 
-        CheckedListBox CheckedListBox { get; }
+        CheckedListBox CheckedListBox { get;  set; }
 
         void ShowForm(IMainView parent);
         void CloseForm();

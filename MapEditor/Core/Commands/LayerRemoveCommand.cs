@@ -20,23 +20,15 @@ namespace MapEditor.Core.Commands
 
         private int layerIndex;
 
-        private CheckedListBox checkedListBox;
-
-        private object checkedListBoxItem;
-
         #endregion
 
         #region Initialize
 
-        public LayerRemoveCommand(List<Layer> layers, int layerIndex, CheckedListBox checkedListBox)
+        public LayerRemoveCommand(List<Layer> layers, int layerIndex)
         {
             this.layers = layers;
 
             this.layer = layers[layerIndex];
-
-            this.checkedListBox = checkedListBox;
-
-            this.checkedListBoxItem = checkedListBox.Items[layerIndex];
         }
 
         #endregion
@@ -49,8 +41,6 @@ namespace MapEditor.Core.Commands
         public void Execute()
         {
             layers.RemoveAt(layerIndex);
-
-            checkedListBox.Items.RemoveAt(layerIndex);
         }
 
         /// <summary>
@@ -59,8 +49,6 @@ namespace MapEditor.Core.Commands
         public void UnExecute()
         {
             layers.Insert(layerIndex, layer);
-
-            checkedListBox.Items.Insert(layerIndex, checkedListBoxItem);
         }
 
         #endregion

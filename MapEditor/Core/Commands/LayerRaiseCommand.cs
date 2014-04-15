@@ -15,19 +15,15 @@ namespace MapEditor.Core.Commands
         
         private int layerIndex;
 
-        private CheckedListBox checkedListBox;
-
         #endregion 
 
         #region Initialize
 
-        public LayerRaiseCommand(List<Layer> layers, int layerIndex, CheckedListBox checkedListBox)
+        public LayerRaiseCommand(List<Layer> layers, int layerIndex)
         {
             this.layers = layers;
 
             this.layerIndex = layerIndex;
-
-            this.checkedListBox = checkedListBox;
         }
 
         #endregion
@@ -40,17 +36,6 @@ namespace MapEditor.Core.Commands
 
             layers[layerIndex - 1] = layers[layerIndex];
             layers[layerIndex] = layerSwap;
-
-            object boxSwap = checkedListBox.Items[layerIndex - 1];
-
-            CheckState newCheckState = checkedListBox.GetItemCheckState(layerIndex);
-            CheckState previousCheckState = checkedListBox.GetItemCheckState(layerIndex - 1);
-
-            checkedListBox.Items[layerIndex - 1] = checkedListBox.Items[layerIndex];
-            checkedListBox.Items[layerIndex] = boxSwap;
-            checkedListBox.SelectedIndex = layerIndex - 1;
-            checkedListBox.SetItemCheckState(layerIndex - 1, newCheckState);
-            checkedListBox.SetItemCheckState(layerIndex, previousCheckState);
         }
 
         public void UnExecute()
