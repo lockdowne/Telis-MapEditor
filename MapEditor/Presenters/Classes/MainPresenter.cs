@@ -297,7 +297,16 @@ namespace MapEditor.Presenters
                     e.Cancel = false;
                 };
 
-            
+
+            mainView.SelectedTabChanged += (sender, e) =>
+                {
+                    if (CurrentMainPresenter == null)
+                        return;
+                    
+                    UpdateLayerView();
+                    minimapPresenter.GenerateMinimap(CurrentMainPresenter.Layers, CurrentMainPresenter.Tilesets);
+                    UpdateTilesetView();
+                };           
         }
 
         private void SubscribeLayerViewEvents()
@@ -407,6 +416,18 @@ namespace MapEditor.Presenters
 
             fileNewView.Confirm += (sender, e) =>
             {
+                if (string.IsNullOrWhiteSpace(fileNewView.FileName))
+                {
+                    fileNewView.DisplayMessage("Enter a name for project");
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(fileNewView.TilesetPath))
+                {
+                    fileNewView.DisplayMessage("Select an image for tileset");
+                    return;
+                }
+                
                 fileNewView.CloseForm();
 
                 // TODO: Change below code accordingly 
@@ -416,15 +437,20 @@ namespace MapEditor.Presenters
                 minimapPresenter.ShowForm(mainView);
 
                 AddMainPresenter(fileNewView.FileName, fileNewView.TilesetPath, fileNewView.TileWidth, fileNewView.TileHeight, fileNewView.MapWidth, fileNewView.MapHeight);
-                tilesetPresenter.AddPresenter(fileNewView.TilesetPath, fileNewView.TileWidth, fileNewView.TileHeight);
+                //tilesetPresenter.AddPresenter(fileNewView.TilesetPath, fileNewView.TileWidth, fileNewView.TileHeight);
+
 
                 mapResizeView.MapWidth = fileNewView.MapWidth;
                 mapResizeView.MapHeight = fileNewView.MapHeight;                
+
+
 
                 minimapPresenter.GenerateMinimap(CurrentMainPresenter.Layers, CurrentMainPresenter.Tilesets);
                 //minimapPresenter.SetFormSize(mapResizeView.MapWidth, mapResizeView.MapHeight);
 
                 UpdateLayerView();
+
+                UpdateTilesetView();
             };
 
             fileNewView.Cancel += (sender, e) =>
@@ -443,7 +469,7 @@ namespace MapEditor.Presenters
             if (tilesetPresenter == null)
                 return;
 
-            tilesetPresenter.SendTileBrushValues += (brush) =>
+            tilesetPresenter.OnSendTileBrushValues += (brush) =>
                 {
                     if (CurrentMainPresenter != null)
                         CurrentMainPresenter.TileBrushValues = brush;
@@ -595,6 +621,22 @@ namespace MapEditor.Presenters
             
             if(layerView.CheckedListBox.Items.Count > 0)
                 layerView.CheckedListBox.SelectedIndex = CurrentMainPresenter.LayerIndex;
+        }
+
+        private void UpdateTilesetView()
+        {
+            if (tilesetPresenter == null)
+                return;
+
+            if (CurrentMainPresenter == null)
+                return;
+
+            tilesetPresenter.Clear();
+
+            CurrentMainPresenter.Tilesets.ForEach(tileset =>
+                {
+                    tilesetPresenter.AddPresenter(tileset.TexturePath, tileset.TileWidth, tileset.TileHeight);
+                });
         }
 
         #endregion

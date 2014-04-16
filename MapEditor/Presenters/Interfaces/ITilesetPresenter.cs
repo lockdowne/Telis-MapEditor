@@ -8,7 +8,7 @@ namespace MapEditor.Presenters
 {
     public interface ITilesetPresenter
     {
-        event Action<int[,]> SendTileBrushValues;
+        event Action<int[,]> OnSendTileBrushValues;
 
         ITilesetRenderPresenter CurrentPresenter { get; }
         List<ITilesetRenderPresenter> AllPresenters { get; }
@@ -16,6 +16,7 @@ namespace MapEditor.Presenters
         void AddPresenter(string path, int tileWidth, int tileHeight);
         void RemovePresenter(string key);
         void LoadForm(IMainView view);
+        void Clear();
         
         
     }

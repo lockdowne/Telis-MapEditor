@@ -139,7 +139,7 @@ namespace MapEditor.UI
         public event FormClosingEventHandler ViewClosing;
         public event Action ViewChanged;
 
-
+        public event EventHandler SelectedTabChanged;
 
         /// <summary>
         /// Gets the current view with focus
@@ -163,6 +163,7 @@ namespace MapEditor.UI
 
         /// <summary>
         /// http://social.msdn.microsoft.com/Forums/windows/en-US/eb922ed2-1036-41ca-bd15-49daed7b637c/outlookstyle-wheel-mouse-behavior?forum=winforms
+        /// Intercepts all mouse wheel events
         /// </summary>
         /// <param name="m"></param>
         /// <returns></returns>
@@ -197,6 +198,12 @@ namespace MapEditor.UI
                 if (ViewClosing != null)
                     ViewClosing(sender, e);
             };
+
+            this.closableTabControl1.SelectedIndexChanged += (sender, e) =>
+                {
+                    if (SelectedTabChanged != null)
+                        SelectedTabChanged(sender, e);
+                };
 
             Application.AddMessageFilter(this);
         }

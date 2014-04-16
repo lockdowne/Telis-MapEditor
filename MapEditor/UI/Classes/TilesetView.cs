@@ -46,6 +46,7 @@ namespace MapEditor.UI
                 this.Hide();
                 e.Cancel = true;
             };
+            
         }
 
         #endregion

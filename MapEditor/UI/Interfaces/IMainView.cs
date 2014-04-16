@@ -50,6 +50,8 @@ namespace MapEditor.UI
 
         event FormClosingEventHandler ViewClosing;
 
+        event EventHandler SelectedTabChanged;
+
         IXnaRenderView GetCurrentView { get; }
 
         void AddView(string fileName, IXnaRenderView renderer);        

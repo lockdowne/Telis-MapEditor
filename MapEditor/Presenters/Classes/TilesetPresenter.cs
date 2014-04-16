@@ -27,7 +27,7 @@ namespace MapEditor.Presenters
 
         #region Properties
  
-        public event Action<int[,]> SendTileBrushValues;
+        public event Action<int[,]> OnSendTileBrushValues;
 
         public ITilesetRenderPresenter CurrentPresenter
         {
@@ -57,8 +57,10 @@ namespace MapEditor.Presenters
 
         public TilesetPresenter(ITilesetView view)
         {
-            this.view = view;            
+            this.view = view;
+
         }
+
 
         #endregion
 
@@ -87,8 +89,8 @@ namespace MapEditor.Presenters
             presenter.SetTileDimesions(tileWidth, tileHeight);
             presenter.SendTileBrushValues += (values) =>
             {
-                if (SendTileBrushValues != null)
-                    SendTileBrushValues(values);
+                if (OnSendTileBrushValues != null)
+                    OnSendTileBrushValues(values);
             };
 
             Presenters.Add(name, presenter);            
@@ -112,6 +114,11 @@ namespace MapEditor.Presenters
         public void LoadForm(IMainView parent)
         {
             view.ShowForm(parent);
+        }
+
+        public void Clear()
+        {
+            Presenters.Clear();
         }
 
         #endregion

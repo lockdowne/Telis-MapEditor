@@ -10,10 +10,13 @@ namespace MapEditor.Models
 {
     public class Minimap
     {
+        private const int MINIMAP_WIDTH = 284;
+        private const int MINIMAP_HEIGHT = 261;
+
         private List<Texture2D> textures = new List<Texture2D>();
 
         private Vector2 scale;
- 
+       
         public void Draw(SpriteBatch spriteBatch)
         {
             textures.ForEach(texture =>
@@ -54,7 +57,7 @@ namespace MapEditor.Models
                         });
                 });
 
-            scale = new Vector2(300, 300) / new Vector2(textures.First().Width, textures.First().Height);
+            scale = new Vector2(MINIMAP_WIDTH, MINIMAP_HEIGHT) / new Vector2(textures.First().Width, textures.First().Height);
         }
     }
 }
