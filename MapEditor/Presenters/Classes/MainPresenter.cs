@@ -427,6 +427,12 @@ namespace MapEditor.Presenters
                     fileNewView.DisplayMessage("Select an image for tileset");
                     return;
                 }
+
+                if (MainPresenters.ContainsKey(fileNewView.FileName))
+                {
+                    fileNewView.DisplayMessage("Project name is already open");
+                    return;
+                }
                 
                 fileNewView.CloseForm();
 

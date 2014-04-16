@@ -35,7 +35,10 @@ namespace MapEditor.Presenters
 
         private bool isMouseLeftPressed;
         private bool isMouseMiddlePressed;
+     
+        private IPaintTool[] paintTools;
 
+        private PaintTool currentPaintTool;
         #endregion
 
         #region Properties
@@ -46,7 +49,8 @@ namespace MapEditor.Presenters
 
         public List<int[,]> Clipboard;
 
-        public int LayerIndex {  get; set; }
+        public int LayerIndex { get; set; }
+
         public int TilesetIndex { get; set; }
         
         public List<Tileset> Tilesets { get; set; }
@@ -55,9 +59,7 @@ namespace MapEditor.Presenters
         public Vector2? BeginSelectionBox { get; set; }
         public Vector2? EndSelectionBox { get; set; }        
 
-        private IPaintTool[] paintTools;
-
-        private PaintTool currentPaintTool;
+  
 
         public Rectangle SelectionBox
         {
@@ -242,7 +244,8 @@ namespace MapEditor.Presenters
                     isMouseLeftPressed = true;
                     break;
                 case MouseButtons.Right:
-                    SetPaintTool(PaintTool.Select);
+                    if(currentPaintTool != PaintTool.Erase)
+                        SetPaintTool(PaintTool.Select);
                     break;             
                 case MouseButtons.Middle:
                     isMouseMiddlePressed = true;
@@ -322,6 +325,9 @@ namespace MapEditor.Presenters
             if (paintTools[(int)currentPaintTool] != null)
                 paintTools[(int)currentPaintTool].Draw(spriteBatch);
 
+            if (SelectionBox != Rectangle.Empty)
+                DrawingTool.DrawRectangle(spriteBatch, Pixel, SelectionBox, Color.White, 2);
+
             // This should only be called reactively 
             /*if (MapChanged != null)
                 MapChanged();*/
@@ -355,6 +361,12 @@ namespace MapEditor.Presenters
         /// <param name="paintTool"></param>
         public void SetPaintTool(PaintTool paintTool)
         {
+            if (paintTool == PaintTool.Erase)
+                RemoveTiles();
+
+            if (paintTool == PaintTool.Draw)
+                ClearSelectionBox();
+
             this.currentPaintTool = paintTool;
         }
 
@@ -458,6 +470,9 @@ namespace MapEditor.Presenters
             layerCounter++;
 
             commandManager.ExecuteLayerAddCommand(Layers, "Layer " + layerCounter.ToString(), mapWidth, mapHeight);
+
+            LayerIndex = -1;
+
         }
 
         /// <summary>
@@ -466,7 +481,15 @@ namespace MapEditor.Presenters
         /// <param name="checkedListBox"></param>
         public void RemoveLayer()
         {
+            if (LayerIndex < 0)
+                return;
+
+            if (Layers.Count <= 0)
+                return;
+
             commandManager.ExecuteLayerRemoveCommand(Layers, LayerIndex);
+
+            LayerIndex = -1;
         }
 
         /// <summary>
@@ -474,7 +497,15 @@ namespace MapEditor.Presenters
         /// </summary>
         public void CloneLayer()
         {
+            if (LayerIndex < 0)
+                return;
+
+            if (Layers.Count <= 0)
+                return;
+
             commandManager.ExecuteLayerClone(Layers, LayerIndex);
+
+            LayerIndex = -1;
         }
 
         /// <summary>
@@ -486,7 +517,12 @@ namespace MapEditor.Presenters
             if (LayerIndex <= 0)
                 return;
 
+            if (Layers.Count <= 0)
+                return;
+
             commandManager.ExecuteLayerRaise(Layers, LayerIndex);
+
+            LayerIndex = -1;
         }
 
         /// <summary>
@@ -495,10 +531,18 @@ namespace MapEditor.Presenters
         /// <param name="checkedListBox"></param>
         public void LowerLayer()
         {
+            if (LayerIndex < 0)
+                return;
+
             if (LayerIndex >= Layers.Count - 1)
                 return;
 
+            if (Layers.Count <= 0)
+                return;
+
             commandManager.ExecuteLayerLower(Layers, LayerIndex);
+
+            LayerIndex = -1;
         }
 
         /// <summary>
@@ -522,7 +566,8 @@ namespace MapEditor.Presenters
             if (Layers.Count <= 0)
                 return;
 
-            // TODO: Check if layer is selected
+            if (LayerIndex < 0)
+                return;
 
             commandManager.ExecuteEditDrawCommand(Layers[LayerIndex], tileBrushes.TileBrushes); 
         } 
@@ -531,12 +576,15 @@ namespace MapEditor.Presenters
         /// Remove selected tiles from map
         /// </summary>
         /// <param name="tileBrushes"></param>
-        public void RemoveTiles(TileBrushCollection tileBrushes)
+        public void RemoveTiles()
         {
             if (Layers.Count <= 0)
                 return;
 
-            commandManager.ExecuteEditRemoveCommand(Layers[LayerIndex], tileBrushes.TileBrushes);
+            if (LayerIndex < 0)
+                return;
+
+            commandManager.ExecuteEditRemoveCommand(Layers[LayerIndex], SelectionBox, TileWidth, TileHeight);
         }
 
         /// <summary>
@@ -546,6 +594,9 @@ namespace MapEditor.Presenters
         /// <param name="offsetY"></param>
         public void OffsetMap(int offsetX, int offsetY)
         {
+            if (Layers.Count <= 0)
+                return;
+
             commandManager.ExecuteMapOffset(Layers, offsetX, offsetY);
         }
 
@@ -556,6 +607,9 @@ namespace MapEditor.Presenters
         /// <param name="mapHeight"></param>
         public void ResizeMap(int mapWidth, int mapHeight, NumericUpDownEx mapWidthNumeric, NumericUpDownEx mapHeightNumeric)
         {
+            if (Layers.Count <= 0)
+                return;
+
             commandManager.ExecuteMapResize(Layers, mapWidth, mapHeight, mapWidthNumeric, mapHeightNumeric);
         }
 
@@ -566,6 +620,9 @@ namespace MapEditor.Presenters
         /// <param name="tileHeight"></param>
         public void ResizeTiles(int tileWidth, int tileHeight, NumericUpDownEx tileWidthNumeric, NumericUpDownEx tileHeightNumeric, List<Action<int, int>> setTileDimensions)
         {
+            if (Tilesets.Count <= 0)
+                return;
+
             commandManager.ExecuteTileResize(Tilesets, tileWidth, tileHeight, tileWidthNumeric, tileHeightNumeric, setTileDimensions);
         }
 
@@ -574,6 +631,8 @@ namespace MapEditor.Presenters
         /// </summary>
         public void Undo()
         {
+            LayerIndex = -1;
+
             commandManager.Undo();
         }
 
@@ -582,6 +641,8 @@ namespace MapEditor.Presenters
         /// </summary>
         public void Redo()
         {
+            LayerIndex = -1;
+
             commandManager.Redo();
         }
 

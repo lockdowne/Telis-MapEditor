@@ -16,20 +16,26 @@ namespace MapEditor.Core.Commands
 
         private Layer layer;
 
-        private List<TileBrush> currentTileBrushes;
-        private List<TileBrush> previousTileBrushes;
+        private Rectangle selectionBox;
+
+        private int tileWidth;
+        private int tileHeight;
+
+        private int[,] previousBrush;
 
         #endregion
 
         #region Initialize
 
-        public EditRemoveCommand(Layer layer, List<TileBrush> brushes)
+        public EditRemoveCommand(Layer layer, Rectangle selectionBox, int tileWidth, int tileHeight)
         {
             this.layer = layer;
 
-            this.currentTileBrushes = new List<TileBrush>(brushes.AsEnumerable());
+            this.selectionBox = selectionBox;
 
-            this.previousTileBrushes = new List<TileBrush>();
+            this.tileWidth = tileWidth;
+            this.tileHeight = tileHeight;
+
         }
 
         #endregion
@@ -37,43 +43,22 @@ namespace MapEditor.Core.Commands
         #region Methods
 
         /// <summary>
-        /// Store previous tiles and replace them with new tilebrushes
+        /// Remove tiles inside selection box
         /// </summary>
         public void Execute()
         {
-            currentTileBrushes.ForEach(brush =>
+            int[,] brush = new int[selectionBox.Height / tileHeight, selectionBox.Width / tileWidth];
+
+            for (int y = 0; y < selectionBox.Height / tileHeight; y++)
             {
-                int[,] previousBrush = new int[brush.Brush.GetLength(0), brush.Brush.GetLength(1)];
-
-                // Get previous tiles
-                for (int y = 0; y < brush.Brush.GetLength(0); y++)
+                for (int x = 0; x < selectionBox.Width / tileWidth; x++)
                 {
-                    for (int x = 0; x < brush.Brush.GetLength(1); x++)
-                    {
-                        previousBrush[y, x] = layer.Rows[(int)(y + brush.Position.Y)].Columns[(int)(x + brush.Position.X)].TileID;
-                    }
+                    brush[y, x] = layer.Rows[y + (selectionBox.Y / tileHeight)].Columns[x + (selectionBox.X / tileWidth)].TileID;
+                    layer.Rows[y + (selectionBox.Y / tileHeight)].Columns[x + (selectionBox.X / tileWidth)].TileID = -1;
                 }
+            }
 
-                // Add previous tiles
-                previousTileBrushes.Add(new TileBrush()
-                {
-                    Brush = previousBrush,
-                    Position = brush.Position,
-                });
-
-            });
-
-            currentTileBrushes.ForEach(brush =>
-            {
-                // Draw new tiles
-                for (int y = 0; y < brush.Brush.GetLength(0); y++)
-                {
-                    for (int x = 0; x < brush.Brush.GetLength(1); x++)
-                    {
-                        layer.Rows[(int)(y + brush.Position.Y)].Columns[(int)(x + brush.Position.X)].TileID = brush.Brush[y, x];
-                    }
-                }
-            });
+            previousBrush = brush;
         }
 
         /// <summary>
@@ -81,16 +66,13 @@ namespace MapEditor.Core.Commands
         /// </summary>
         public void UnExecute()
         {
-            previousTileBrushes.ForEach(brush =>
+            for (int y = 0; y < selectionBox.Height / tileHeight; y++)
             {
-                for (int y = 0; y < brush.Brush.GetLength(0); y++)
+                for (int x = 0; x < selectionBox.Width / tileWidth; x++)
                 {
-                    for (int x = 0; x < brush.Brush.GetLength(1); x++)
-                    {
-                        layer.Rows[(int)(y + brush.Position.Y)].Columns[(int)(x + brush.Position.X)].TileID = brush.Brush[y, x];
-                    }
+                    layer.Rows[y + (selectionBox.Y / tileHeight)].Columns[x + (selectionBox.X / tileWidth)].TileID = previousBrush[y, x];
                 }
-            });
+            }
         }
 
         #endregion

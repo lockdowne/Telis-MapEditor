@@ -62,9 +62,9 @@ namespace MapEditor.Core.Commands
             RedoCommands.Clear();
         }
 
-        public void ExecuteEditRemoveCommand(Layer layer, List<TileBrush> tileBrushes)
+        public void ExecuteEditRemoveCommand(Layer layer, Rectangle selectionBox, int tileWidth, int tileHeight)
         {
-            ICommand command = new EditRemoveCommand(layer, tileBrushes);
+            ICommand command = new EditRemoveCommand(layer, selectionBox, tileWidth, tileHeight);
             command.Execute();
 
             UndoCommands.Push(command);
@@ -102,9 +102,9 @@ namespace MapEditor.Core.Commands
             RedoCommands.Clear();
         }
 
-        public void ExecuteLayerRemoveCommand(List<Layer> layers, int index)
+        public void ExecuteLayerRemoveCommand(List<Layer> layers, int layerIndex)
         {
-            ICommand command = new LayerRemoveCommand(layers, index);
+            ICommand command = new LayerRemoveCommand(layers, layerIndex);
             command.Execute();
 
             UndoCommands.Push(command);
@@ -121,27 +121,27 @@ namespace MapEditor.Core.Commands
             //RedoCommands.Clear();
         }
 
-        public void ExecuteLayerClone(List<Layer> layers, int index)
+        public void ExecuteLayerClone(List<Layer> layers, int layerIndex)
         {
-            ICommand command = new LayerCloneCommand(layers, index);
+            ICommand command = new LayerCloneCommand(layers, layerIndex);
             command.Execute();
 
             UndoCommands.Push(command);
             RedoCommands.Clear();
         }
 
-        public void ExecuteLayerRaise(List<Layer> layers, int index)
+        public void ExecuteLayerRaise(List<Layer> layers, int layerIndex)
         {
-            ICommand command = new LayerRaiseCommand(layers, index);
+            ICommand command = new LayerRaiseCommand(layers, layerIndex);
             command.Execute();
 
             UndoCommands.Push(command);
             RedoCommands.Clear();
         }
 
-        public void ExecuteLayerLower(List<Layer> layers, int index)
+        public void ExecuteLayerLower(List<Layer> layers, int layerIndex)
         {
-            ICommand command = new LayerLowerCommand(layers, index);
+            ICommand command = new LayerLowerCommand(layers, layerIndex);
             command.Execute();
 
             UndoCommands.Push(command);

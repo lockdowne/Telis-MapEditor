@@ -15,75 +15,73 @@ namespace MapEditor.Core.PaintTools
     {
         private readonly MainRenderPresenter presenter;
 
-        private bool isMouseLeftPressed;
+        private Vector2? beginSelectionBox;
+        private Vector2? endSelectionBox;
 
-        private Vector2 previousMousePosition;
-        private Vector2 currentMousePosition;
+        private bool isMouseRightPressed;
 
-        private TileBrushCollection tileBrushes;
+      
 
         public ErasePaintTool(MainRenderPresenter parent)
         {
             presenter = parent;
-
-            tileBrushes = new TileBrushCollection();
         }
 
         public void OnMouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (presenter == null)
+                return;
+
+            if (e.Button == MouseButtons.Right)
             {
-                isMouseLeftPressed = true;
 
-                currentMousePosition = presenter.PixelsToCoordinate(presenter.InvertCameraMatrix(e.Location));
+                isMouseRightPressed = true;
 
-                tileBrushes.ClearBrushes();
+                beginSelectionBox = null;
+                endSelectionBox = null;
 
-                tileBrushes.AddTileBrush(new TileBrush()
-                {
-                    Brush = new int[,] {{-1}},
-                    Position = currentMousePosition,
-                });
+                presenter.BeginSelectionBox = null;
+                presenter.EndSelectionBox = null;
 
+                beginSelectionBox = presenter.SnapToGrid(new Vector2(MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).X, 0, presenter.MapWidth * presenter.TileWidth),
+                    MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).Y, 0, presenter.MapHeight * presenter.TileHeight)));
                 //presenter.Layers[presenter.LayerIndex].Rows[(int)MathHelper.Clamp(mousePosition.Y, 0, presenter.Layers.FirstOrDefault().MapHeight)].Columns[(int)MathHelper.Clamp(mousePosition.X, 0, presenter.Layers.FirstOrDefault().MapHeight)].TileID = -1;
-
+                presenter.BeginSelectionBox = beginSelectionBox;
             }
         }
 
         public void OnMouseMove(object sender, MouseEventArgs e)
         {
-            if (isMouseLeftPressed)
+            if (isMouseRightPressed)
             {
-                previousMousePosition = currentMousePosition;
-                currentMousePosition = presenter.PixelsToCoordinate(presenter.InvertCameraMatrix(e.Location));
+                endSelectionBox = presenter.SnapToGrid(new Vector2(MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).X, 0, presenter.MapWidth * presenter.TileWidth),
+                    MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).Y, 0, presenter.MapHeight * presenter.TileHeight)));
 
-                if (currentMousePosition != previousMousePosition)
-                {
-                    tileBrushes.AddTileBrush(new TileBrush()
-                    {
-                        Brush = new int[,] {{-1}},
-                        Position = currentMousePosition,
-                    });
-                }
-                //presenter.Layers[presenter.LayerIndex].Rows[(int)MathHelper.Clamp(mousePosition.Y, 0, presenter.Layers.FirstOrDefault().MapHeight)].Columns[(int)MathHelper.Clamp(mousePosition.X, 0, presenter.Layers.FirstOrDefault().MapHeight)].TileID = -1;
+                presenter.EndSelectionBox = endSelectionBox;
             }
+                //presenter.Layers[presenter.LayerIndex].Rows[(int)MathHelper.Clamp(mousePosition.Y, 0, presenter.Layers.FirstOrDefault().MapHeight)].Columns[(int)MathHelper.Clamp(mousePosition.X, 0, presenter.Layers.FirstOrDefault().MapHeight)].TileID = -1;
+            
         }
 
         public void OnMouseUp(object sender, MouseEventArgs e)
         {
-            if (isMouseLeftPressed)
+            if (isMouseRightPressed)
             {
-                isMouseLeftPressed = false;
+                isMouseRightPressed = false;
 
-                presenter.RemoveTiles(tileBrushes);
+                endSelectionBox = presenter.SnapToGrid(new Vector2(MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).X, 0, presenter.MapWidth * presenter.TileWidth),
+                    MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).Y, 0, presenter.MapHeight * presenter.TileHeight)));
 
-                tileBrushes.ClearBrushes();
+                presenter.EndSelectionBox = endSelectionBox;
+
+                presenter.RemoveTiles();
+                
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            //tileBrushes.Draw(spriteBatch, presenter.Tilesets[presenter.TilesetIndex]);
+           
         }
     }
 }

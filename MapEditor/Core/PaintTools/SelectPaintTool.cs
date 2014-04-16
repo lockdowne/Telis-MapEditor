@@ -25,19 +25,6 @@ namespace MapEditor.Core.PaintTools
 
         #region Properties
 
-        public Rectangle SelectionBox
-        {
-            get
-            {
-                if (beginSelectionBox == null || endSelectionBox == null)
-                    return Rectangle.Empty;
-
-                return new Rectangle((int)Math.Min(beginSelectionBox.Value.X, endSelectionBox.Value.X),
-                   (int)Math.Min(beginSelectionBox.Value.Y, endSelectionBox.Value.Y),
-                   (int)Math.Abs(beginSelectionBox.Value.X - endSelectionBox.Value.X),
-                   (int)Math.Abs(beginSelectionBox.Value.Y - endSelectionBox.Value.Y));
-            }
-        }
 
         #endregion
 
@@ -61,27 +48,16 @@ namespace MapEditor.Core.PaintTools
             {
                 isMouseRightPressed = true;
 
+                beginSelectionBox = null;
                 endSelectionBox = null;
 
-                int tileWidth = 0;
-                int tileHeight = 0;
-                int mapWidth = 0;
-                int mapHeight = 0;
+                presenter.BeginSelectionBox = null;
+                presenter.EndSelectionBox = null;
 
-                if (presenter.Tilesets.Count > 0)
-                {
-                    tileWidth = presenter.Tilesets.FirstOrDefault().TileWidth;
-                    tileHeight = presenter.Tilesets.FirstOrDefault().TileHeight;
-                }
+                beginSelectionBox = presenter.SnapToGrid(new Vector2(MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).X, 0, presenter.MapWidth * presenter.TileWidth),
+                    MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).Y, 0, presenter.MapHeight * presenter.TileHeight)));
 
-                if (presenter.Layers.Count > 0)
-                {
-                    mapWidth = presenter.Layers.FirstOrDefault().MapWidth;
-                    mapHeight = presenter.Layers.FirstOrDefault().MapHeight;
-                }                
-
-                beginSelectionBox = presenter.SnapToGrid(new Vector2(MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).X, 0, mapWidth * tileWidth),
-                    MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).Y, 0, mapHeight * tileHeight)));
+                presenter.BeginSelectionBox = beginSelectionBox;
             }
         }
 
@@ -92,25 +68,10 @@ namespace MapEditor.Core.PaintTools
 
             if (isMouseRightPressed)
             {
-                int tileWidth = 0;
-                int tileHeight = 0;
-                int mapWidth = 0;
-                int mapHeight = 0;
+                endSelectionBox = presenter.SnapToGrid(new Vector2(MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).X, 0, presenter.MapWidth * presenter.TileWidth),
+                    MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).Y, 0, presenter.MapHeight * presenter.TileHeight)));
 
-                if (presenter.Tilesets.Count > 0)
-                {
-                    tileWidth = presenter.Tilesets.FirstOrDefault().TileWidth;
-                    tileHeight = presenter.Tilesets.FirstOrDefault().TileHeight;
-                }
-
-                if (presenter.Layers.Count > 0)
-                {
-                    mapWidth = presenter.Layers.FirstOrDefault().MapWidth;
-                    mapHeight = presenter.Layers.FirstOrDefault().MapHeight;
-                }    
-
-                endSelectionBox = presenter.SnapToGrid(new Vector2(MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).X, 0, mapWidth * tileWidth),
-                    MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).Y, 0, mapHeight * tileHeight)));
+                presenter.EndSelectionBox = endSelectionBox;
             }
         }
 
@@ -122,42 +83,19 @@ namespace MapEditor.Core.PaintTools
 
             if (isMouseRightPressed)
             {
-                isMouseRightPressed = false;
+                isMouseRightPressed = false;               
 
-                int tileWidth = 0;
-                int tileHeight = 0;
-                int mapWidth = 0;
-                int mapHeight = 0;
+                endSelectionBox = presenter.SnapToGrid(new Vector2(MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).X, 0, presenter.MapWidth * presenter.TileWidth),
+                    MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).Y, 0, presenter.MapHeight * presenter.TileHeight)));
 
-                if (presenter.Tilesets.Count > 0)
-                {
-                    tileWidth = presenter.Tilesets.FirstOrDefault().TileWidth;
-                    tileHeight = presenter.Tilesets.FirstOrDefault().TileHeight;
-                }
-
-                if (presenter.Layers.Count > 0)
-                {
-                    mapWidth = presenter.Layers.FirstOrDefault().MapWidth;
-                    mapHeight = presenter.Layers.FirstOrDefault().MapHeight;
-                }    
-
-                endSelectionBox = presenter.SnapToGrid(new Vector2(MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).X, 0, mapWidth * tileWidth),
-                    MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).Y, 0, mapHeight * tileHeight)));
-
-                presenter.BeginSelectionBox = beginSelectionBox;
+                //presenter.BeginSelectionBox = beginSelectionBox;
                 presenter.EndSelectionBox = endSelectionBox;
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (SelectionBox == Rectangle.Empty)
-                return;
-
-            if (spriteBatch == null)
-                return;
-
-            DrawingTool.DrawRectangle(spriteBatch, presenter.Pixel, SelectionBox, Color.White, 2);
+            
         }
 
         #endregion

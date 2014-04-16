@@ -27,6 +27,9 @@ namespace MapEditor.Models
 
         public void GenerateMinimap(GraphicsDevice graphicsDevice, List<Layer> layers, List<Tileset> tilesets)
         {
+            if (layers.Count <= 0)
+                return;
+
             textures.Clear();
 
             tilesets.ForEach(tileset =>

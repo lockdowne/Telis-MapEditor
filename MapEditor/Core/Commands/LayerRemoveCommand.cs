@@ -29,6 +29,8 @@ namespace MapEditor.Core.Commands
             this.layers = layers;
 
             this.layer = layers[layerIndex];
+
+            this.layerIndex = layerIndex;
         }
 
         #endregion
