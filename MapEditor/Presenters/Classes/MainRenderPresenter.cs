@@ -21,7 +21,7 @@ namespace MapEditor.Presenters
 
         private readonly IXnaRenderView view;
 
-        private Camera camera;
+        public Camera Camera { get; set; }
 
         private Vector2 cameraPosition;
         private Vector2 currentMousePosition;
@@ -58,6 +58,9 @@ namespace MapEditor.Presenters
 
         public Vector2? BeginSelectionBox { get; set; }
         public Vector2? EndSelectionBox { get; set; }        
+
+        //TEST
+        public event Action<Camera> CameraChanged;
 
   
 
@@ -138,10 +141,12 @@ namespace MapEditor.Presenters
             Layers = new List<Layer>();
 
             // Move to initialize method
-            camera = new Camera()
+            Camera = new Camera()
             {
                 Position = Vector2.Zero,
                 Zoom = 1f,
+                ViewportWidth = view.GetGraphicsDevice.Viewport.Width,
+                ViewportHeight = view.GetGraphicsDevice.Viewport.Height,
             };
 
             Clipboard = new List<int[,]>();
@@ -175,14 +180,14 @@ namespace MapEditor.Presenters
         {
             // Position => wheel up => zoom in
             // Negative => wheel down => zoom out
-            float zoom = camera.Zoom;
+            float zoom = Camera.Zoom;
 
             if (e.Delta > 0)
                 zoom += 0.1f;
             else if (e.Delta < 0)
                 zoom -= 0.1f;
 
-            camera.Zoom = MathHelper.Clamp(zoom, 0.5f, 2f);
+            Camera.Zoom = MathHelper.Clamp(zoom, 0.5f, 2f);
         }
 
         void view_OnXnaMove(object sender, MouseEventArgs e)
@@ -213,6 +218,9 @@ namespace MapEditor.Presenters
                 //Console.WriteLine(cameraPosition.ToString());
 
                 ScrollCamera(cameraPosition);
+
+                if (CameraChanged != null)
+                    CameraChanged(Camera);
             }
         }
 
@@ -246,6 +254,8 @@ namespace MapEditor.Presenters
                 case MouseButtons.Right:
                     if(currentPaintTool != PaintTool.Erase)
                         SetPaintTool(PaintTool.Select);
+
+                    
                     break;             
                 case MouseButtons.Middle:
                     isMouseMiddlePressed = true;
@@ -263,7 +273,7 @@ namespace MapEditor.Presenters
         {
             view.GetGraphicsDevice.Clear(Color.DimGray);
 
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.CameraTransformation);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, Camera.CameraTransformation);
 
             if (TileWidth <= 0 || TileHeight <= 0)
                 return;
@@ -349,7 +359,7 @@ namespace MapEditor.Presenters
             /*camera.Position = new Vector2(MathHelper.Clamp((int)(position.X), 0, (MapWidth * TileWidth) - view.GetGraphicsDevice.Viewport.Width),
               (MathHelper.Clamp((int)(position.Y), 0, (MapHeight * TileHeight) - view.GetGraphicsDevice.Viewport.Height)));*/
 
-            camera.Position = new Vector2(MathHelper.Clamp((int)(position.X), 0, (MapWidth * TileWidth)),
+            Camera.Position = new Vector2(MathHelper.Clamp((int)(position.X), 0, (MapWidth * TileWidth)),
              (MathHelper.Clamp((int)(position.Y), 0, (MapHeight * TileHeight))));
 
         }
@@ -702,7 +712,7 @@ namespace MapEditor.Presenters
         /// <returns></returns>
         public Vector2 InvertCameraMatrix(System.Drawing.Point point)
         {
-            return Vector2.Transform(new Vector2(point.X, point.Y), Matrix.Invert(camera.CameraTransformation));
+            return Vector2.Transform(new Vector2(point.X, point.Y), Matrix.Invert(Camera.CameraTransformation));
         }
 
         #endregion

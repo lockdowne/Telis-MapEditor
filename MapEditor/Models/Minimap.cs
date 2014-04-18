@@ -16,13 +16,25 @@ namespace MapEditor.Models
         private List<Texture2D> textures = new List<Texture2D>();
 
         private Vector2 scale;
+
+        public Camera Camera { get; set; }
        
-        public void Draw(SpriteBatch spriteBatch)
-        {
+        public void Draw(SpriteBatch spriteBatch, Texture2D pixel)
+        {            
             textures.ForEach(texture =>
-                {
-                    spriteBatch.Draw(texture, Vector2.Zero, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 1f);
-                });
+            {
+                spriteBatch.Draw(texture, Vector2.Zero, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 1f);
+            });
+
+            // Draw view rectangle
+            if (Camera != null)
+                DrawingTool.DrawRectangle(spriteBatch, pixel,
+                    new Rectangle((int)MathHelper.Clamp(Camera.Position.X / MINIMAP_WIDTH * scale.X, 0, MINIMAP_WIDTH),
+                        (int)MathHelper.Clamp(Camera.Position.Y  / MINIMAP_HEIGHT * scale.Y, 0, MINIMAP_HEIGHT),
+                        (int)(MINIMAP_WIDTH / scale.X),
+                        (int)(MINIMAP_HEIGHT / scale.Y)),
+                        Color.White,
+                        1);
         }
 
         public void GenerateMinimap(GraphicsDevice graphicsDevice, List<Layer> layers, List<Tileset> tilesets)

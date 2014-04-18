@@ -12,6 +12,7 @@ using MapEditor.Models;
 using MapEditor.UI;
 
 // TODO: Hook up selected tab changed event for main view
+// TODO: Known bug => temp tile brushes are visible when attempting to draw brushes.. right clicking.. then reenabling the draw paint option
 namespace MapEditor.Presenters
 {
     /// <summary>
@@ -80,6 +81,8 @@ namespace MapEditor.Presenters
             SubscribeTileResizeViewEvents();
             SubscribeAddTilesetViewEvents();
             SubscribeMinimapPresenterEvents();
+
+       
         }
 
 
@@ -306,7 +309,12 @@ namespace MapEditor.Presenters
                     UpdateLayerView();
                     minimapPresenter.GenerateMinimap(CurrentMainPresenter.Layers, CurrentMainPresenter.Tilesets);
                     UpdateTilesetView();
-                };           
+                };
+
+           
+
+                
+           
         }
 
         private void SubscribeLayerViewEvents()
@@ -568,7 +576,11 @@ namespace MapEditor.Presenters
             if (minimapPresenter == null)
                 return;
 
-            
+            minimapPresenter.MinimapChanged += (camera) =>
+                {
+                    if (CurrentMainPresenter != null)
+                        CurrentMainPresenter.Camera = minimapPresenter.MinimapCamera;
+                };
         }
 
         #endregion             
@@ -599,6 +611,10 @@ namespace MapEditor.Presenters
             presenter.MapChanged += () =>
                 {                    
                     minimapPresenter.GenerateMinimap(CurrentMainPresenter.Layers, CurrentMainPresenter.Tilesets);
+                };
+            presenter.CameraChanged += (Camera) =>
+                {
+                    minimapPresenter.MinimapCamera = Camera;
                 };
            // presenter.AddLayer(mapWidth, mapHeight);
             //presenter.SetMapDimesions(mapWidth, mapHeight);

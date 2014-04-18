@@ -16,7 +16,9 @@ namespace MapEditor.Presenters
         List<Layer> Layers { get; set; }
 
         event Action MapChanged;
+        event Action<Camera> CameraChanged;
 
+        Camera Camera { get; set; }
         int[,] TileBrushValues { get; set; }
 
         int LayerIndex {  get; set; }

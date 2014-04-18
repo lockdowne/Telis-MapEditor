@@ -9,6 +9,10 @@ namespace MapEditor.Presenters
 {
     public interface IMinimapPresenter
     {
+        Camera MinimapCamera { get; set; }
+
+        event Action<Camera> MinimapChanged;
+
         void GenerateMinimap(List<Layer> layers, List<Tileset> tilesets);
 
         void ShowForm(IMainView parent);

@@ -26,9 +26,9 @@ namespace MapEditor.UI
         
         public event Action<SpriteBatch> OnDraw;
         public event Action OnInitialize;
-        public event EventHandler OnXnaDown;
-        public event EventHandler OnXnaUp;
-        public event EventHandler OnXnaMove;
+        public event MouseEventHandler OnXnaDown;
+        public event MouseEventHandler OnXnaUp;
+        public event MouseEventHandler OnXnaMove;
 
         public GraphicsDevice GraphicsDevice
         {
@@ -63,7 +63,20 @@ namespace MapEditor.UI
 
             xnaRenderView1.OnXnaDown += (sender, e) =>
                 {
+                    if (OnXnaDown != null)
+                        OnXnaDown(sender, e);
+                };
 
+            xnaRenderView1.OnXnaMove += (sender, e) =>
+                {
+                    if (OnXnaMove != null)
+                        OnXnaMove(sender, e);
+                };
+
+            xnaRenderView1.OnXnaUp += (sender, e) =>
+                {
+                    if (OnXnaUp != null)
+                        OnXnaUp(sender, e);
                 };
 
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;

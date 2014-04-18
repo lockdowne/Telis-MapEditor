@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -11,9 +12,9 @@ namespace MapEditor.UI
     {
         event Action<SpriteBatch> OnDraw;
         event Action OnInitialize;
-        event EventHandler OnXnaDown;
-        event EventHandler OnXnaUp;
-        event EventHandler OnXnaMove;
+        event MouseEventHandler OnXnaDown;
+        event MouseEventHandler OnXnaUp;
+        event MouseEventHandler OnXnaMove;
 
         GraphicsDevice GraphicsDevice { get; }
 
