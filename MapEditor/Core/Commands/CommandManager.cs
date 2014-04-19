@@ -88,6 +88,15 @@ namespace MapEditor.Core.Commands
             RedoCommands.Clear();
         }
 
+        public void ExecuteEditFillCommand(TileBrush tileBrush, Layer layer, int target)
+        {
+            ICommand command = new EditFillCommand(tileBrush, layer, target);
+            command.Execute();
+
+            UndoCommands.Push(command);
+            RedoCommands.Clear();
+        }
+
         public void ExecuteAddTilesetCommand()
         {
             //ICommand command = new MapAddTilesetCommand(

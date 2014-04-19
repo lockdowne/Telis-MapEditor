@@ -73,15 +73,19 @@ namespace MapEditor.Presenters
             {
                 currentMousePosition = new Vector2(e.Location.X, e.Location.Y);
 
-                minimap.Camera.Position = new Vector2(MathHelper.Clamp((int)(currentMousePosition.X), 0, MINIMAP_WIDTH),
-                    (MathHelper.Clamp((int)(currentMousePosition.Y), 0, MINIMAP_HEIGHT)));                
-
-                minimap.IsScrolling = true;
-             
-                MinimapChanged(new Camera()
+                if (minimap.Camera == null)
                 {
-                    Position = minimap.Camera.Position / minimap.CameraScale,
-                });
+
+                    minimap.Camera.Position = new Vector2(MathHelper.Clamp((int)(currentMousePosition.X), 0, MINIMAP_WIDTH),
+                        (MathHelper.Clamp((int)(currentMousePosition.Y), 0, MINIMAP_HEIGHT)));
+
+                    minimap.IsScrolling = true;
+
+                    MinimapChanged(new Camera()
+                    {
+                        Position = minimap.Camera.Position / minimap.CameraScale,
+                    });
+                }
             }
         }
 

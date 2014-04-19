@@ -166,13 +166,19 @@ namespace MapEditor.Presenters
             mainView.EditUndo += (sender, e) =>
             {
                 if (CurrentMainPresenter != null)
+                {
                     CurrentMainPresenter.Undo();
+                    UpdateLayerView();
+                }
             };
 
             mainView.EditRedo += (sender, e) =>
             {
                 if (CurrentMainPresenter != null)
+                {
                     CurrentMainPresenter.Redo();
+                    UpdateLayerView();
+                }
             };
 
             mainView.ViewShowGrid += (sender, e) =>

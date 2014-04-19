@@ -170,9 +170,6 @@ namespace MapEditor.Presenters
                 CameraChanged(new Camera() { Position = Camera.Position, Zoom = Camera.Zoom });
         }
 
-      
-       
-
         #endregion
         
         #region Events
@@ -286,20 +283,20 @@ namespace MapEditor.Presenters
                 return;
 
             // Draw only viewport
-            /*
-            int left = (int)Math.Floor(camera.Position.X / TileWidth);
-            int right = TileWidth + left + spriteBatch.GraphicsDevice.Viewport.Width / TileWidth;
+            
+            int left = (int)Math.Floor(Camera.Position.X / TileWidth);
+            int right = (int)(TileWidth + left + spriteBatch.GraphicsDevice.Viewport.Width / TileWidth / Camera.Zoom);
             right = Math.Min(right, MapWidth);
 
-            int top = (int)Math.Floor(camera.Position.Y / TileHeight);
+            int top = (int)Math.Floor(Camera.Position.Y / TileHeight);
             int bottom = TileHeight + top + spriteBatch.GraphicsDevice.Viewport.Height / TileHeight;
-            bottom = Math.Min(bottom, MapHeight);*/
+            bottom = Math.Min(bottom, MapHeight);
 
-            int top = 0;
+           /* int top = 0;
             int left = 0;
 
             int bottom = MapHeight;
-            int right = MapWidth;
+            int right = MapWidth;*/
 
             for (int y = top; y < bottom; y++)
             {
@@ -474,6 +471,17 @@ namespace MapEditor.Presenters
                     SetPaintTool(PaintTool.Draw);
 
                     ClearSelectionBox();                                       
+                }
+            }
+        }
+
+        public void Fill(TileBrush tileBrush, int target)
+        {
+            if (currentPaintTool == PaintTool.Fill)
+            {
+                if (TileBrushValues != null)
+                {
+                    commandManager.ExecuteEditFillCommand(tileBrush, Layers[LayerIndex], target);
                 }
             }
         }

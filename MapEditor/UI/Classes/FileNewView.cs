@@ -150,7 +150,7 @@ namespace MapEditor.UI
             this.buttonBrowse.TabIndex = 2;
             this.buttonBrowse.Text = "Browse";
             this.buttonBrowse.UseVisualStyleBackColor = true;
-            this.buttonBrowse.Click += new System.EventHandler(buttonBrowse_Click);
+            this.buttonBrowse.Click += new System.EventHandler(this.buttonBrowse_Click);
             // 
             // textBoxTileset
             // 
@@ -212,7 +212,7 @@ namespace MapEditor.UI
             // 
             this.numericUpDownExMapHeight.Location = new System.Drawing.Point(61, 46);
             this.numericUpDownExMapHeight.Maximum = new decimal(new int[] {
-            999,
+            500,
             0,
             0,
             0});
@@ -230,13 +230,13 @@ namespace MapEditor.UI
             0,
             0,
             0});
-            this.numericUpDownExMapHeight.ValueChanged += new EventHandler(numericUpDownExMapHeight_ValueChanged);
+            this.numericUpDownExMapHeight.ValueChanged += new System.EventHandler(this.numericUpDownExMapHeight_ValueChanged);
             // 
             // numericUpDownExMapWidth
             // 
             this.numericUpDownExMapWidth.Location = new System.Drawing.Point(61, 20);
             this.numericUpDownExMapWidth.Maximum = new decimal(new int[] {
-            999,
+            500,
             0,
             0,
             0});
@@ -254,7 +254,7 @@ namespace MapEditor.UI
             0,
             0,
             0});
-            this.numericUpDownExMapWidth.ValueChanged += new EventHandler(numericUpDownExMapWidth_ValueChanged);
+            this.numericUpDownExMapWidth.ValueChanged += new System.EventHandler(this.numericUpDownExMapWidth_ValueChanged);
             // 
             // label4
             // 
@@ -309,7 +309,7 @@ namespace MapEditor.UI
             0,
             0,
             0});
-            this.numericUpDownExTileHeight.ValueChanged += new EventHandler(numericUpDownExTileHeight_ValueChanged);
+            this.numericUpDownExTileHeight.ValueChanged += new System.EventHandler(this.numericUpDownExTileHeight_ValueChanged);
             // 
             // label6
             // 
@@ -342,7 +342,7 @@ namespace MapEditor.UI
             0,
             0,
             0});
-            this.numericUpDownExTileWidth.ValueChanged += new EventHandler(numericUpDownExTileWidth_ValueChanged);
+            this.numericUpDownExTileWidth.ValueChanged += new System.EventHandler(this.numericUpDownExTileWidth_ValueChanged);
             // 
             // label5
             // 
@@ -361,7 +361,7 @@ namespace MapEditor.UI
             this.buttonCancel.TabIndex = 8;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
-            this.buttonCancel.Click += new EventHandler(buttonCancel_Click);
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
             // buttonOK
             // 
@@ -371,7 +371,7 @@ namespace MapEditor.UI
             this.buttonOK.TabIndex = 7;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
-            this.buttonOK.Click += new EventHandler(buttonOK_Click);
+            this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
             // FileNewView
             // 

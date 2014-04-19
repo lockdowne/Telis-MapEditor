@@ -105,7 +105,7 @@ namespace MapEditor.UI
             // 
             this.numericUpDownEx2.Location = new System.Drawing.Point(170, 21);
             this.numericUpDownEx2.Maximum = new decimal(new int[] {
-            999,
+            500,
             0,
             0,
             0});
@@ -128,7 +128,7 @@ namespace MapEditor.UI
             // 
             this.numericUpDownEx1.Location = new System.Drawing.Point(52, 21);
             this.numericUpDownEx1.Maximum = new decimal(new int[] {
-            999,
+            500,
             0,
             0,
             0});

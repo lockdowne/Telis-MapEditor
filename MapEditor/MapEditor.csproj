@@ -54,6 +54,7 @@
     <Compile Include="Core\Commands\EditCopyCommand.cs" />
     <Compile Include="Core\Commands\EditCutCommand.cs" />
     <Compile Include="Core\Commands\EditDrawCommand.cs" />
+    <Compile Include="Core\Commands\EditFillCommand.cs" />
     <Compile Include="Core\Commands\EditRemoveCommand.cs" />
     <Compile Include="Core\Commands\ICommand.cs" />
     <Compile Include="Core\Commands\LayerAddCommand.cs" />
