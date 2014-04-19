@@ -10,12 +10,20 @@ namespace MapEditor.Models
 {
     public class Minimap
     {
-        private const int MINIMAP_WIDTH = 284;
-        private const int MINIMAP_HEIGHT = 261;
+        public const int MINIMAP_WIDTH = 284;
+        public const int MINIMAP_HEIGHT = 261;
+
+        public bool IsScrolling { get; set; }
 
         private List<Texture2D> textures = new List<Texture2D>();
 
         private Vector2 scale;
+        private Vector2 mapPixelsDimensions;
+
+        public Vector2 CameraScale
+        {
+            get { return new Vector2(MINIMAP_WIDTH, MINIMAP_HEIGHT) / mapPixelsDimensions; }
+        }
 
         public Camera Camera { get; set; }
        
@@ -28,13 +36,24 @@ namespace MapEditor.Models
 
             // Draw view rectangle
             if (Camera != null)
-                DrawingTool.DrawRectangle(spriteBatch, pixel,
-                    new Rectangle((int)MathHelper.Clamp(Camera.Position.X / MINIMAP_WIDTH * scale.X, 0, MINIMAP_WIDTH),
-                        (int)MathHelper.Clamp(Camera.Position.Y  / MINIMAP_HEIGHT * scale.Y, 0, MINIMAP_HEIGHT),
-                        (int)(MINIMAP_WIDTH / scale.X),
-                        (int)(MINIMAP_HEIGHT / scale.Y)),
-                        Color.White,
-                        1);
+            {
+                if (!IsScrolling)
+                    DrawingTool.DrawRectangle(spriteBatch, pixel,
+                        new Rectangle((int)MathHelper.Clamp(Camera.Position.X * CameraScale.X, 0, MINIMAP_WIDTH),
+                            (int)MathHelper.Clamp(Camera.Position.Y * CameraScale.Y, 0, MINIMAP_HEIGHT),
+                            (int)(CameraScale.X * Camera.ViewportWidth / Camera.Zoom),
+                            (int)(CameraScale.Y * Camera.ViewportHeight / Camera.Zoom)),
+                            Color.White,
+                            1);
+                else
+                    DrawingTool.DrawRectangle(spriteBatch, pixel,
+                       new Rectangle((int)MathHelper.Clamp(Camera.Position.X, 0, MINIMAP_WIDTH),
+                           (int)MathHelper.Clamp(Camera.Position.Y, 0, MINIMAP_HEIGHT),
+                           (int)(CameraScale.X * Camera.ViewportWidth / Camera.Zoom),
+                           (int)(CameraScale.Y * Camera.ViewportHeight / Camera.Zoom)),
+                           Color.White,
+                           1);
+            }
         }
 
         public void GenerateMinimap(GraphicsDevice graphicsDevice, List<Layer> layers, List<Tileset> tilesets)
@@ -71,6 +90,8 @@ namespace MapEditor.Models
                             textures.Add(texture);
                         });
                 });
+
+            mapPixelsDimensions = new Vector2(layers.First().MapWidth * tilesets.First().TileWidth, layers.First().MapHeight * tilesets.First().TileHeight);
 
             scale = new Vector2(MINIMAP_WIDTH, MINIMAP_HEIGHT) / new Vector2(textures.First().Width, textures.First().Height);
         }

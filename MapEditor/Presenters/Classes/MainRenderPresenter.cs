@@ -145,8 +145,6 @@ namespace MapEditor.Presenters
             {
                 Position = Vector2.Zero,
                 Zoom = 1f,
-                ViewportWidth = view.GetGraphicsDevice.Viewport.Width,
-                ViewportHeight = view.GetGraphicsDevice.Viewport.Height,
             };
 
             Clipboard = new List<int[,]>();
@@ -164,9 +162,12 @@ namespace MapEditor.Presenters
 
             commandManager = new CommandManager();
 
-            paintTools = new IPaintTool[] { new DrawPaintTool(this), new ErasePaintTool(this), new SelectPaintTool(this) };
+            paintTools = new IPaintTool[] { new DrawPaintTool(this), new ErasePaintTool(this), new SelectPaintTool(this), new FillPaintTool(this) };
 
             cameraPosition = Vector2.Zero;
+
+            if (CameraChanged != null)
+                CameraChanged(new Camera() { Position = Camera.Position, Zoom = Camera.Zoom });
         }
 
       
@@ -188,6 +189,9 @@ namespace MapEditor.Presenters
                 zoom -= 0.1f;
 
             Camera.Zoom = MathHelper.Clamp(zoom, 0.5f, 2f);
+
+            if (CameraChanged != null)
+                CameraChanged(Camera);
         }
 
         void view_OnXnaMove(object sender, MouseEventArgs e)
@@ -260,6 +264,9 @@ namespace MapEditor.Presenters
                 case MouseButtons.Middle:
                     isMouseMiddlePressed = true;
                     previousMousePosition = InvertCameraMatrix(e.Location);
+
+                    if (CameraChanged != null)
+                        CameraChanged(Camera);
                     break;
             }            
         }

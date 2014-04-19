@@ -44,6 +44,12 @@ namespace MapEditor.Presenters
             set { minimap.Camera = value; }
         }
 
+        public bool IsScrolling
+        {
+            get { return minimap.IsScrolling; }
+            set { minimap.IsScrolling = value; }
+        }
+
         #endregion
 
         public MinimapPresenter(IMinimapView view)
@@ -67,22 +73,15 @@ namespace MapEditor.Presenters
             {
                 currentMousePosition = new Vector2(e.Location.X, e.Location.Y);
 
-                cameraPosition = currentMousePosition;
+                minimap.Camera.Position = new Vector2(MathHelper.Clamp((int)(currentMousePosition.X), 0, MINIMAP_WIDTH),
+                    (MathHelper.Clamp((int)(currentMousePosition.Y), 0, MINIMAP_HEIGHT)));                
 
-                if (cameraPosition.X < 0)
-                    cameraPosition.X = 0;
-                if (cameraPosition.Y < 0)
-                    cameraPosition.Y = 0;
-                if (cameraPosition.X >= MINIMAP_WIDTH)
-                    cameraPosition.X = MINIMAP_WIDTH;
-                if (cameraPosition.Y >= MINIMAP_HEIGHT)
-                    cameraPosition.Y = MINIMAP_HEIGHT;
-
-                minimap.Camera.Position = new Vector2(MathHelper.Clamp((int)(cameraPosition.X), 0, MINIMAP_WIDTH),
-                    (MathHelper.Clamp((int)(cameraPosition.Y), 0, MINIMAP_HEIGHT)));
-
-                if (MinimapChanged != null)
-                    MinimapChanged(minimap.Camera);
+                minimap.IsScrolling = true;
+             
+                MinimapChanged(new Camera()
+                {
+                    Position = minimap.Camera.Position / minimap.CameraScale,
+                });
             }
         }
 

@@ -44,7 +44,7 @@ namespace MapEditor.Core.PaintTools
             if (presenter == null)
                 return;
 
-            if (e.Button == MouseButtons.Right)
+            if (e.Button == MouseButtons.Right || e.Button == MouseButtons.Left)
             {
                 isMouseRightPressed = true;
 

@@ -54,6 +54,9 @@ namespace MapEditor.UI
 
         IXnaRenderView GetCurrentView { get; }
 
+        int ControlWidth { get; }
+        int ControlHeight { get; }
+
         void AddView(string fileName, IXnaRenderView renderer);        
     }
 }

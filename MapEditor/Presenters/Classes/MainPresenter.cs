@@ -159,7 +159,8 @@ namespace MapEditor.Presenters
 
             mainView.EditFill += (sender, e) =>
             {
-                // TODO: flood fill algorithm
+                if (CurrentMainPresenter != null)
+                    CurrentMainPresenter.SetPaintTool(PaintTool.Fill);
             };
 
             mainView.EditUndo += (sender, e) =>
@@ -579,7 +580,7 @@ namespace MapEditor.Presenters
             minimapPresenter.MinimapChanged += (camera) =>
                 {
                     if (CurrentMainPresenter != null)
-                        CurrentMainPresenter.Camera = minimapPresenter.MinimapCamera;
+                        CurrentMainPresenter.Camera.Position = camera.Position;
                 };
         }
 
@@ -612,13 +613,18 @@ namespace MapEditor.Presenters
                 {                    
                     minimapPresenter.GenerateMinimap(CurrentMainPresenter.Layers, CurrentMainPresenter.Tilesets);
                 };
-            presenter.CameraChanged += (Camera) =>
+            presenter.CameraChanged += (camera) =>
                 {
-                    minimapPresenter.MinimapCamera = Camera;
+                    minimapPresenter.MinimapCamera = new Camera()
+                    {
+                        Position = camera.Position,
+                        ViewportHeight = mainView.ControlHeight,
+                        ViewportWidth = mainView.ControlWidth,
+                        Zoom = camera.Zoom
+                    };
+
+                    minimapPresenter.IsScrolling = false;
                 };
-           // presenter.AddLayer(mapWidth, mapHeight);
-            //presenter.SetMapDimesions(mapWidth, mapHeight);
-            //presenter.SetTileDimensions(tileWidth, tileHeight);
 
             MainPresenters.Add(name, presenter);
         }

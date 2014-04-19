@@ -16,6 +16,7 @@ namespace MapEditor.Core.PaintTools
         Draw = 0,
         Erase = 1,
         Select = 2,
+        Fill = 3,
     }
 
 

@@ -13,6 +13,8 @@ namespace MapEditor.Presenters
 
         event Action<Camera> MinimapChanged;
 
+        bool IsScrolling { get; set; }
+
         void GenerateMinimap(List<Layer> layers, List<Tileset> tilesets);
 
         void ShowForm(IMainView parent);
