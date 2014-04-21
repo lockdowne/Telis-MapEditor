@@ -15,7 +15,7 @@ namespace MapEditor.UI
         event EventHandler MoveLayerUp;
         event EventHandler RemoveLayerItem;
         event EventHandler AddLayerItem;
-        event EventHandler LayerItemChecked;
+        event ItemCheckEventHandler LayerItemChecked;
         event Action<int> LayerIndexChanged;
         event EventHandler DuplicateLayer;
 

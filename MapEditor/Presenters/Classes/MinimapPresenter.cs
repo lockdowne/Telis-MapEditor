@@ -73,7 +73,7 @@ namespace MapEditor.Presenters
             {
                 currentMousePosition = new Vector2(e.Location.X, e.Location.Y);
 
-                if (minimap.Camera == null)
+                if (minimap.Camera != null)
                 {
 
                     minimap.Camera.Position = new Vector2(MathHelper.Clamp((int)(currentMousePosition.X), 0, MINIMAP_WIDTH),

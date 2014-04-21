@@ -43,7 +43,29 @@ namespace MapEditor.Core.Controls
 
         #region Properties
 
-        
+        /// <summary>
+        /// The DesignMode property does not correctly tell you if
+        /// you are in design mode.  IsDesignerHosted is a corrected
+        /// version of that property.
+        /// (see https://connect.microsoft.com/VisualStudio/feedback/details/553305
+        /// and http://decav.com/blogs/andre/archive/2007/04/18/1078.aspx )
+        /// </summary>
+        public bool IsDesignerHosted
+        {
+            get
+            {
+                Control ctrl = this;
+
+                while (ctrl != null)
+                {
+                    if ((ctrl.Site != null) && ctrl.Site.DesignMode)
+                        return true;
+                    ctrl = ctrl.Parent;
+                }
+                return false;
+            }
+        }
+
         /// <summary>
         /// Gets a GraphicsDevice that can be used to draw onto this control.
         /// </summary>
@@ -77,7 +99,7 @@ namespace MapEditor.Core.Controls
         protected override void OnCreateControl()
         {
             // Don't initialize the graphics device if we are running in the designer.
-            if (!DesignMode)
+            if (!IsDesignerHosted)
             {
                 graphicsDeviceService = GraphicsDeviceService.AddRef(Handle,
                                                                      ClientSize.Width,

@@ -10,38 +10,53 @@ namespace MapEditor.Models
     {
         #region Properties
 
-        public List<Cell> Columns = new List<Cell>();
+        public List<Tile> Columns = new List<Tile>();
 
         #endregion
     }
    
+    /// <summary>
+    /// Represents a matrix of tiles
+    /// </summary>
     public class Layer
     {
         #region Properties
 
-        // Matrix
+        /// <summary>
+        /// Gets or sets layer matrix
+        /// </summary>
         public List<Row> Rows = new List<Row>();
 
+        /// <summary>
+        /// Gets or sets layer name
+        /// </summary>
         public string LayerName { get; set; }
         
-        // Layer width in tiles
-        public int MapWidth { get; private set; }
-        // Layer height in tiles
-        public int MapHeight { get; private set; }
+        /// <summary>
+        /// Gets layer width in tiles
+        /// </summary>
+        public int LayerWidth { get; private set; }
 
-        // Visibility of layer
+        /// <summary>
+        /// Gets layer height in tiles
+        /// </summary>
+        public int LayerHeight { get; private set; }
+
+        /// <summary>
+        /// Gets or sets layer visibility
+        /// </summary>
         public bool IsVisible { get; set; }
 
         #endregion
 
         #region Initialize
 
-        public Layer(string layerName, int width, int height)
+        public Layer(string layerName, int layerWidth, int layerHeight)
         {
             LayerName = layerName;
 
-            MapWidth = width;
-            MapHeight = height;
+            LayerWidth = layerWidth;
+            LayerHeight = layerHeight;
 
             IsVisible = true;
 
@@ -53,13 +68,13 @@ namespace MapEditor.Models
         /// </summary>
         private void Initialize()
         {
-            for (int y = 0; y < MapHeight; y++)
+            for (int y = 0; y < LayerHeight; y++)
             {
                 Row row = new Row();
 
-                for (int x = 0; x < MapWidth; x++)
+                for (int x = 0; x < LayerWidth; x++)
                 {
-                    row.Columns.Add(new Cell()
+                    row.Columns.Add(new Tile()
                     {
                         TileID = -1,
                     });

@@ -289,7 +289,7 @@ namespace MapEditor.Presenters
             right = Math.Min(right, MapWidth);
 
             int top = (int)Math.Floor(Camera.Position.Y / TileHeight);
-            int bottom = TileHeight + top + spriteBatch.GraphicsDevice.Viewport.Height / TileHeight;
+            int bottom = (int)(TileHeight + top + spriteBatch.GraphicsDevice.Viewport.Height / TileHeight / Camera.Zoom);
             bottom = Math.Min(bottom, MapHeight);
 
            /* int top = 0;
@@ -327,11 +327,12 @@ namespace MapEditor.Presenters
                                 });
                         });
 
-                    /* Draw grid
-                    DrawingTool.DrawRectangle(spriteBatch, pixel, new Rectangle((x * 32),
+                    /*// Draw grid
+                    DrawingTool.DrawRectangle(spriteBatch, Pixel, new Rectangle((x * 32),
                                                         (y * 32),
                                                         32,
-                                                        32), Color.White, 1);*/
+                                                        32), Color.White, 1);
+                     * */
                     
                 }
             }

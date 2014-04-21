@@ -45,13 +45,13 @@ namespace MapEditor.Core.Commands
 
             currentLayers.ForEach(layer =>
                 {
-                    Layer newLayer = new Layer(layer.LayerName, layer.MapWidth, layer.MapHeight);
+                    Layer newLayer = new Layer(layer.LayerName, layer.LayerWidth, layer.LayerHeight);
 
-                    for (int y = 0; y < layer.MapHeight; y++)
+                    for (int y = 0; y < layer.LayerHeight; y++)
                     {
-                        for (int x = 0; x < layer.MapWidth; x++)
+                        for (int x = 0; x < layer.LayerWidth; x++)
                         {
-                            if((offsetY + y) < newLayer.MapHeight && (offsetX + x) < newLayer.MapWidth)
+                            if((offsetY + y) < newLayer.LayerHeight && (offsetX + x) < newLayer.LayerWidth)
                                 newLayer.Rows[offsetY + y].Columns[offsetX + x].TileID = layer.Rows[y].Columns[x].TileID;
                         }
                     }

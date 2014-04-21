@@ -19,12 +19,11 @@ namespace MapEditor.Core.PaintTools
         Fill = 3,
     }
 
-
     public interface IPaintTool
     {
-        void OnMouseDown(object sender, MouseEventArgs e);
-        void OnMouseMove(object sender, MouseEventArgs e);
-        void OnMouseUp(object sender, MouseEventArgs e);
+        void MouseDown(object sender, MouseEventArgs e);
+        void MouseMove(object sender, MouseEventArgs e);
+        void MouseUp(object sender, MouseEventArgs e);
 
         void Draw(SpriteBatch spriteBatch);
     }

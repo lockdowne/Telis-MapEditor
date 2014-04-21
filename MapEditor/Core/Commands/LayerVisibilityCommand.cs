@@ -15,17 +15,13 @@ namespace MapEditor.Core.Commands
 
         private Layer layer;
 
-        private bool isVisisble;
-
         #endregion
 
         #region Initialize
 
-        public LayerVisibilityCommand(Layer layer, bool isVisible)
+        public LayerVisibilityCommand(Layer layer)
         {
             this.layer = layer;
-
-            this.isVisisble = isVisible;
         }
 
         #endregion
@@ -37,7 +33,7 @@ namespace MapEditor.Core.Commands
         /// </summary>
         public void Execute()
         {
-            layer.IsVisible = isVisisble;
+            layer.IsVisible = !layer.IsVisible;
         }
 
         /// <summary>
@@ -45,7 +41,7 @@ namespace MapEditor.Core.Commands
         /// </summary>
         public void UnExecute()
         {
-            layer.IsVisible = !isVisisble;
+            layer.IsVisible = !layer.IsVisible;
         }
 
         #endregion

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,9 +11,6 @@ using MapEditor.UI;
 
 namespace MapEditor.Core.Commands
 {
-    /// <summary>
-    /// Manages all commands. Keeps track of commands in stack to execute, undo, and redo
-    /// </summary>
     public class CommandManager
     {
         #region Fields
@@ -120,14 +117,14 @@ namespace MapEditor.Core.Commands
             RedoCommands.Clear();
         }
 
-        public void ExecuteLayerVisibility(Layer layer, bool isVisible)
+        public void ExecuteLayerVisibility(Layer layer)
         {
-            ICommand command = new LayerVisibilityCommand(layer, isVisible);
+            ICommand command = new LayerVisibilityCommand(layer);
             command.Execute();
 
             // This command does not have the need to be undoed
-            //UndoCommands.Push(command);
-            //RedoCommands.Clear();
+            UndoCommands.Push(command);
+            RedoCommands.Clear();
         }
 
         public void ExecuteLayerClone(List<Layer> layers, int layerIndex)
@@ -154,7 +151,7 @@ namespace MapEditor.Core.Commands
             command.Execute();
 
             UndoCommands.Push(command);
-             RedoCommands.Clear();
+            RedoCommands.Clear();
         }
 
 
@@ -167,18 +164,18 @@ namespace MapEditor.Core.Commands
             RedoCommands.Clear();
         }
 
-        public void ExecuteMapResize(List<Layer> layers, int mapWidth, int mapHeight, NumericUpDownEx mapWidthNumeric, NumericUpDownEx mapHeightNumeric)
+        public void ExecuteMapResize(List<Layer> layers, int mapWidth, int mapHeight)
         {
-            ICommand command = new MapResizeCommand(layers, mapWidth, mapHeight, mapWidthNumeric, mapHeightNumeric);
+            ICommand command = new MapResizeCommand(layers, mapWidth, mapHeight);
             command.Execute();
 
             UndoCommands.Push(command);
             RedoCommands.Clear();
         }
 
-        public void ExecuteTileResize(List<Tileset> tilesets, int tileWidth, int tileHeight, NumericUpDownEx tileWidthNumeric, NumericUpDownEx tileHeightNumeric, List<Action<int, int>> setTileDimensions)
+        public void ExecuteTileResize(Tileset tileset, int tileWidth, int tileHeight)
         {
-            ICommand command = new TileResizeCommand(tilesets, tileWidth, tileHeight, tileWidthNumeric, tileHeightNumeric, setTileDimensions);
+            ICommand command = new TileResizeCommand(tileset, tileWidth, tileHeight);
             command.Execute();
 
             UndoCommands.Push(command);
@@ -197,8 +194,17 @@ namespace MapEditor.Core.Commands
 
         public void ExecuteInitializeMap(List<Layer> layers, int mapWidth, int mapHeight, int tileWidth, int tileHeight)
         {
-           // ICommand addLayer = new LayerAddCommand(layers, mapWidth, mapHeight);
+            // ICommand addLayer = new LayerAddCommand(layers, mapWidth, mapHeight);
             //ICommand addTileset
+        }
+
+        public void ExecuteRenameLayer(Layer layer, string name)
+        {
+            ICommand command = new LayerRenameCommand(layer, name);
+            command.Execute();
+
+            UndoCommands.Push(command);
+            RedoCommands.Clear();
         }
 
         #endregion

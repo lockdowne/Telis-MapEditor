@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MapEditor.Presenters;
 using MapEditor.Models;
 
 namespace MapEditor.Core.PaintTools
@@ -14,88 +12,75 @@ namespace MapEditor.Core.PaintTools
     {
         #region Fields
 
-        private readonly MainRenderPresenter presenter;
+        private Map map;
 
-        private Vector2? beginSelectionBox;
-        private Vector2? endSelectionBox; 
+        private Vector2? selectionBoxA;
+        private Vector2? selectionBoxB; 
 
-        private bool isMouseRightPressed;
-
-        #endregion
-
-        #region Properties
-
+        private bool isMousePressed;
 
         #endregion
-
+        
         #region Initialize
 
-        public SelectPaintTool(MainRenderPresenter parent)
+        public SelectPaintTool(Map map)
         {
-            presenter = parent;
+            this.map = map;
         }
 
         #endregion
 
         #region Methods
 
-        public void OnMouseDown(object sender, MouseEventArgs e)
+        public void MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            if (presenter == null)
-                return;
-
-            if (e.Button == MouseButtons.Right || e.Button == MouseButtons.Left)
+            if (e.Button == System.Windows.Forms.MouseButtons.Right || e.Button == System.Windows.Forms.MouseButtons.Left)
             {
-                isMouseRightPressed = true;
+                isMousePressed = true;
 
-                beginSelectionBox = null;
-                endSelectionBox = null;
+                map.ClearSelectionBox();
 
-                presenter.BeginSelectionBox = null;
-                presenter.EndSelectionBox = null;
+                selectionBoxA = map.SnapToGrid(new Vector2(MathHelper.Clamp(map.InvertCameraMatrix(e.Location).X, 0, map.MapWidth * map.TileWidth),
+                    MathHelper.Clamp(map.InvertCameraMatrix(e.Location).Y, 0, map.MapHeight * map.TileHeight)));
 
-                beginSelectionBox = presenter.SnapToGrid(new Vector2(MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).X, 0, presenter.MapWidth * presenter.TileWidth),
-                    MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).Y, 0, presenter.MapHeight * presenter.TileHeight)));
-
-                presenter.BeginSelectionBox = beginSelectionBox;
+                map.SelectionBoxA = selectionBoxA;
             }
         }
 
-        public void OnMouseMove(object sender, MouseEventArgs e)
+        public void MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            if (presenter == null)
-                return;
-
-            if (isMouseRightPressed)
+            if (isMousePressed)
             {
-                endSelectionBox = presenter.SnapToGrid(new Vector2(MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).X, 0, presenter.MapWidth * presenter.TileWidth),
-                    MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).Y, 0, presenter.MapHeight * presenter.TileHeight)));
+                selectionBoxB = map.SnapToGrid(new Vector2(MathHelper.Clamp(map.InvertCameraMatrix(e.Location).X, 0, map.MapWidth * map.TileWidth),
+                    MathHelper.Clamp(map.InvertCameraMatrix(e.Location).Y, 0, map.MapHeight * map.TileHeight)));
 
-                presenter.EndSelectionBox = endSelectionBox;
+                map.SelectionBoxB = selectionBoxB;
             }
         }
 
 
-        public void OnMouseUp(object sender, MouseEventArgs e)
+        public void MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            if (presenter == null)
-                return;
-
-            if (isMouseRightPressed)
+            if (isMousePressed)
             {
-                isMouseRightPressed = false;               
+                isMousePressed = false;
 
-                endSelectionBox = presenter.SnapToGrid(new Vector2(MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).X, 0, presenter.MapWidth * presenter.TileWidth),
-                    MathHelper.Clamp(presenter.InvertCameraMatrix(e.Location).Y, 0, presenter.MapHeight * presenter.TileHeight)));
-
-                //presenter.BeginSelectionBox = beginSelectionBox;
-                presenter.EndSelectionBox = endSelectionBox;
+                selectionBoxB = map.SnapToGrid(new Vector2(MathHelper.Clamp(map.InvertCameraMatrix(e.Location).X, 0, map.MapWidth * map.TileWidth),
+                    MathHelper.Clamp(map.InvertCameraMatrix(e.Location).Y, 0, map.MapHeight * map.TileHeight)));
+              
+                map.SelectionBoxB = selectionBoxB;
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             
+        }
+
+        private void ClearSelectionBox()
+        {
+            selectionBoxA = null;
+            selectionBoxB = null;
         }
 
         #endregion

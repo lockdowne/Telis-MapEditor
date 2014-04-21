@@ -12,23 +12,35 @@ namespace MapEditor.Models
     public class Camera
     {
         #region Properties
-
-        // Camera position
+        
+        /// <summary>
+        /// Gets or sets vector position
+        /// </summary>
         public Vector2 Position { get; set; }
 
-        // Camera width
+        /// <summary>
+        /// Gets or sets the viewport width
+        /// </summary>
         public float ViewportWidth { get; set; }
 
-        // Camera height
+        /// <summary>
+        /// Gets or sets the viewport height
+        /// </summary>
         public float ViewportHeight { get; set; }
 
-        // Camera zoom level
+        /// <summary>
+        /// Gets or sets zoom
+        /// </summary>
         public float Zoom { get; set; }
 
-        // Camera rotation
+        /// <summary>
+        /// Gets or sets rotation
+        /// </summary>
         public float Rotation { get; set; }       
 
-        // Matrix translation to calculate camera values
+        /// <summary>
+        /// Gets the matrix transformation
+        /// </summary>
         public Matrix CameraTransformation
         {
             get

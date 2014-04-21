@@ -40,7 +40,7 @@ namespace MapEditor.UI
         public event EventHandler MoveLayerUp;
         public event EventHandler RemoveLayerItem;
         public event EventHandler AddLayerItem;
-        public event EventHandler LayerItemChecked;
+        public event ItemCheckEventHandler LayerItemChecked;
         public event Action<int> LayerIndexChanged;
         public event EventHandler DuplicateLayer;
         
@@ -58,6 +58,7 @@ namespace MapEditor.UI
                 checkedListBox1 = value;
             }
         }
+
         /*public CheckedListBox CheckedListBox
         {
             set
@@ -81,7 +82,7 @@ namespace MapEditor.UI
             {
                 this.Hide();
                 e.Cancel = true;
-            };
+            };            
         }
 
         #region Windows Form Designer generated code
@@ -188,6 +189,7 @@ namespace MapEditor.UI
             this.checkedListBox1.TabIndex = 1;
             this.checkedListBox1.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBox1_ItemCheck);
             this.checkedListBox1.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
+            this.checkedListBox1.CheckOnClick = false;
             // 
             // LayerView
             // 
@@ -224,7 +226,6 @@ namespace MapEditor.UI
             if (LayerItemChecked != null)
                 LayerItemChecked(sender, e);
         }
-
 
         private void toolStripMoveUp_Click(object sender, EventArgs e)
         {

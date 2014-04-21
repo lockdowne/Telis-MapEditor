@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MapEditor.Presenters;
 using MapEditor.Models;
 
 namespace MapEditor.Core.PaintTools
@@ -14,7 +12,7 @@ namespace MapEditor.Core.PaintTools
     {
         #region Fields
 
-        private readonly MainRenderPresenter presenter;
+        private Map map;
 
         private Layer tempLayer;
 
@@ -24,110 +22,55 @@ namespace MapEditor.Core.PaintTools
 
         #endregion
 
-        public FillPaintTool(MainRenderPresenter presenter)
-        {
-            this.presenter = presenter;
+        #region Initialize
 
+        public FillPaintTool(Map map)
+        {
+            this.map = map;
         }
 
-        public void OnMouseDown(object sender, MouseEventArgs e)
-        {
-            if(e.Button == MouseButtons.Left)
-            {
-                int x = (int)MathHelper.Clamp(presenter.PixelsToCoordinate(presenter.InvertCameraMatrix(e.Location)).X, 0, presenter.MapWidth - 1);
-                int y = (int)MathHelper.Clamp(presenter.PixelsToCoordinate(presenter.InvertCameraMatrix(e.Location)).Y, 0, presenter.MapHeight - 1);
+        #endregion
 
-                TileBrush tileBrush = new TileBrush() { Brush = presenter.TileBrushValues, Position = new Vector2(x, y), };
-                presenter.Fill(tileBrush, presenter.Layers[presenter.LayerIndex].Rows[y].Columns[x].TileID);                
+        #region Methods
+
+        public void MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                int x = (int)MathHelper.Clamp(map.PixelsToCoordinate(map.InvertCameraMatrix(e.Location)).X, 0, map.MapWidth - 1);
+                int y = (int)MathHelper.Clamp(map.PixelsToCoordinate(map.InvertCameraMatrix(e.Location)).Y, 0, map.MapHeight - 1);
+
+                TileBrush tileBrush = new TileBrush() { Brush = map.TileBrushValues, Position = new Vector2(x, y), };
+
+                if (map.CurrentLayer != null)
+                    map.Fill(tileBrush, map.CurrentLayer.Rows[y].Columns[x].TileID);                
             }
 
-            if (e.Button == MouseButtons.Middle)
+            if (e.Button == System.Windows.Forms.MouseButtons.Middle)
                 isMiddleMousePressed = true;
         }
 
-        public void OnMouseMove(object sender, MouseEventArgs e)
+        public void MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (!isMiddleMousePressed)
             {
-                int x = (int)MathHelper.Clamp(presenter.PixelsToCoordinate(presenter.InvertCameraMatrix(e.Location)).X, 0, presenter.MapWidth - 1);
-                int y = (int)MathHelper.Clamp(presenter.PixelsToCoordinate(presenter.InvertCameraMatrix(e.Location)).Y, 0, presenter.MapHeight - 1);
+                int x = (int)MathHelper.Clamp(map.PixelsToCoordinate(map.InvertCameraMatrix(e.Location)).X, 0, map.MapWidth - 1);
+                int y = (int)MathHelper.Clamp(map.PixelsToCoordinate(map.InvertCameraMatrix(e.Location)).Y, 0, map.MapHeight - 1);
 
-                TileBrush tileBrush = new TileBrush() { Brush = presenter.TileBrushValues, Position = new Vector2(x, y), };
+                TileBrush tileBrush = new TileBrush() { Brush = map.TileBrushValues, Position = new Vector2(x, y) };
 
-                if(presenter.Layers[presenter.LayerIndex].Rows[y].Columns[x].TileID != previousTarget)
-                    FloodFill(tileBrush, presenter.Layers[presenter.LayerIndex].Rows[y].Columns[x].TileID);
+                if (map.CurrentLayer != null)
+                    if (map.CurrentLayer.Rows[y].Columns[x].TileID != previousTarget)
+                        FloodFill(tileBrush, map.CurrentLayer.Rows[y].Columns[x].TileID);
             }
         }
 
 
-        public void OnMouseUp(object sender, MouseEventArgs e)
+        public void MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Middle)
+            if (e.Button == System.Windows.Forms.MouseButtons.Middle)
                 isMiddleMousePressed = false;
         }
-
-        /*private void FloodFill(TileBrush tileBrush, int target)
-        {
-            Layer layer = presenter.Layers[presenter.LayerIndex];
-
-            Queue<TileBrush> queue = new Queue<TileBrush>();
-            queue.Enqueue(tileBrush);
-
-            if (layer.Rows[(int)tileBrush.Position.Y].Columns[(int)tileBrush.Position.X].TileID == tileBrush.Brush[0,0])
-                return;
-
-            while (queue.Count > 0)
-            {
-                TileBrush brush = queue.Dequeue();
-
-                if (layer.Rows[(int)brush.Position.Y].Columns[(int)brush.Position.X].TileID == target)
-                {
-                    int left = (int)brush.Position.X;
-                    int right = (int)brush.Position.X + 1;
-                    int y = (int)brush.Position.Y;
-
-                    
-                    if (layer.Rows[(int)MathHelper.Clamp(y - 1, 0, layer.MapHeight - 1)].Columns[left].TileID == target)
-                        queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(left, (int)MathHelper.Clamp(y - 1, 0, layer.MapHeight - 1)) });
-
-                    if (layer.Rows[(int)MathHelper.Clamp(y + 1, 0, layer.MapHeight - 1)].Columns[left].TileID == target)
-                        queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(left, (int)MathHelper.Clamp(y + 1, 0, layer.MapHeight - 1)) });
-
-                    if (layer.Rows[(int)MathHelper.Clamp(y - 1, 0, layer.MapHeight - 1)].Columns[right].TileID == target)
-                        queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(right, (int)MathHelper.Clamp(y - 1, 0, layer.MapHeight - 1)) });
-
-                    if (layer.Rows[(int)MathHelper.Clamp(y + 1, 0, layer.MapHeight - 1)].Columns[right].TileID == target)
-                        queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(right, (int)MathHelper.Clamp(y + 1, 0, layer.MapHeight - 1)) });
-
-
-                    while (layer.Rows[y].Columns[left].TileID == target)
-                    {
-                        layer.Rows[y].Columns[left].TileID = brush.Brush[0,0];
-
-                        left = (int)MathHelper.Clamp(left - 1, 0, layer.MapWidth - 1);
-
-                        if(layer.Rows[(int)MathHelper.Clamp(y - 1, 0, layer.MapHeight - 1)].Columns[left].TileID == target)
-                            queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(left, (int)MathHelper.Clamp(y - 1, 0, layer.MapHeight - 1))});
-
-                        if (layer.Rows[(int)MathHelper.Clamp(y + 1, 0, layer.MapHeight - 1)].Columns[left].TileID == target)
-                            queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(left, (int)MathHelper.Clamp(y + 1, 0, layer.MapHeight - 1)) });
-                    }
-
-                    while (layer.Rows[y].Columns[right].TileID == target)
-                    {
-                        layer.Rows[y].Columns[right].TileID = brush.Brush[0, 0];
-
-                        right = (int)MathHelper.Clamp(right + 1, 0, layer.MapWidth - 1);
-
-                        if (layer.Rows[(int)MathHelper.Clamp(y - 1, 0, layer.MapHeight - 1)].Columns[right].TileID == target)
-                            queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(right, (int)MathHelper.Clamp(y - 1, 0, layer.MapHeight - 1)) });
-
-                        if (layer.Rows[(int)MathHelper.Clamp(y + 1, 0, layer.MapHeight - 1)].Columns[right].TileID == target)
-                            queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(right, (int)MathHelper.Clamp(y + 1, 0, layer.MapHeight - 1)) });
-                    }
-                }
-            }          
-        }*/
 
         private void FloodFill(TileBrush tileBrush, int target)
         {
@@ -138,13 +81,13 @@ namespace MapEditor.Core.PaintTools
             if (tileBrush == null)
                 return;
 
-            Layer layer = new Layer(presenter.Layers[presenter.LayerIndex].LayerName, presenter.Layers[presenter.LayerIndex].MapWidth, presenter.Layers[presenter.LayerIndex].MapHeight);
+            Layer layer = new Layer(map.CurrentLayer.LayerName, map.CurrentLayer.LayerWidth, map.CurrentLayer.LayerHeight);
 
-            for (int layerY = 0; layerY < layer.MapHeight; layerY++)
+            for (int layerY = 0; layerY < layer.LayerHeight; layerY++)
             {
-                for (int layerX = 0; layerX < layer.MapWidth; layerX++)
+                for (int layerX = 0; layerX < layer.LayerWidth; layerX++)
                 {
-                    layer.Rows[layerY].Columns[layerX].TileID = presenter.Layers[presenter.LayerIndex].Rows[layerY].Columns[layerX].TileID;
+                    layer.Rows[layerY].Columns[layerX].TileID = map.Layers[map.LayerIndex].Rows[layerY].Columns[layerX].TileID;
                 }
             }
 
@@ -169,50 +112,50 @@ namespace MapEditor.Core.PaintTools
                 if (layer.Rows[(int)brush.Position.Y].Columns[(int)brush.Position.X].TileID == target)
                 {
                     int left = (int)brush.Position.X;
-                    int right = (int)MathHelper.Clamp(brush.Position.X + 1, 0, layer.MapWidth - 1);
+                    int right = (int)MathHelper.Clamp(brush.Position.X + 1, 0, layer.LayerWidth - 1);
                     int y = (int)brush.Position.Y;
 
                     int i = tileBrush.Brush.GetLength(0);
                     int j = tileBrush.Brush.GetLength(1);
 
 
-                    if (layer.Rows[(int)MathHelper.Clamp(y - 1, 0, layer.MapHeight - 1)].Columns[left].TileID == target)
-                        queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(left, (int)MathHelper.Clamp(y - 1, 0, layer.MapHeight - 1)) });
+                    if (layer.Rows[(int)MathHelper.Clamp(y - 1, 0, layer.LayerHeight - 1)].Columns[left].TileID == target)
+                        queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(left, (int)MathHelper.Clamp(y - 1, 0, layer.LayerHeight - 1)) });
 
-                    if (layer.Rows[(int)MathHelper.Clamp(y + 1, 0, layer.MapHeight - 1)].Columns[left].TileID == target)
-                        queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(left, (int)MathHelper.Clamp(y + 1, 0, layer.MapHeight - 1)) });
+                    if (layer.Rows[(int)MathHelper.Clamp(y + 1, 0, layer.LayerHeight - 1)].Columns[left].TileID == target)
+                        queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(left, (int)MathHelper.Clamp(y + 1, 0, layer.LayerHeight - 1)) });
 
-                    if (layer.Rows[(int)MathHelper.Clamp(y - 1, 0, layer.MapHeight - 1)].Columns[right].TileID == target)
-                        queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(right, (int)MathHelper.Clamp(y - 1, 0, layer.MapHeight - 1)) });
+                    if (layer.Rows[(int)MathHelper.Clamp(y - 1, 0, layer.LayerHeight - 1)].Columns[right].TileID == target)
+                        queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(right, (int)MathHelper.Clamp(y - 1, 0, layer.LayerHeight - 1)) });
 
-                    if (layer.Rows[(int)MathHelper.Clamp(y + 1, 0, layer.MapHeight - 1)].Columns[right].TileID == target)
-                        queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(right, (int)MathHelper.Clamp(y + 1, 0, layer.MapHeight - 1)) });
+                    if (layer.Rows[(int)MathHelper.Clamp(y + 1, 0, layer.LayerHeight - 1)].Columns[right].TileID == target)
+                        queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(right, (int)MathHelper.Clamp(y + 1, 0, layer.LayerHeight - 1)) });
 
 
                     while (layer.Rows[y].Columns[left].TileID == target)
                     {
                         layer.Rows[y].Columns[left].TileID = brush.Brush[y % i, left % j];
 
-                        left = (int)MathHelper.Clamp(left - 1, 0, layer.MapWidth - 1);
+                        left = (int)MathHelper.Clamp(left - 1, 0, layer.LayerWidth - 1);
 
-                        if (layer.Rows[(int)MathHelper.Clamp(y - 1, 0, layer.MapHeight - 1)].Columns[left].TileID == target)
-                            queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(left, (int)MathHelper.Clamp(y - 1, 0, layer.MapHeight - 1)) });
+                        if (layer.Rows[(int)MathHelper.Clamp(y - 1, 0, layer.LayerHeight - 1)].Columns[left].TileID == target)
+                            queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(left, (int)MathHelper.Clamp(y - 1, 0, layer.LayerHeight - 1)) });
 
-                        if (layer.Rows[(int)MathHelper.Clamp(y + 1, 0, layer.MapHeight - 1)].Columns[left].TileID == target)
-                            queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(left, (int)MathHelper.Clamp(y + 1, 0, layer.MapHeight - 1)) });
+                        if (layer.Rows[(int)MathHelper.Clamp(y + 1, 0, layer.LayerHeight - 1)].Columns[left].TileID == target)
+                            queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(left, (int)MathHelper.Clamp(y + 1, 0, layer.LayerHeight - 1)) });
                     }
 
                     while (layer.Rows[y].Columns[right].TileID == target)
                     {
                         layer.Rows[y].Columns[right].TileID = brush.Brush[y % i, right % j];
 
-                        right = (int)MathHelper.Clamp(right + 1, 0, layer.MapWidth - 1);
+                        right = (int)MathHelper.Clamp(right + 1, 0, layer.LayerWidth - 1);
 
-                        if (layer.Rows[(int)MathHelper.Clamp(y - 1, 0, layer.MapHeight - 1)].Columns[right].TileID == target)
-                            queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(right, (int)MathHelper.Clamp(y - 1, 0, layer.MapHeight - 1)) });
+                        if (layer.Rows[(int)MathHelper.Clamp(y - 1, 0, layer.LayerHeight - 1)].Columns[right].TileID == target)
+                            queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(right, (int)MathHelper.Clamp(y - 1, 0, layer.LayerHeight - 1)) });
 
-                        if (layer.Rows[(int)MathHelper.Clamp(y + 1, 0, layer.MapHeight - 1)].Columns[right].TileID == target)
-                            queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(right, (int)MathHelper.Clamp(y + 1, 0, layer.MapHeight - 1)) });
+                        if (layer.Rows[(int)MathHelper.Clamp(y + 1, 0, layer.LayerHeight - 1)].Columns[right].TileID == target)
+                            queue.Enqueue(new TileBrush() { Brush = brush.Brush, Position = new Vector2(right, (int)MathHelper.Clamp(y + 1, 0, layer.LayerHeight - 1)) });
                     }
                 }
             }
@@ -226,13 +169,13 @@ namespace MapEditor.Core.PaintTools
             if (tempLayer == null)
                 return;
 
-            int left = (int)Math.Floor(presenter.Camera.Position.X / presenter.Tilesets.First().TileWidth);
-            int right = presenter.Tilesets.First().TileWidth + left + spriteBatch.GraphicsDevice.Viewport.Width / presenter.Tilesets.First().TileWidth;
-            right = Math.Min(right, tempLayer.MapWidth);
+            int left = (int)Math.Floor(map.Camera.Position.X / map.Tileset.TileWidth);
+            int right = (int)(map.Tileset.TileWidth + left + spriteBatch.GraphicsDevice.Viewport.Width / map.Tileset.TileWidth / map.Camera.Zoom);
+            right = Math.Min(right, tempLayer.LayerWidth);
 
-            int top = (int)Math.Floor(presenter.Camera.Position.Y / presenter.Tilesets.First().TileHeight);
-            int bottom = presenter.Tilesets.First().TileHeight + top + spriteBatch.GraphicsDevice.Viewport.Height / presenter.Tilesets.First().TileHeight;
-            bottom = Math.Min(bottom, tempLayer.MapHeight);
+            int top = (int)Math.Floor(map.Camera.Position.Y / map.Tileset.TileHeight);
+            int bottom = (int)(map.Tileset.TileHeight + top + spriteBatch.GraphicsDevice.Viewport.Height / map.Tileset.TileHeight / map.Camera.Zoom);
+            bottom = Math.Min(bottom, tempLayer.LayerHeight);
 
             for (int y = top; y < bottom; y++)
             {
@@ -242,16 +185,18 @@ namespace MapEditor.Core.PaintTools
 
                     if (tileID > -1)
                     {
-                        spriteBatch.Draw(presenter.Tilesets.First().Texture,
-                            new Rectangle((x * presenter.Tilesets.First().TileWidth),
-                                (y * presenter.Tilesets.First().TileHeight),
-                                presenter.Tilesets.First().TileWidth,
-                                presenter.Tilesets.First().TileHeight),
-                                presenter.Tilesets.First().GetSourceRectangle(tileID),
+                        spriteBatch.Draw(map.Tileset.Texture,
+                            new Rectangle((x * map.Tileset.TileWidth),
+                                (y * map.Tileset.TileHeight),
+                                map.Tileset.TileWidth,
+                                map.Tileset.TileHeight),
+                                map.Tileset.GetSourceRectangle(tileID),
                                 Color.White * 0.5f);
                     }
                 }
             }
-        }             
+        }
+
+        #endregion
     }
 }

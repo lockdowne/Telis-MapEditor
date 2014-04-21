@@ -42,8 +42,8 @@ namespace MapEditor.Core.Commands
         /// </summary>
         public void Execute()
         {
-            int mapWidth = layer.MapWidth;
-            int mapHeight = layer.MapHeight;
+            int mapWidth = layer.LayerWidth;
+            int mapHeight = layer.LayerHeight;
 
             currentTileBrushes.ForEach(brush =>
                 {

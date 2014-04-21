@@ -7,25 +7,29 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MapEditor.Models
 {
+    /// <summary>
+    /// Represents a collection of tile brushes
+    /// </summary>
     public class TileBrushCollection
     {
         #region Fields
-
+        
         private List<TileBrush> tileBrushes = new List<TileBrush>();
 
         #endregion
-
-        #region Properties
 
         public List<TileBrush> TileBrushes
         {
             get { return tileBrushes; }
         }
 
-        #endregion
-
         #region Methods
-
+        
+        /// <summary>
+        /// Draws tilebrushes to screen
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="tileset"></param>
         public void Draw(SpriteBatch spriteBatch, Tileset tileset)
         {
             if (spriteBatch == null)
@@ -57,6 +61,10 @@ namespace MapEditor.Models
                 });
         }
 
+        /// <summary>
+        /// Adds new tilebrush to collection
+        /// </summary>
+        /// <param name="brush"></param>
         public void AddTileBrush(TileBrush brush)
         {
             if (brush == null)
@@ -71,6 +79,9 @@ namespace MapEditor.Models
             tileBrushes.Add(brush);
         }
 
+        /// <summary>
+        /// Removes all tilebrushes from collection
+        /// </summary>
         public void ClearBrushes()
         {
             tileBrushes.Clear();

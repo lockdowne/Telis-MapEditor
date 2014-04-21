@@ -29,17 +29,7 @@ namespace MapEditor.Core.Controls
         public event MouseEventHandler OnXnaWheel;
 
         public event Action OnInitialize;
-        public event Action<SpriteBatch> OnDraw;   
-       
-        public GraphicsDevice GraphicsDevice
-        {
-            get { return GraphicsDevice; }
-        }
-
-        public string KeyName
-        {
-            get { return Name; }            
-        }
+        public event Action<SpriteBatch> OnDraw;  
 
         #endregion
 
@@ -50,7 +40,7 @@ namespace MapEditor.Core.Controls
             MouseDown += (sender, e) => { if (OnXnaDown != null) OnXnaDown(sender, e); };
             MouseUp += (sender, e) => { if (OnXnaUp != null) OnXnaUp(sender, e); };
             MouseMove += (sender, e) => { if (OnXnaMove != null) OnXnaMove(sender, e); };
-            MouseWheel += (sender, e) => { if (OnXnaWheel != null) OnXnaWheel(sender, e); };
+            MouseWheel += (sender, e) => { if (OnXnaWheel != null) OnXnaWheel(sender, e); };            
         }  
 
         protected override void Initialize()

@@ -213,6 +213,16 @@ namespace MapEditor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap rename_32 {
+            get {
+                object obj = ResourceManager.GetObject("rename_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap save_32 {
             get {
                 object obj = ResourceManager.GetObject("save_32", resourceCulture);
@@ -256,6 +266,16 @@ namespace MapEditor.Properties {
         internal static System.Drawing.Bitmap undo_4_32 {
             get {
                 object obj = ResourceManager.GetObject("undo_4_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap visible_32 {
+            get {
+                object obj = ResourceManager.GetObject("visible_32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

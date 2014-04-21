@@ -7,38 +7,63 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MapEditor.Models
 {
+    /// <summary>
+    /// Represents a tileset
+    /// </summary>
     public class Tileset
     {
         #region Properties
 
+        /// <summary>
+        /// Gets or sets tile width
+        /// </summary>
         public int TileWidth { get; set; }
+
+        /// <summary>
+        /// Gets or sets tile height
+        /// </summary>
         public int TileHeight { get; set; }
 
-        // Tileset texture directory
+       /// <summary>
+       /// Gets or sets texture directory path
+       /// </summary>
         public string TexturePath { get; set; }
 
-        // Tileset texture
+        /// <summary>
+        /// Gets or sets texture2D
+        /// </summary>
         public Texture2D Texture { get; set; }
 
-        // Finds the exact tile in tileset to draw
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Return a rectangle with the size of the tile dimensions
+        /// Represents the location on the texture to draw
+        /// </summary>
+        /// <param name="tileIndex"></param>
+        /// <returns></returns>
         public Rectangle GetSourceRectangle(int tileIndex)
         {
             if (Texture == null)
-                return Rectangle.Empty;
-
-            if (TileWidth <= 0)
-                return Rectangle.Empty;
-
+                throw new ArgumentNullException();
+            
             int tileY = tileIndex / (Texture.Width / TileWidth);
             int tileX = tileIndex % (Texture.Width / TileWidth);
 
             return new Rectangle(tileX * TileWidth, tileY * TileHeight, TileWidth, TileHeight);
         }
 
+        /// <summary>
+        /// Get the color of the pixel in the center of selected tile
+        /// </summary>
+        /// <param name="tileIndex"></param>
+        /// <returns></returns>
         public Color GetCenterPixelColor(int tileIndex)
         {
             if (Texture == null)
-                return Color.Transparent;
+                throw new ArgumentNullException();
 
             if (tileIndex < 0)
                 return Color.Transparent;

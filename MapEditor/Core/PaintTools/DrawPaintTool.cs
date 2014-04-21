@@ -5,36 +5,30 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MapEditor.Presenters;
 using MapEditor.Models;
-
 
 namespace MapEditor.Core.PaintTools
 {
-    /// <summary>
-    ///Paint brush tool state. Changes the map state to paint brush.
-    ///Map state to enable drawing tilebrushes to map
-    /// </summary>
     public class DrawPaintTool : IPaintTool
     {
         #region Fields
 
-        private readonly MainRenderPresenter presenter;
-
-        private bool isMouseLeftPressed;
+        private Map map;
 
         private Vector2 previousMousePosition;
         private Vector2 currentMousePosition;
 
         private TileBrushCollection tileBrushes;
 
-        #endregion
+        private bool isMouseLeftPressed;
 
+        #endregion
+        
         #region Initialize
 
-        public DrawPaintTool(MainRenderPresenter parent)
+        public DrawPaintTool(Map map)
         {
-            this.presenter = parent;
+            this.map = map;
 
             tileBrushes = new TileBrushCollection();
         }
@@ -48,21 +42,21 @@ namespace MapEditor.Core.PaintTools
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void OnMouseDown(object sender, MouseEventArgs e)
+        public void MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
                 isMouseLeftPressed = true;
 
-                currentMousePosition = presenter.PixelsToCoordinate(presenter.InvertCameraMatrix(e.Location));
+                currentMousePosition = map.PixelsToCoordinate(map.InvertCameraMatrix(e.Location));
 
                 tileBrushes.ClearBrushes();
 
-                if (presenter.TileBrushValues != null)
+                if (map.TileBrushValues != null)
                 {
                     tileBrushes.AddTileBrush(new TileBrush()
                     {
-                        Brush = presenter.TileBrushValues,
+                        Brush = map.TileBrushValues,
                         Position = currentMousePosition,
                     });
                 }
@@ -74,20 +68,20 @@ namespace MapEditor.Core.PaintTools
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void OnMouseMove(object sender, MouseEventArgs e)
+        public void MouseMove(object sender, MouseEventArgs e)
         {
             if (isMouseLeftPressed)
             {
                 previousMousePosition = currentMousePosition;
-                currentMousePosition = presenter.PixelsToCoordinate(presenter.InvertCameraMatrix(e.Location));
+                currentMousePosition = map.PixelsToCoordinate(map.InvertCameraMatrix(e.Location));
 
                 if (currentMousePosition != previousMousePosition)
                 {
-                    if (presenter.TileBrushValues != null)
+                    if (map.TileBrushValues != null)
                     {
                         tileBrushes.AddTileBrush(new TileBrush()
                         {
-                            Brush = presenter.TileBrushValues,
+                            Brush = map.TileBrushValues,
                             Position = currentMousePosition,
                         });
                     }
@@ -95,19 +89,19 @@ namespace MapEditor.Core.PaintTools
             }
             else
             {
-                currentMousePosition = presenter.PixelsToCoordinate(presenter.InvertCameraMatrix(e.Location));
+                currentMousePosition = map.PixelsToCoordinate(map.InvertCameraMatrix(e.Location));
 
                 tileBrushes.ClearBrushes();
 
-                if (presenter.TileBrushValues != null)
+                if (map.TileBrushValues != null)
                 {
                     tileBrushes.AddTileBrush(new TileBrush()
                     {
-                        Brush = presenter.TileBrushValues,
+                        Brush = map.TileBrushValues,
                         Position = currentMousePosition,
                     });
                 }
-            }            
+            }
         }
 
         /// <summary>
@@ -115,13 +109,13 @@ namespace MapEditor.Core.PaintTools
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void OnMouseUp(object sender, MouseEventArgs e)
+        public void MouseUp(object sender, MouseEventArgs e)
         {
             if (isMouseLeftPressed)
             {
                 isMouseLeftPressed = false;
 
-                presenter.DrawTileBrushes(tileBrushes);
+                map.DrawTileBrushes(tileBrushes);
 
                 tileBrushes.ClearBrushes();
             }
@@ -133,7 +127,7 @@ namespace MapEditor.Core.PaintTools
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            tileBrushes.Draw(spriteBatch, presenter.Tilesets[presenter.TilesetIndex]);
+            tileBrushes.Draw(spriteBatch, map.Tileset);
         }
 
         #endregion

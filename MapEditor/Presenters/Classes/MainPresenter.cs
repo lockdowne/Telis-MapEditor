@@ -188,12 +188,25 @@ namespace MapEditor.Presenters
 
             mainView.ViewZoomIn += (sender, e) =>
             {
-                // TODO: zoom in
+
+                if (CurrentMainPresenter == null)
+                    return;
+
+                float zoom = CurrentMainPresenter.Camera.Zoom;
+                zoom += 0.1f;
+
+                CurrentMainPresenter.Camera.Zoom = MathHelper.Clamp(zoom, 0.5f, 2f);
             };
 
             mainView.ViewZoomOut += (sender, e) =>
             {
-                // TODO: zoom out
+                if (CurrentMainPresenter == null)
+                    return;
+
+                float zoom = CurrentMainPresenter.Camera.Zoom;
+                zoom -= 0.1f;
+
+                CurrentMainPresenter.Camera.Zoom = MathHelper.Clamp(zoom, 0.5f, 2f);
             };
             
             mainView.ViewShowLayerForm += (sender, e) =>
@@ -356,9 +369,7 @@ namespace MapEditor.Presenters
                 {
                     CurrentMainPresenter.RaiseLayer();
 
-                    UpdateLayerView();
-
-                   
+                    UpdateLayerView();                   
                 }
             };
 
@@ -382,11 +393,28 @@ namespace MapEditor.Presenters
                 }
             };
 
+
             layerView.LayerIndexChanged += (index) =>
                 {
                     if (CurrentMainPresenter != null)
                     {
                         CurrentMainPresenter.LayerIndex = index;
+
+                        for (int i = 0; i < CurrentMainPresenter.Layers.Count; i++)
+                        {
+                            if (layerView.CheckedListBox.CheckedIndices.Contains(i))
+                                CurrentMainPresenter.Layers[i].IsVisible = true;
+                            else
+                                CurrentMainPresenter.Layers[i].IsVisible = false;
+                        }
+                    }                    
+                };
+
+            layerView.LayerItemChecked += (sender, e) =>
+                {
+                    if (CurrentMainPresenter != null)
+                    {
+                       
                     }
                 };
         }
