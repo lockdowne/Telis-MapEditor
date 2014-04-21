@@ -95,6 +95,8 @@ namespace MapEditor.UI
         public NewMapView()
         {
             InitializeComponent();
+
+            CenterToScreen();
         } 
 
         #region Windows Form Designer generated code
@@ -514,8 +516,8 @@ namespace MapEditor.UI
             textBoxName.Text = string.Empty;
             textBoxTileset.Text = string.Empty;
 
-            numericMapHeight.Value = 32;
-            numericMapWidth.Value = 32;
+            numericMapHeight.Value = 100;
+            numericMapWidth.Value = 100;
             numericTileHeight.Value = 32;
             numericTileWidth.Value = 32;
         }

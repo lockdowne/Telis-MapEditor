@@ -16,16 +16,16 @@ namespace MapEditor.UI
     /// Represents a window that shows the tileset graphics
     /// </summary>
     public class TilesetView : Form, ITilesetView
-    {
-       
+    {       
         #region Fields
-
 
         /// <summary>
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
         private XnaRender xnaRender1;
+
+        private Blue.Windows.StickyWindow stickyWindow;
 
         #endregion
 
@@ -76,6 +76,8 @@ namespace MapEditor.UI
         public TilesetView()
         {
             InitializeComponent();
+
+            stickyWindow = new Blue.Windows.StickyWindow(this);
         }
 
         #region Windows Form Designer generated code
@@ -182,7 +184,11 @@ namespace MapEditor.UI
         public void ShowWindow(IMainView parent)
         {
             if (!Visible)
+            {
                 Show((Form)parent);
+
+                this.Location = new System.Drawing.Point(((Form)parent).Width - this.Width - 25, 80 + 300);
+            }
         }
 
         /// <summary>

@@ -70,6 +70,8 @@ namespace MapEditor.UI
         public ResizeTileView()
         {
             InitializeComponent();
+
+            CenterToScreen();
         }
 
         #region Windows Form Designer generated code

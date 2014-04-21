@@ -11,6 +11,7 @@ namespace MapEditor.Core.Controls
     //Making tabs closable
     public class ClosableTabControl : TabControl
     {
+        
         public ClosableTabControl()
         {
             this.DrawMode = TabDrawMode.OwnerDrawFixed;
@@ -47,8 +48,9 @@ namespace MapEditor.Core.Controls
 
                 if (closeButton.Contains(e.Location))
                 {
-                    // Diplay a message
-                    TabPages.RemoveAt(i);
+                  
+                
+                    TabPages.RemoveAt(i);                    
                 }
             }
         }

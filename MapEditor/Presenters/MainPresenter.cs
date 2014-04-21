@@ -15,6 +15,8 @@ namespace MapEditor.Presenters
 {
     public class MainPresenter
     {
+        #region Fields
+
         private readonly IMainView mainView;
         private readonly ILayerView layerView;        
         private readonly INewMapView newMapView;
@@ -26,6 +28,10 @@ namespace MapEditor.Presenters
         private readonly IRenameView renameView;
 
         private Dictionary<string, Map> Maps = new Dictionary<string, Map>();
+
+        #endregion
+
+        #region Initialize
 
         public MainPresenter(IMainView mainView,
             ILayerView layerView,
@@ -134,7 +140,7 @@ namespace MapEditor.Presenters
 
                     // Check for save
                     Maps.Remove(mainView.SelectedTabName);
-                    mainView.RemoveTab(mainView.SelectedTabName);
+                    mainView.RemoveTab(mainView.SelectedTabName);                    
                 };
 
             mainView.OnFileCloseAll += () =>
@@ -279,22 +285,31 @@ namespace MapEditor.Presenters
                     // Show grid
                 };
 
-            mainView.OnViewLayers += () =>
+            mainView.OnViewLayers += (isChecked) =>
                 {
                     if (layerView == null)
                         return;
 
-                    layerView.ShowWindow(mainView);
+                    if (isChecked)
+                        layerView.ShowWindow(mainView);
+                    else
+                        layerView.HideWindow();
                 };
 
-            mainView.OnViewMinimap += () =>
+            mainView.OnViewMinimap += (isChecked) =>
                 {
-                    minimapPresenter.ShowWindow(mainView);
+                    if (isChecked)
+                        minimapPresenter.ShowWindow(mainView);
+                    else
+                        minimapPresenter.HideWindow();
                 };
 
-            mainView.OnViewTileset += () =>
+            mainView.OnViewTileset += (isChecked) =>
                 {
-                    tilesetPresenter.ShowWindow(mainView);
+                    if (isChecked)
+                        tilesetPresenter.ShowWindow(mainView);
+                    else
+                        tilesetPresenter.HideWindow();
                 };
 
             mainView.OnZoomIn += () =>
@@ -316,7 +331,21 @@ namespace MapEditor.Presenters
             mainView.OnSelectedTabChanged += (name) =>
                 {
                     if (!Maps.ContainsKey(name))
-                        return;                    
+                        return;
+
+                    // Update layers
+                    layerView.ClearAllListItems();
+
+                    Maps[mainView.SelectedTabName].Layers.ForEach(layer =>
+                        {
+                            layerView.AddListItem(layer.LayerName);
+                        });
+
+                    minimapPresenter.GenerateMinimap(Maps[mainView.SelectedTabName].Layers, Maps[mainView.SelectedTabName].Tileset);
+
+                    tilesetPresenter.SetTileset(Maps[mainView.SelectedTabName].Tileset);
+
+                    Maps[mainView.SelectedTabName].ClearSelectionBox();
                 };
         }
 
@@ -418,6 +447,8 @@ namespace MapEditor.Presenters
                             throw new Exception("No map exists to offset");
 
                         Maps[mainView.SelectedTabName].OffsetMap(offset.X, offset.Y);
+
+                        offsetView.CloseWindow();
                     }
                     catch (Exception exception)
                     {
@@ -444,6 +475,8 @@ namespace MapEditor.Presenters
                             throw new Exception("No map exists to resize");
 
                         Maps[mainView.SelectedTabName].ResizeMap(resize.MapWidth, resize.MapHeight);
+
+                        resizeMapView.CloseWindow();
                     }
                     catch (Exception exception)
                     {
@@ -470,6 +503,8 @@ namespace MapEditor.Presenters
                             throw new Exception("No map exists to resize");
 
                         Maps[mainView.SelectedTabName].ResizeTiles(resize.TileWidth, resize.TileHeight);
+
+                        resizeTileView.CloseWindow();
                     }
                     catch (Exception exception)
                     {
@@ -477,11 +512,15 @@ namespace MapEditor.Presenters
                     }
                 };
         }
+        // 1-909-438-0868
 
         private void SubscribeTilesetEvents()
         {
             tilesetPresenter.OnTileBrushChanged += (tiles) =>
                 {
+                    if (mainView.SelectedTabName == string.Empty)
+                        return;
+
                     if (mainView.SelectedTabName == null)
                         return;
 
@@ -562,6 +601,7 @@ namespace MapEditor.Presenters
                         {
                             // Good news everyone!
                             newMapView.CloseWindow();
+                            newMapView.Reset();
                             tilesetPresenter.ShowWindow(mainView);
                             minimapPresenter.ShowWindow(mainView);
                             layerView.ShowWindow(mainView);
@@ -607,6 +647,10 @@ namespace MapEditor.Presenters
                     renameView.CloseWindow();
                 };
         }
+
+        #endregion
+
+        #region Methods
 
         public bool AddMap(string name, string tilesetPath, int tileWidth, int tileHeight, int mapWidth, int mapHeight)
         {
@@ -709,5 +753,7 @@ namespace MapEditor.Presenters
 
             return true;
         }
+
+        #endregion
     }
 }

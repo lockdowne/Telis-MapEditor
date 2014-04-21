@@ -68,6 +68,8 @@ namespace MapEditor.UI
         public OffsetView()
         {
             InitializeComponent();
+
+            CenterToScreen();
         }
 
         #region Windows Form Designer generated code

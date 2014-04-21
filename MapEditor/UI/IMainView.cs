@@ -25,9 +25,9 @@ namespace MapEditor.UI
         event Action OnEditSelect;
         event Action OnEditFill;
         event Action OnViewGrid;
-        event Action OnViewTileset;
-        event Action OnViewLayers;
-        event Action OnViewMinimap;
+        event Action<bool> OnViewTileset;
+        event Action<bool> OnViewLayers;
+        event Action<bool> OnViewMinimap;
         event Action OnZoomIn;
         event Action OnZoomOut;
         event Action OnLayerAdd;
@@ -41,6 +41,7 @@ namespace MapEditor.UI
         event Action OnMapResizeTile;
         event Action OnMapResizeMap;
         event Action<string> OnSelectedTabChanged;
+        event ControlEventHandler OnTabClosed;
 
         XnaRender SelectedXnaTab { get; }
         string SelectedTabName { get; }

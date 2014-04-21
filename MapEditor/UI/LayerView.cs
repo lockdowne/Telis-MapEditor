@@ -27,7 +27,9 @@ namespace MapEditor.UI
         private ListBox listBox;
         private ToolStripSeparator toolStripSeparator2;
         private ToolStripButton toolStripVisibility;
-        private ToolStripButton toolStripRename;       
+        private ToolStripButton toolStripRename;
+
+        private Blue.Windows.StickyWindow stickyWindow;
 
         /// <summary>
         /// Required designer variable.
@@ -108,6 +110,8 @@ namespace MapEditor.UI
                     this.Hide();
                     e.Cancel = true;
                 };
+
+            stickyWindow = new Blue.Windows.StickyWindow(this);            
         }  
 
         #region Windows Form Designer generated code
@@ -145,9 +149,9 @@ namespace MapEditor.UI
             this.toolStripDuplicate,
             this.toolStripVisibility,
             this.toolStripRename});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 143);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 236);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(196, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(284, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -242,7 +246,7 @@ namespace MapEditor.UI
             this.listBox.FormattingEnabled = true;
             this.listBox.Location = new System.Drawing.Point(0, 0);
             this.listBox.Name = "listBox";
-            this.listBox.Size = new System.Drawing.Size(196, 143);
+            this.listBox.Size = new System.Drawing.Size(284, 236);
             this.listBox.TabIndex = 2;
             this.listBox.SelectedIndexChanged += new System.EventHandler(this.listBox_SelectedIndexChanged);
             // 
@@ -250,7 +254,7 @@ namespace MapEditor.UI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(196, 168);
+            this.ClientSize = new System.Drawing.Size(284, 261);
             this.Controls.Add(this.listBox);
             this.Controls.Add(this.toolStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
@@ -341,6 +345,8 @@ namespace MapEditor.UI
         {
             if (!Visible)
                 Show((Form)parent);
+
+            this.Location = new System.Drawing.Point(((Form)parent).Width - this.Width - 25, 80 + 300 * 2);
         }
 
         /// <summary>

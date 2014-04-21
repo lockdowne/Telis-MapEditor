@@ -59,7 +59,7 @@ namespace MapEditor.Core.Commands
                 if (layer.Rows[(int)brush.Position.Y].Columns[(int)brush.Position.X].TileID == target)
                 {
                     int left = (int)brush.Position.X;
-                    int right = (int)brush.Position.X + 1;
+                    int right = (int)MathHelper.Clamp(brush.Position.X + 1, 0, layer.LayerWidth - 1);
                     int y = (int)brush.Position.Y;
 
                     int i = tileBrush.Brush.GetLength(0);

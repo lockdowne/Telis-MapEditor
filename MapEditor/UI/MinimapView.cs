@@ -16,8 +16,7 @@ namespace MapEditor.UI
     /// Represents a window that shows the minimap 
     /// </summary>
     public class MinimapView : Form, IMinimapView
-    {
-        
+    {        
         #region Fields
 
         /// <summary>
@@ -26,6 +25,8 @@ namespace MapEditor.UI
         private IContainer components = null;
         
         private XnaRender xnaRender1;
+
+        private Blue.Windows.StickyWindow stickyWindow;
 
         #endregion
 
@@ -92,6 +93,8 @@ namespace MapEditor.UI
         public MinimapView()
         {
             InitializeComponent();
+
+            stickyWindow = new Blue.Windows.StickyWindow(this);
         }
 
 
@@ -111,7 +114,7 @@ namespace MapEditor.UI
             this.xnaRender1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.xnaRender1.Location = new System.Drawing.Point(0, 0);
             this.xnaRender1.Name = "xnaRender1";
-            this.xnaRender1.Size = new System.Drawing.Size(284, 261);
+            this.xnaRender1.Size = new System.Drawing.Size(294, 271);
             this.xnaRender1.TabIndex = 0;
             this.xnaRender1.Text = "xnaRender1";
             this.xnaRender1.OnXnaDown += new System.Windows.Forms.MouseEventHandler(this.xnaRender_OnXnaDown);
@@ -125,7 +128,7 @@ namespace MapEditor.UI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(294, 271);
             this.Controls.Add(this.xnaRender1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "MinimapView";
@@ -199,7 +202,11 @@ namespace MapEditor.UI
         public void ShowWindow(IMainView parent)
         {
             if (!Visible)
+            {
                 Show((Form)parent);
+
+                this.Location = new System.Drawing.Point(((Form)parent).Width - this.Width - 25, 80);
+            }
         }
 
         /// <summary>

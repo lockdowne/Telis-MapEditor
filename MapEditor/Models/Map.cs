@@ -353,6 +353,9 @@ namespace MapEditor.Models
                     SetPaintTool(PaintTool.Draw);
 
                     ClearSelectionBox();
+
+                    if (OnMapChanged != null)
+                        OnMapChanged();
                 }
             }
         }
@@ -378,6 +381,9 @@ namespace MapEditor.Models
                     SetPaintTool(PaintTool.Draw);
 
                     ClearSelectionBox();
+
+                    if (OnMapChanged != null)
+                        OnMapChanged();
                 }
             }
         }
@@ -392,6 +398,9 @@ namespace MapEditor.Models
                         return;
 
                     commandManager.ExecuteEditFillCommand(tileBrush, CurrentLayer, target);
+
+                    if (OnMapChanged != null)
+                        OnMapChanged();
                 }
             }
         }
@@ -603,6 +612,9 @@ namespace MapEditor.Models
 
             if (OnLayerChanged != null)
                 OnLayerChanged(new LayerEventArgs(LayerIndex));
+
+            if (OnMapChanged != null)
+                OnMapChanged();
         }
 
         /// <summary>
@@ -616,6 +628,9 @@ namespace MapEditor.Models
 
             if (OnLayerChanged != null)
                 OnLayerChanged(new LayerEventArgs(LayerIndex));
+
+            if (OnMapChanged != null)
+                OnMapChanged();
         }
 
         /// <summary>

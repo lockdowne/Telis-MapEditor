@@ -81,6 +81,7 @@
     <Compile Include="Core\Controls\NumericUpDownExControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Core\Controls\StickyWindow.cs" />
     <Compile Include="Core\Controls\XnaRender.cs">
       <SubType>Component</SubType>
     </Compile>
