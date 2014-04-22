@@ -11,7 +11,8 @@ namespace MapEditor.UI
         event Action OnCancel;
         event RenameEventHandler OnConfirm;
 
-        void ShowWindow(ILayerView parent);
+        void ShowWindow(System.Windows.Forms.Form parent);
         void CloseWindow();
+        void ClearTextBox();
     }
 }

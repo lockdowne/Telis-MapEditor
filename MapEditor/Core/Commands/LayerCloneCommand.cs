@@ -23,7 +23,9 @@ namespace MapEditor.Core.Commands
         {
             this.layers = layers;
 
-            this.layer = layers[layerIndex];
+            Layer newLayer = new Layer(layers[layerIndex].LayerName, layers[layerIndex].LayerWidth, layers[layerIndex].LayerHeight);
+
+            this.layer = newLayer;
         }
 
         #endregion
@@ -34,7 +36,7 @@ namespace MapEditor.Core.Commands
         /// Add clone of layer to map and view
         /// </summary>
         public void Execute()
-        {
+        {            
             layers.Add(layer);
         }
 

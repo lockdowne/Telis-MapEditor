@@ -14,9 +14,9 @@ namespace MapEditor.UI
     {
         #region Fields
 
-        private TextBox textBox;
-        private Button buttonRename;
         private Button buttonCancel;
+        private Button buttonConfirm;
+        private TextBox textBox1;
 
         /// <summary>
         /// Required designer variable.
@@ -27,27 +27,20 @@ namespace MapEditor.UI
 
         #region Properties
 
-        /// <summary>
-        /// Occurs when the Cancel button is clicked
-        /// </summary>
         public event Action OnCancel;
 
-        /// <summary>
-        /// Occurs when the Rename button is clicked
-        /// </summary>
-        public event RenameEventHandler OnConfirm;        
+        public event RenameEventHandler OnConfirm;
 
         #endregion
 
-        #region Initialize
+        #region Intialize
 
         public RenameView()
         {
             InitializeComponent();
 
-            StartPosition = FormStartPosition.CenterParent;
+            CenterToParent();
         }
-        
 
         #region Windows Form Designer generated code
 
@@ -57,47 +50,47 @@ namespace MapEditor.UI
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox = new System.Windows.Forms.TextBox();
-            this.buttonRename = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
+            this.buttonConfirm = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
-            // 
-            // textBox
-            // 
-            this.textBox.Location = new System.Drawing.Point(12, 12);
-            this.textBox.MaxLength = 15;
-            this.textBox.Name = "textBox";
-            this.textBox.Size = new System.Drawing.Size(151, 20);
-            this.textBox.TabIndex = 0;
-            // 
-            // buttonRename
-            // 
-            this.buttonRename.Location = new System.Drawing.Point(12, 38);
-            this.buttonRename.Name = "buttonRename";
-            this.buttonRename.Size = new System.Drawing.Size(75, 23);
-            this.buttonRename.TabIndex = 1;
-            this.buttonRename.Text = "Rename";
-            this.buttonRename.UseVisualStyleBackColor = true;
-            this.buttonRename.Click += new System.EventHandler(this.buttonRename_Click);
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(88, 38);
+            this.buttonCancel.Location = new System.Drawing.Point(94, 38);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
-            this.buttonCancel.TabIndex = 2;
+            this.buttonCancel.TabIndex = 8;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            // 
+            // buttonConfirm
+            // 
+            this.buttonConfirm.Location = new System.Drawing.Point(12, 38);
+            this.buttonConfirm.Name = "buttonConfirm";
+            this.buttonConfirm.Size = new System.Drawing.Size(75, 23);
+            this.buttonConfirm.TabIndex = 7;
+            this.buttonConfirm.Text = "OK";
+            this.buttonConfirm.UseVisualStyleBackColor = true;
+            this.buttonConfirm.Click += new System.EventHandler(this.buttonConfirm_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(12, 12);
+            this.textBox1.MaxLength = 32;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(157, 20);
+            this.textBox1.TabIndex = 9;
             // 
             // RenameView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(175, 70);
+            this.ClientSize = new System.Drawing.Size(181, 72);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.buttonCancel);
-            this.Controls.Add(this.buttonRename);
-            this.Controls.Add(this.textBox);
+            this.Controls.Add(this.buttonConfirm);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "RenameView";
             this.Text = "Rename";
@@ -112,10 +105,10 @@ namespace MapEditor.UI
 
         #region Windows Form Designer generated events
 
-        private void buttonRename_Click(object sender, EventArgs e)
+        private void buttonConfirm_Click(object sender, EventArgs e)
         {
             if (OnConfirm != null)
-                OnConfirm(new RenameEventArgs(textBox.Text));
+                OnConfirm(new RenameEventArgs(textBox1.Text));
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
@@ -141,20 +134,19 @@ namespace MapEditor.UI
             base.Dispose(disposing);
         }
 
-        /// <summary>
-        /// Show window as dialog
-        /// </summary>
-        public void ShowWindow(ILayerView parent)
+        public void ShowWindow(Form parent)
         {
-            ShowDialog((Form)parent);
+            ShowDialog(parent);
         }
 
-        /// <summary>
-        /// Close window
-        /// </summary>
-        public void CloseWindow()        
+        public void CloseWindow()
         {
             Close();
+        }
+
+        public void ClearTextBox()
+        {
+            textBox1.Text = string.Empty;
         }
 
         #endregion

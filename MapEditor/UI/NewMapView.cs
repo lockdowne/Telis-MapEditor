@@ -358,6 +358,7 @@ namespace MapEditor.UI
             // textBoxName
             // 
             this.textBoxName.Location = new System.Drawing.Point(61, 20);
+            this.textBoxName.MaxLength = 32;
             this.textBoxName.Name = "textBoxName";
             this.textBoxName.Size = new System.Drawing.Size(209, 20);
             this.textBoxName.TabIndex = 1;

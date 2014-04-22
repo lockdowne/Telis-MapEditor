@@ -60,7 +60,8 @@ namespace MapEditor.Presenters
             SubscribeResizeMapEvents();
             SubscribeResizeTileEvents();
             SubscribeTilesetEvents();
-            SubscribeNewMapEvents();      
+            SubscribeNewMapEvents();
+            SubscribeRenameEvents();
         }
 
         private void SubscribeMainEvents()
@@ -233,7 +234,7 @@ namespace MapEditor.Presenters
                     if (renameView == null)
                         return;
 
-                    renameView.ShowWindow(layerView);
+                    renameView.ShowWindow((Form)mainView);
                 };
 
             mainView.OnLayerVisibility += () =>
@@ -413,7 +414,7 @@ namespace MapEditor.Presenters
                     if (renameView == null)
                         return;
 
-                    renameView.ShowWindow(layerView);
+                    renameView.ShowWindow((Form)mainView);
                     
                 };
 
@@ -512,8 +513,7 @@ namespace MapEditor.Presenters
                     }
                 };
         }
-        // 1-909-438-0868
-
+      
         private void SubscribeTilesetEvents()
         {
             tilesetPresenter.OnTileBrushChanged += (tiles) =>
@@ -643,6 +643,8 @@ namespace MapEditor.Presenters
                         return;
 
                     Maps[mainView.SelectedTabName].RenameLayer(name.Name);
+
+                    renameView.ClearTextBox();
 
                     renameView.CloseWindow();
                 };
