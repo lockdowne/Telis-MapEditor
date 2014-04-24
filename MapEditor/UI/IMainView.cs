@@ -51,6 +51,7 @@ namespace MapEditor.UI
         void AddTab(string name);
         void RemoveTab(string name);
         void RemoveAllTabs();
+        void DisplayMessage(string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon);
 
     }
 }

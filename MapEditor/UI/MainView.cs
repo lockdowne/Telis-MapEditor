@@ -1313,6 +1313,18 @@ namespace MapEditor.UI
             tabControl1.TabPages.Clear();
         }
 
+        /// <summary>
+        /// Displays a message box
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="caption"></param>
+        /// <param name="buttons"></param>
+        /// <param name="icon"></param>
+        public void DisplayMessage(string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
+        {
+            MessageBox.Show(text, caption, buttons, icon);
+        }
+        
         #endregion       
 
        

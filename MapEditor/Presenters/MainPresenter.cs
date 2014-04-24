@@ -17,6 +17,7 @@ namespace MapEditor.Presenters
     public class MainPresenter
     {
         #region Fields
+        private const int MAX_XNA_TEXTURE = 4096;
 
         private readonly IMainView mainView;
         private readonly ILayerView layerView;        
@@ -168,8 +169,6 @@ namespace MapEditor.Presenters
 
             mainView.OnFileOpen += () =>
                 {
-                    // open file
-
                     try
                     {
                         OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -182,7 +181,9 @@ namespace MapEditor.Presenters
 
                         if (openFileDialog.ShowDialog() == DialogResult.OK)
                         {
-                            using (Stream stream = openFileDialog.OpenFile())
+                            Stream stream;
+
+                            if((stream = openFileDialog.OpenFile()) != null)
                             {
                                 object obj = xml.Deserialize(stream);
                                 Map map = (Map)obj;
@@ -193,34 +194,25 @@ namespace MapEditor.Presenters
                                 minimapPresenter.ShowWindow(mainView);
                                 layerView.ShowWindow(mainView);
                                 minimapPresenter.GenerateMinimap(Maps[mainView.SelectedTabName].Layers, Maps[mainView.SelectedTabName].Tileset);
-                                Maps[mainView.SelectedTabName].ClearUndoRedo();
+                                Maps[mainView.SelectedTabName].ClearUndoRedo();                                
                             }
+
+                            stream.Close();
                         }
                     }
                     catch (Exception exception)
                     {
-                        MessageBox.Show(exception.Message);
+                        mainView.DisplayMessage(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-
-                   
-                    
-
-                   
-
-                   // AddMap(map.MapName, map.Tileset.TexturePath, map.TileWidth, map.TileHeight, map.MapWidth, map.MapHeight);
-                    
                 };
 
             mainView.OnFileSave += () =>
                 {
-                   /* if (mainView.SelectedTabName == string.Empty)
-                        return;*/
-
-                    // save file
+                    if (mainView.SelectedTabName == string.Empty)
+                        return;
+                  
                     try
                     {
-
-                        //TESTING 
                         SaveFileDialog save = new SaveFileDialog();
                         save.Filter = "xml files (*.xml)|*.xml";
                         save.RestoreDirectory = true;
@@ -233,21 +225,20 @@ namespace MapEditor.Presenters
 
                         if (save.ShowDialog() == DialogResult.OK)
                         {
-                            using (Stream stream = save.OpenFile())
+                            Stream stream;
+
+                            if((stream = save.OpenFile()) != null)
                             {
-                                xml.Serialize(stream, Maps[mainView.SelectedTabName], ns);
+                                xml.Serialize(stream, Maps[mainView.SelectedTabName], ns);                                
                             }
+
+                            stream.Close();
                         }
                     }
                     catch (Exception exception)
                     {
-                        MessageBox.Show(exception.Message);
+                        mainView.DisplayMessage(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-
-                    MessageBox.Show("GOOD NEWS EVERYONE!");
-
-
-                    
                 };
 
             mainView.OnFileSaveAs += () =>
@@ -628,7 +619,17 @@ namespace MapEditor.Presenters
 
                         if (openFileDialog.ShowDialog() == DialogResult.OK)
                         {
-                            newMapView.TilesetPath = openFileDialog.FileName;
+                            string path = openFileDialog.FileName;
+
+                            newMapView.TilesetPath = path;
+
+                            System.Drawing.Image image = System.Drawing.Image.FromFile(path);
+
+                            if (image.Width > MAX_XNA_TEXTURE || image.Height > MAX_XNA_TEXTURE)
+                                mainView.DisplayMessage("The maximum tileset image dimensions is " + MAX_XNA_TEXTURE + " x " + MAX_XNA_TEXTURE + " pixels.\nSelected image will be scaled down accordingly.",
+                                    "Warning", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            image.Dispose();
                         }
                     }
                     catch (Exception exception)
@@ -932,11 +933,13 @@ namespace MapEditor.Presenters
                 resizeTileView.TileWidth = tileWidth;
                 resizeTileView.TileHeight = tileHeight;
             }
-            catch
+            catch(Exception exception)
             {
                 Maps.Remove(name);
                 mainView.RemoveTab(name);
                 layerView.ClearAllListItems();
+
+                mainView.DisplayMessage(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 return false;
             }
