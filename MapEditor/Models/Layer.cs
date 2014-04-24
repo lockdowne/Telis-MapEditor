@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 
 namespace MapEditor.Models
@@ -9,7 +10,7 @@ namespace MapEditor.Models
     public class Row
     {
         #region Properties
-
+       
         public List<Tile> Columns = new List<Tile>();
 
         #endregion
@@ -35,12 +36,12 @@ namespace MapEditor.Models
         /// <summary>
         /// Gets layer width in tiles
         /// </summary>
-        public int LayerWidth { get; private set; }
+        public int LayerWidth { get; set; }
 
         /// <summary>
         /// Gets layer height in tiles
         /// </summary>
-        public int LayerHeight { get; private set; }
+        public int LayerHeight { get; set; }
 
         /// <summary>
         /// Gets or sets layer visibility
@@ -51,23 +52,18 @@ namespace MapEditor.Models
 
         #region Initialize
 
-        public Layer(string layerName, int layerWidth, int layerHeight)
+        /// <summary>
+        /// Initialize layer to empty cells
+        /// </summary>
+        public void Initialize(string layerName, int layerWidth, int layerHeight)
         {
             LayerName = layerName;
 
             LayerWidth = layerWidth;
             LayerHeight = layerHeight;
 
-            IsVisible = true;
+            IsVisible = true;            
 
-            Initialize();
-        }
-
-        /// <summary>
-        /// Initialize layer to empty cells
-        /// </summary>
-        private void Initialize()
-        {
             for (int y = 0; y < LayerHeight; y++)
             {
                 Row row = new Row();
@@ -77,6 +73,7 @@ namespace MapEditor.Models
                     row.Columns.Add(new Tile()
                     {
                         TileID = -1,
+                        Property = "TEAT"
                     });
                 }
 

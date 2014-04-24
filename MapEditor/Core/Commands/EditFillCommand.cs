@@ -24,7 +24,8 @@ namespace MapEditor.Core.Commands
             
             this.target = target;
 
-            this.previousLayer = new Layer(layer.LayerName, layer.LayerWidth, layer.LayerHeight);
+            this.previousLayer = new Layer();
+            this.previousLayer.Initialize(layer.LayerName, layer.LayerWidth, layer.LayerHeight);
 
             for (int y = 0; y < layer.LayerHeight; y++)
             {

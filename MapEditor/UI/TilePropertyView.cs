@@ -10,37 +10,28 @@ using MapEditor.Core.EventsArgs;
 
 namespace MapEditor.UI
 {
-    public class RenameView : Form, IRenameView
+    public class TilePropertyView : Form
     {
-        #region Fields
-
-        private Button buttonCancel;
-        private Button buttonConfirm;
+        
         private TextBox textBox1;
+        private Button buttonCancel;
+        private Button buttonAdd;
+
+        public event TilePropertyEventHandler OnConfirm;
+
+        public event Action OnCancel;
+
+
+        public TilePropertyView()
+        {
+            InitializeComponent();
+        }
 
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
-
-        #endregion
-
-        #region Properties
-
-        public event Action OnCancel;
-
-        public event RenameEventHandler OnConfirm;
-
-        #endregion
-
-        #region Intialize
-
-        public RenameView()
-        {
-            InitializeComponent();
-
-            CenterToParent();
-        }
+        private IContainer components = null;
+       
 
         #region Windows Form Designer generated code
 
@@ -50,30 +41,10 @@ namespace MapEditor.UI
         /// </summary>
         private void InitializeComponent()
         {
-            this.buttonCancel = new System.Windows.Forms.Button();
-            this.buttonConfirm = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.buttonCancel = new System.Windows.Forms.Button();
+            this.buttonAdd = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // buttonCancel
-            // 
-            this.buttonCancel.Location = new System.Drawing.Point(94, 38);
-            this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
-            this.buttonCancel.TabIndex = 8;
-            this.buttonCancel.Text = "Cancel";
-            this.buttonCancel.UseVisualStyleBackColor = true;
-            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
-            // 
-            // buttonConfirm
-            // 
-            this.buttonConfirm.Location = new System.Drawing.Point(12, 38);
-            this.buttonConfirm.Name = "buttonConfirm";
-            this.buttonConfirm.Size = new System.Drawing.Size(75, 23);
-            this.buttonConfirm.TabIndex = 7;
-            this.buttonConfirm.Text = "OK";
-            this.buttonConfirm.UseVisualStyleBackColor = true;
-            this.buttonConfirm.Click += new System.EventHandler(this.buttonConfirm_Click);
             // 
             // textBox1
             // 
@@ -81,20 +52,40 @@ namespace MapEditor.UI
             this.textBox1.MaxLength = 32;
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(157, 20);
-            this.textBox1.TabIndex = 0;
+            this.textBox1.TabIndex = 9;
             // 
-            // RenameView
+            // buttonCancel
             // 
-            this.AcceptButton = this.buttonConfirm;
+            this.buttonCancel.Location = new System.Drawing.Point(94, 38);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.TabIndex = 11;
+            this.buttonCancel.Text = "Cancel";
+            this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            // 
+            // buttonAdd
+            // 
+            this.buttonAdd.Location = new System.Drawing.Point(12, 38);
+            this.buttonAdd.Name = "buttonAdd";
+            this.buttonAdd.Size = new System.Drawing.Size(75, 23);
+            this.buttonAdd.TabIndex = 10;
+            this.buttonAdd.Text = "Add";
+            this.buttonAdd.UseVisualStyleBackColor = true;
+            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
+            // 
+            // AddTilePropertyView
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(181, 72);
+            this.ClientSize = new System.Drawing.Size(181, 71);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.buttonCancel);
-            this.Controls.Add(this.buttonConfirm);
+            this.Controls.Add(this.buttonAdd);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "RenameView";
-            this.Text = "Rename";
+            this.Name = "AddTilePropertyView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Tile Property";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -102,14 +93,12 @@ namespace MapEditor.UI
 
         #endregion
 
-        #endregion
+     
 
-        #region Windows Form Designer generated events
-
-        private void buttonConfirm_Click(object sender, EventArgs e)
+        private void buttonAdd_Click(object sender, EventArgs e)
         {
             if (OnConfirm != null)
-                OnConfirm(new RenameEventArgs(textBox1.Text));
+                OnConfirm(new TilePropertyEventsArgs(textBox1.Text));
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
@@ -117,11 +106,7 @@ namespace MapEditor.UI
             if (OnCancel != null)
                 OnCancel();
         }
-
-        #endregion
-
-        #region Methods
-
+        
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -135,21 +120,14 @@ namespace MapEditor.UI
             base.Dispose(disposing);
         }
 
-        public void ShowWindow(Form parent)
+        public void ShowWindow()
         {
-            ShowDialog(parent);
+            ShowDialog();
         }
 
         public void CloseWindow()
         {
             Close();
         }
-
-        public void ClearTextBox()
-        {
-            textBox1.Text = string.Empty;
-        }
-
-        #endregion
     }
 }

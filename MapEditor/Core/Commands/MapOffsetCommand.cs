@@ -45,7 +45,8 @@ namespace MapEditor.Core.Commands
 
             currentLayers.ForEach(layer =>
                 {
-                    Layer newLayer = new Layer(layer.LayerName, layer.LayerWidth, layer.LayerHeight);
+                    Layer newLayer = new Layer();
+                    newLayer.Initialize(layer.LayerName, layer.LayerWidth, layer.LayerHeight);
 
                     for (int y = 0; y < layer.LayerHeight; y++)
                     {

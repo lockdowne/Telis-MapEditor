@@ -23,7 +23,8 @@ namespace MapEditor.Core.Commands
         {
             this.layers = layers;
 
-            Layer newLayer = new Layer(layers[layerIndex].LayerName, layers[layerIndex].LayerWidth, layers[layerIndex].LayerHeight);
+            Layer newLayer = new Layer();
+            newLayer.Initialize(layers[layerIndex].LayerName, layers[layerIndex].LayerWidth, layers[layerIndex].LayerHeight);
 
             this.layer = newLayer;
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -16,7 +17,7 @@ namespace MapEditor.Models
 
         /// <summary>
         /// Gets or sets tile width
-        /// </summary>
+        /// </summary>        
         public int TileWidth { get; set; }
 
         /// <summary>

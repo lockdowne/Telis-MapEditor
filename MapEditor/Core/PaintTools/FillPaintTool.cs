@@ -81,7 +81,8 @@ namespace MapEditor.Core.PaintTools
             if (tileBrush == null)
                 return;
 
-            Layer layer = new Layer(map.CurrentLayer.LayerName, map.CurrentLayer.LayerWidth, map.CurrentLayer.LayerHeight);
+            Layer layer = new Layer();
+            layer.Initialize(map.CurrentLayer.LayerName, map.CurrentLayer.LayerWidth, map.CurrentLayer.LayerHeight);
 
             for (int layerY = 0; layerY < layer.LayerHeight; layerY++)
             {

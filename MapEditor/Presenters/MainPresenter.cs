@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MapEditor.Core.PaintTools;
@@ -168,14 +169,83 @@ namespace MapEditor.Presenters
             mainView.OnFileOpen += () =>
                 {
                     // open file
+
+                    try
+                    {
+                        OpenFileDialog openFileDialog = new OpenFileDialog();
+
+                        openFileDialog.Filter = "xml files (*.xml)|*.xml;";
+                        openFileDialog.FilterIndex = 1;
+                        openFileDialog.Multiselect = false;
+
+                        XmlSerializer xml = new XmlSerializer(typeof(Map));
+
+                        if (openFileDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            using (Stream stream = openFileDialog.OpenFile())
+                            {
+                                object obj = xml.Deserialize(stream);
+                                Map map = (Map)obj;
+
+                                LoadMap(map);
+                            }
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        MessageBox.Show(exception.Message);
+                    }
+
+                    tilesetPresenter.ShowWindow(mainView);
+                    minimapPresenter.ShowWindow(mainView);
+                    layerView.ShowWindow(mainView);
+                    minimapPresenter.GenerateMinimap(Maps[mainView.SelectedTabName].Layers, Maps[mainView.SelectedTabName].Tileset);
+                    Maps[mainView.SelectedTabName].ClearUndoRedo();
+                    
+
+                   
+
+                   // AddMap(map.MapName, map.Tileset.TexturePath, map.TileWidth, map.TileHeight, map.MapWidth, map.MapHeight);
+                    
                 };
 
             mainView.OnFileSave += () =>
                 {
-                    if (mainView.SelectedTabName == string.Empty)
-                        return;
+                   /* if (mainView.SelectedTabName == string.Empty)
+                        return;*/
 
                     // save file
+                    try
+                    {
+
+                        //TESTING 
+                        SaveFileDialog save = new SaveFileDialog();
+                        save.Filter = "xml files (*.xml)|*.xml";
+                        save.RestoreDirectory = true;
+
+                        XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+                        ns.Add("", "");
+
+
+                        XmlSerializer xml = new XmlSerializer(Maps[mainView.SelectedTabName].GetType());
+
+                        if (save.ShowDialog() == DialogResult.OK)
+                        {
+                            using (Stream stream = save.OpenFile())
+                            {
+                                xml.Serialize(stream, Maps[mainView.SelectedTabName], ns);
+                            }
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        MessageBox.Show(exception.Message);
+                    }
+
+                    MessageBox.Show("GOOD NEWS EVERYONE!");
+
+
+                    
                 };
 
             mainView.OnFileSaveAs += () =>
@@ -183,7 +253,7 @@ namespace MapEditor.Presenters
                     if (mainView.SelectedTabName == string.Empty)
                         return;
 
-                    // save as file
+                    // save as file                  
                 };
 
             mainView.OnLayerAdd += () =>
@@ -654,6 +724,121 @@ namespace MapEditor.Presenters
 
         #region Methods
 
+        public void LoadMap(Map mapObj)
+        {
+            if (Maps.ContainsKey(mapObj.MapName))
+                return;
+
+            try
+            {
+                mainView.AddTab(mapObj.MapName);
+
+                Map newMap = new Map();
+                newMap.InitializeMap(mainView.SelectedXnaTab.GraphicsDevice, mapObj.Tileset.TexturePath, mapObj.TileWidth, mapObj.TileHeight, mapObj.MapName);
+                newMap.ResizeTiles(mapObj.TileWidth, mapObj.TileHeight);
+                newMap.LayerIndex = -1;
+
+                mapObj.Layers.ForEach(layer =>
+                    {
+                        newMap.Layers.Add(layer);
+                    });
+
+                tilesetPresenter.SetTileset(newMap.Tileset);
+
+                newMap.OnCameraChanged += (camera) =>
+                {
+                    minimapPresenter.Camera = camera.Camera;
+                    minimapPresenter.IsScrolling = false;
+                };
+
+                newMap.OnLayerChanged += (index) =>
+                {
+                    if (mainView.SelectedTabName == string.Empty)
+                        return;
+
+                    if (layerView == null)
+                        return;
+
+                    layerView.ClearAllListItems();
+
+                    Maps[mainView.SelectedTabName].Layers.ForEach(layer =>
+                    {
+                        layerView.AddListItem(layer.LayerName);
+                    });
+
+                    layerView.SelectedIndex = index.LayerIndex;
+                };
+
+                newMap.OnMapChanged += () =>
+                {
+                    minimapPresenter.GenerateMinimap(newMap.Layers, newMap.Tileset);
+                    minimapPresenter.MapViewport = new Vector2(mainView.ViewportWidth, mainView.ViewportHeight);
+                };
+
+
+                mainView.SelectedXnaTab.OnDraw += (spriteBatch) =>
+                {
+                    newMap.Draw(spriteBatch);
+                };
+
+                mainView.SelectedXnaTab.OnInitialize += () =>
+                {
+
+                };
+
+                mainView.SelectedXnaTab.OnXnaDown += (sender, e) =>
+                {
+                    newMap.MouseDown(sender, e);
+                };
+
+                mainView.SelectedXnaTab.OnXnaUp += (sender, e) =>
+                {
+                    newMap.MouseUp(sender, e);
+                };
+
+                mainView.SelectedXnaTab.OnXnaMove += (sender, e) =>
+                {
+                    newMap.MouseMove(sender, e);
+                };
+
+                mainView.SelectedXnaTab.OnXnaWheel += (sender, e) =>
+                {
+                    newMap.MouseWheel(sender, e);
+                };
+
+                Maps.Add(newMap.MapName, newMap);
+
+                if (layerView == null)
+                    return;
+
+                layerView.ClearAllListItems();
+
+                Maps[mainView.SelectedTabName].Layers.ForEach(layer =>
+                {
+                    layerView.AddListItem(layer.LayerName);
+                });
+
+                layerView.SelectedIndex = -1;
+
+                if (resizeMapView == null)
+                    return;
+
+                resizeMapView.MapWidth = newMap.MapWidth;
+                resizeMapView.MapHeight = newMap.MapHeight;
+
+                if (resizeTileView == null)
+                    return;
+
+                resizeTileView.TileWidth = newMap.TileWidth;
+                resizeTileView.TileHeight = newMap.TileHeight;
+
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
+        }
+
         public bool AddMap(string name, string tilesetPath, int tileWidth, int tileHeight, int mapWidth, int mapHeight)
         {
             if (Maps.ContainsKey(name))
@@ -663,7 +848,8 @@ namespace MapEditor.Presenters
             { 
                 mainView.AddTab(name);
 
-                Map map = new Map(mainView.SelectedXnaTab.GraphicsDevice, tilesetPath, tileWidth, tileHeight);
+                Map map = new Map();
+                map.InitializeMap(mainView.SelectedXnaTab.GraphicsDevice, tilesetPath, tileWidth, tileHeight, name);
                 map.ResizeTiles(tileWidth, tileHeight);
                 map.AddLayer(mapWidth, mapHeight);
                 tilesetPresenter.SetTileset(map.Tileset);

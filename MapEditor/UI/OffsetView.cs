@@ -134,19 +134,9 @@ namespace MapEditor.UI
             0,
             0});
             this.numericY.Measure = null;
-            this.numericY.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.numericY.Name = "numericY";
             this.numericY.Size = new System.Drawing.Size(35, 20);
             this.numericY.TabIndex = 3;
-            this.numericY.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             // 
             // numericX
             // 
@@ -157,19 +147,9 @@ namespace MapEditor.UI
             0,
             0});
             this.numericX.Measure = null;
-            this.numericX.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.numericX.Name = "numericX";
             this.numericX.Size = new System.Drawing.Size(35, 20);
             this.numericX.TabIndex = 2;
-            this.numericX.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             // 
             // label2
             // 

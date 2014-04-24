@@ -22,11 +22,12 @@ namespace MapEditor.Core.Commands
 
         #region Initialize
 
-        public LayerAddCommand(List<Layer> layers, string layerName, int width, int height)
+        public LayerAddCommand(List<Layer> layers, string layerName, int layerWidth, int layerHeight)
         {
             this.layers = layers;
 
-            this.layer = new Layer(layerName, width, height);
+            this.layer = new Layer();
+            this.layer.Initialize(layerName, layerWidth, layerHeight);
         }
 
         #endregion

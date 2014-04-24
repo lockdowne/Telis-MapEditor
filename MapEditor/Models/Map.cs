@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Text;
+using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MapEditor.Core.Commands;
@@ -12,6 +13,7 @@ using MapEditor.UI;
 
 namespace MapEditor.Models
 {
+    [XmlRoot("Map")]
     public class Map
     {
         #region Fields
@@ -53,33 +55,40 @@ namespace MapEditor.Models
         /// <summary>
         /// Get or set the camera
         /// </summary>
+        [XmlIgnore()]
         public Camera Camera { get; set; }
         
         /// <summary>
         /// Gets or sets the tile brush values
         /// </summary>
+        [XmlIgnore()]
         public int[,] TileBrushValues { get; set; }
 
         /// <summary>
         /// List of copied tile brush values
         /// </summary>
+        [XmlIgnore()]
         public List<int[,]> Clipboard = new List<int[,]>();
 
         /// <summary>
         /// Gets or sets current layer index
         /// </summary>
+        [XmlIgnore()]
         public int LayerIndex { get; set; }
 
         /// <summary>
         /// Gets current tileset
         /// </summary>
-        public Tileset Tileset { get; private set; }
+        public Tileset Tileset { get; set; }
 
         public List<Layer> Layers = new List<Layer>();
 
+        [XmlIgnore()]
         public Vector2? SelectionBoxA { get; set; }
+        [XmlIgnore()]
         public Vector2? SelectionBoxB { get; set; }
 
+        [XmlIgnore()]
         public Rectangle SelectionBox
         {
             get
@@ -124,6 +133,7 @@ namespace MapEditor.Models
             get { return Tileset.TileHeight; }
         }
 
+        [XmlIgnore()]
         public Layer CurrentLayer
         {
             get 
@@ -134,11 +144,13 @@ namespace MapEditor.Models
             }
         }
 
+        public string MapName { get; set; }
+
         #endregion
 
         #region Initialize
-
-        public Map(GraphicsDevice graphicsDevice, string tilesetPath, int tileWidth, int tileHeight)
+ 
+        public void InitializeMap(GraphicsDevice graphicsDevice, string tilesetPath, int tileWidth, int tileHeight, string mapName)
         {
             Camera = new Camera() { Zoom = 1f };
 
@@ -162,8 +174,8 @@ namespace MapEditor.Models
 
             paintTools = new IPaintTool[] { new DrawPaintTool(this), new ErasePaintTool(this), new SelectPaintTool(this), new FillPaintTool(this) };
 
-
-        }     
+            MapName = mapName;
+        }
 
         #endregion
 
