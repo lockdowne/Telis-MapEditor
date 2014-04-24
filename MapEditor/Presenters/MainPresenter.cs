@@ -188,6 +188,12 @@ namespace MapEditor.Presenters
                                 Map map = (Map)obj;
 
                                 LoadMap(map);
+                                
+                                tilesetPresenter.ShowWindow(mainView);
+                                minimapPresenter.ShowWindow(mainView);
+                                layerView.ShowWindow(mainView);
+                                minimapPresenter.GenerateMinimap(Maps[mainView.SelectedTabName].Layers, Maps[mainView.SelectedTabName].Tileset);
+                                Maps[mainView.SelectedTabName].ClearUndoRedo();
                             }
                         }
                     }
@@ -196,11 +202,7 @@ namespace MapEditor.Presenters
                         MessageBox.Show(exception.Message);
                     }
 
-                    tilesetPresenter.ShowWindow(mainView);
-                    minimapPresenter.ShowWindow(mainView);
-                    layerView.ShowWindow(mainView);
-                    minimapPresenter.GenerateMinimap(Maps[mainView.SelectedTabName].Layers, Maps[mainView.SelectedTabName].Tileset);
-                    Maps[mainView.SelectedTabName].ClearUndoRedo();
+                   
                     
 
                    
