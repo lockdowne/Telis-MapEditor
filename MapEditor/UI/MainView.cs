@@ -1246,12 +1246,6 @@ namespace MapEditor.UI
         }
 
 
-        private void tilePropertiesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //tile properties
-        }
-
-
         #endregion
 
         #region Methods

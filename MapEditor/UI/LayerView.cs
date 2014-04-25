@@ -111,7 +111,7 @@ namespace MapEditor.UI
                     e.Cancel = true;
                 };
 
-            stickyWindow = new Blue.Windows.StickyWindow(this);            
+            stickyWindow = new Blue.Windows.StickyWindow(this);
         }  
 
         #region Windows Form Designer generated code

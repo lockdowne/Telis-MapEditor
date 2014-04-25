@@ -78,6 +78,12 @@ namespace MapEditor.UI
             InitializeComponent();
 
             stickyWindow = new Blue.Windows.StickyWindow(this);
+
+            FormClosing += (sender, e) =>
+                {
+                    Hide();
+                    e.Cancel = true;
+                };
         }
 
         #region Windows Form Designer generated code
