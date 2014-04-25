@@ -257,7 +257,10 @@ namespace MapEditor.UI
             this.ClientSize = new System.Drawing.Size(284, 261);
             this.Controls.Add(this.listBox);
             this.Controls.Add(this.toolStrip1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.HelpButton = true;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "LayerView";
             this.Text = "LayerView";
             this.toolStrip1.ResumeLayout(false);

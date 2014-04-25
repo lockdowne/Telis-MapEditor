@@ -73,7 +73,6 @@ namespace MapEditor.Models
                     row.Columns.Add(new Tile()
                     {
                         TileID = -1,
-                        Property = "TEAT"
                     });
                 }
 

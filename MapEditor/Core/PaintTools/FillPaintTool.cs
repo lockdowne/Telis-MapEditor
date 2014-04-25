@@ -192,7 +192,7 @@ namespace MapEditor.Core.PaintTools
                                 map.Tileset.TileWidth,
                                 map.Tileset.TileHeight),
                                 map.Tileset.GetSourceRectangle(tileID),
-                                Color.White * 0.5f);
+                                Color.White * 0.25f);
                     }
                 }
             }

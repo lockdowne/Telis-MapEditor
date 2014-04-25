@@ -16,6 +16,7 @@ namespace MapEditor.Core.Commands
         #region Fields
 
         private Layer layer;
+        private Layer previousLayer;
 
         private List<TileBrush> currentTileBrushes;
         private List<TileBrush> previousTileBrushes;
@@ -45,6 +46,9 @@ namespace MapEditor.Core.Commands
             int mapWidth = layer.LayerWidth;
             int mapHeight = layer.LayerHeight;
 
+            previousLayer = new Layer();
+            previousLayer.Initialize(layer.LayerName, layer.LayerWidth, layer.LayerHeight);
+
             currentTileBrushes.ForEach(brush =>
                 {
                     int[,] previousBrush = new int[brush.Brush.GetLength(0), brush.Brush.GetLength(1)];
@@ -54,9 +58,17 @@ namespace MapEditor.Core.Commands
                     {
                         for (int x = 0; x < brush.Brush.GetLength(1); x++)
                         {
-                            previousBrush[y, x] = layer.Rows[(int)(MathHelper.Clamp(y + brush.Position.Y, 0, mapHeight - 1))].Columns[(int)(MathHelper.Clamp(x + brush.Position.X, 0, mapWidth - 1))].TileID;
+                            previousBrush[y, x] = layer.Rows[(int)(MathHelper.Clamp(y + brush.Position.Y, 0, mapHeight - 1))].Columns[(int)(MathHelper.Clamp(x + brush.Position.X, 0, mapWidth - 1))].TileID;                            
                         }
                     }
+
+                    /*for (int y = 0; y < layer.LayerHeight; y++)
+                    {
+                        for (int x = 0; x < layer.LayerWidth; x++)
+                        {
+                            previousLayer.Rows[y].Columns[x].TileID = layer.Rows[y].Columns[x].TileID;
+                        }
+                    }*/
 
                     // Add previous tiles
                     previousTileBrushes.Add(new TileBrush()
@@ -91,9 +103,17 @@ namespace MapEditor.Core.Commands
                 {
                     for (int x = 0; x < brush.Brush.GetLength(1); x++)
                     {
-                        layer.Rows[(int)(y + brush.Position.Y)].Columns[(int)(x + brush.Position.X)].TileID = brush.Brush[y, x];
+                        layer.Rows[(int)MathHelper.Clamp((int)(y + brush.Position.Y), 0, layer.LayerHeight - 1)].Columns[(int)MathHelper.Clamp((int)(x + brush.Position.X), 0, layer.LayerWidth - 1)].TileID = brush.Brush[y, x];
                     }
                 }
+
+                /*for (int y = 0; y < previousLayer.LayerHeight; y++)
+                {
+                    for (int x = 0; x < previousLayer.LayerWidth; x++)
+                    {
+                        layer.Rows[y].Columns[x].TileID = previousLayer.Rows[y].Columns[x].TileID;
+                    }
+                }*/
             });
         }
 

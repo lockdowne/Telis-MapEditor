@@ -146,6 +146,9 @@ namespace MapEditor.Models
 
         public string MapName { get; set; }
 
+        [XmlIgnore()]
+        public string SavePath { get; set; }
+
         #endregion
 
         #region Initialize
