@@ -33,6 +33,16 @@ namespace MapEditor.Presenters
         public event CameraEventHandler OnCameraChanged;
 
         /// <summary>
+        /// Occurs when hide is called
+        /// </summary>
+        public event Action OnHiding;
+
+        /// <summary>
+        /// Occurs when show is called
+        /// </summary>
+        public event Action OnShowing;
+
+        /// <summary>
         /// Gets or sets the minimap camera
         /// </summary>
         public Camera Camera
@@ -126,6 +136,19 @@ namespace MapEditor.Presenters
                     spriteBatch.End();
                 };
 
+            view.OnHiding += () =>
+                {
+                    if (OnHiding != null)
+                        OnHiding();
+                };
+
+            view.OnShowing += () =>
+                {
+                    if (OnShowing != null)
+                        OnShowing();
+                };
+            
+
             
         }
 
@@ -146,6 +169,11 @@ namespace MapEditor.Presenters
         public void HideWindow()
         {
             view.HideWindow();
+        }
+
+        public void ClearMinimap()
+        {
+            minimap.ClearMinimap();
         }
 
         #endregion

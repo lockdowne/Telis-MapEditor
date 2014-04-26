@@ -291,6 +291,30 @@
   <ItemGroup>
     <None Include="Resources\visible-32.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\erase-32-gray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\paint-bucket-32-gray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pencil-32-gray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\square-dashed-32-gray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\erase-32-red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\paint-bucket-32-red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pencil-32-red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\square-dashed-32-red.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

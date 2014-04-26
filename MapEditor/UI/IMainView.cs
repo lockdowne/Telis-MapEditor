@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -15,6 +16,7 @@ namespace MapEditor.UI
         event Action OnFileSaveAs;
         event Action OnFileClose;
         event Action OnFileCloseAll;
+        event FormClosingEventHandler OnSystemExit;
         event Action OnFileExit;
         event Action OnEditUndo;
         event Action OnEditRedo;
@@ -52,6 +54,13 @@ namespace MapEditor.UI
         void RemoveTab(string name);
         void RemoveAllTabs();
         void DisplayMessage(string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon);
+        void SetDrawImage(Image image);
+        void SetEraseImage(Image image);
+        void SetSelectImage(Image image);
+        void SetFillImage(Image image);
+        void SetLayerChecked(bool isChecked);
+        void SetTilesetChecked(bool isChecked);
+        void SetMinimapChecked(bool isChecked);
 
     }
 }

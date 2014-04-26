@@ -46,6 +46,16 @@ namespace MapEditor.Presenters
         public event TilesetEventHandler OnTileBrushChanged;
 
         /// <summary>
+        /// Occurs when hide is called
+        /// </summary>
+        public event Action OnHiding;
+
+        /// <summary>
+        /// Occurs when show is called
+        /// </summary>
+        public event Action OnShowing;
+
+        /// <summary>
         /// Gets the selection box created on top of the tileset image
         /// </summary>
         public Rectangle SelectionBox
@@ -181,7 +191,19 @@ namespace MapEditor.Presenters
 
                         ScrollCamera(cameraPosition);
                     }
-                }; 
+                };
+
+            view.OnHiding += () =>
+                {
+                    if (OnHiding != null)
+                        OnHiding();
+                };
+
+            view.OnShowing += () =>
+                {
+                    if (OnShowing != null)
+                        OnShowing();
+                };
         }
 
         #endregion

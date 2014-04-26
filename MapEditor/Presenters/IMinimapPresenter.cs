@@ -12,6 +12,8 @@ namespace MapEditor.Presenters
     public interface IMinimapPresenter
     {
         event CameraEventHandler OnCameraChanged;
+        event Action OnHiding;
+        event Action OnShowing;
 
         Camera Camera { get; set; }
         bool IsScrolling { get; set; }
@@ -22,5 +24,6 @@ namespace MapEditor.Presenters
         void GenerateMinimap(List<Layer> layers, Tileset tileset);
         void ShowWindow(IMainView parent);
         void HideWindow();
+        void ClearMinimap();
     }
 }

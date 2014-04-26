@@ -161,7 +161,15 @@ namespace MapEditor.Models
         public void MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
                 isMouseLeftPressed = true;
+
+                Camera.Position = new Vector2(MathHelper.Clamp(e.Location.X, 0, MinimapDimensions.X),
+                    MathHelper.Clamp(e.Location.Y, 0, MinimapDimensions.Y));
+
+                if (OnCameraChanged != null)
+                    OnCameraChanged(new CameraEventArgs(new Camera() { Position = Camera.Position / RectangleScale }));
+            }
         }
 
         /// <summary>
@@ -204,6 +212,9 @@ namespace MapEditor.Models
         /// <param name="tileset"></param>
         public void GenerateMinimap(List<Layer> layers, Tileset tileset)
         {
+            if (layers == null)
+                return;
+
             if (layers.Count <= 0)
                 return;
 
@@ -240,6 +251,11 @@ namespace MapEditor.Models
             MapDimensions = new Vector2(layers.First().LayerWidth * tileset.TileWidth, layers.First().LayerHeight * tileset.TileHeight);
 
             drawScale = new Vector2(MinimapDimensions.X, MinimapDimensions.Y) / new Vector2(textures.First().Width, textures.First().Height);
+        }
+
+        public void ClearMinimap()
+        {
+            textures.Clear();
         }
 
       

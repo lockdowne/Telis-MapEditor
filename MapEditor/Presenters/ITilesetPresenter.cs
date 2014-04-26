@@ -13,6 +13,8 @@ namespace MapEditor.Presenters
     public interface ITilesetPresenter
     {
         event TilesetEventHandler OnTileBrushChanged;
+        event Action OnHiding;
+        event Action OnShowing;
 
         Rectangle SelectionBox { get; }
 

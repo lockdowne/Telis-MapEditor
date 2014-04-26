@@ -77,10 +77,10 @@ namespace MapEditor.UI
         private ToolStripButton toolStripButton10;
         private ToolStripButton toolStripButton9;
         private ToolStripSeparator toolStripSeparator8;
-        private ToolStripButton toolStripButton6;
-        private ToolStripButton toolStripButton7;
-        private ToolStripButton toolStripButton8;
-        private ToolStripButton toolStripButton12;
+        private ToolStripButton toolStripButtonDraw;
+        private ToolStripButton toolStripButtonErase;
+        private ToolStripButton toolStripButtonSelect;
+        private ToolStripButton toolStripButtonFill;
         private ToolStripSeparator toolStripSeparator10;
         private ToolStripMenuItem toggleVisibilityToolStripMenuItem;
         private ToolStripMenuItem renameLayerToolStripMenuItem;
@@ -124,6 +124,11 @@ namespace MapEditor.UI
         /// Occurs when Close All button is clicked
         /// </summary>
         public event Action OnFileCloseAll;
+
+        /// <summary>
+        /// Occurs when the application is closing
+        /// </summary>
+        public event FormClosingEventHandler OnSystemExit;
 
         /// <summary>
         /// Occurs when Exit button is clicked
@@ -341,6 +346,9 @@ namespace MapEditor.UI
 
             this.FormClosing += (sender, e) =>
                 {
+                    if (OnSystemExit != null)
+                        OnSystemExit(sender, e);
+
                     e.Cancel = false;
                 };
 
@@ -359,29 +367,13 @@ namespace MapEditor.UI
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.selectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fillToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.zoomInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.zoomOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.tilesetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.layersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -391,32 +383,48 @@ namespace MapEditor.UI
             this.resizeTilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.offsetMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.layerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.raiseLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.lowerLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
-            this.duplicateLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toggleVisibilityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.renameLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton10 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton9 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton7 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton8 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton12 = new System.Windows.Forms.ToolStripButton();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.toolStripButtonDraw = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonErase = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonSelect = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonFill = new System.Windows.Forms.ToolStripButton();
+            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fillToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zoomInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zoomOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.raiseLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lowerLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.duplicateLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toggleVisibilityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.renameLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -452,70 +460,22 @@ namespace MapEditor.UI
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // newToolStripMenuItem
-            // 
-            this.newToolStripMenuItem.Image = global::MapEditor.Properties.Resources.add_file_32;
-            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.newToolStripMenuItem.Text = "New...";
-            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
-            // 
-            // openToolStripMenuItem
-            // 
-            this.openToolStripMenuItem.Image = global::MapEditor.Properties.Resources.folder_3_32;
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.openToolStripMenuItem.Text = "Open...";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
-            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
-            // 
-            // saveToolStripMenuItem
-            // 
-            this.saveToolStripMenuItem.Image = global::MapEditor.Properties.Resources.save_32;
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.saveToolStripMenuItem.Text = "Save";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
-            // 
-            // saveAsToolStripMenuItem
-            // 
-            this.saveAsToolStripMenuItem.Image = global::MapEditor.Properties.Resources.save_as_32;
-            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.saveAsToolStripMenuItem.Text = "Save As...";
-            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(120, 6);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
-            // 
-            // closeToolStripMenuItem
-            // 
-            this.closeToolStripMenuItem.Image = global::MapEditor.Properties.Resources.x_mark_32;
-            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.closeToolStripMenuItem.Text = "Close";
-            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(120, 6);
             // 
             // closeAllToolStripMenuItem
             // 
             this.closeAllToolStripMenuItem.Name = "closeAllToolStripMenuItem";
-            this.closeAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.closeAllToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.closeAllToolStripMenuItem.Text = "Close All";
             this.closeAllToolStripMenuItem.Click += new System.EventHandler(this.closeAllToolStripMenuItem_Click);
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Image = global::MapEditor.Properties.Resources.exit_2_32;
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
             // 
@@ -534,79 +494,15 @@ namespace MapEditor.UI
             this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.editToolStripMenuItem.Text = "Edit";
             // 
-            // undoToolStripMenuItem
-            // 
-            this.undoToolStripMenuItem.Image = global::MapEditor.Properties.Resources.undo_4_32;
-            this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
-            this.undoToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
-            this.undoToolStripMenuItem.Text = "Undo";
-            this.undoToolStripMenuItem.Click += new System.EventHandler(this.undoToolStripMenuItem_Click);
-            // 
-            // redoToolStripMenuItem
-            // 
-            this.redoToolStripMenuItem.Image = global::MapEditor.Properties.Resources.redo_4_32;
-            this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
-            this.redoToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
-            this.redoToolStripMenuItem.Text = "Redo";
-            this.redoToolStripMenuItem.Click += new System.EventHandler(this.redoToolStripMenuItem_Click);
-            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(102, 6);
             // 
-            // cutToolStripMenuItem
-            // 
-            this.cutToolStripMenuItem.Image = global::MapEditor.Properties.Resources.cut_32;
-            this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
-            this.cutToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
-            this.cutToolStripMenuItem.Text = "Cut";
-            this.cutToolStripMenuItem.Click += new System.EventHandler(this.cutToolStripMenuItem_Click);
-            // 
-            // copyToolStripMenuItem
-            // 
-            this.copyToolStripMenuItem.Image = global::MapEditor.Properties.Resources.copy_32;
-            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
-            this.copyToolStripMenuItem.Text = "Copy";
-            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
-            // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             this.toolStripSeparator5.Size = new System.Drawing.Size(102, 6);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Image = global::MapEditor.Properties.Resources.pencil_32;
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(105, 22);
-            this.toolStripMenuItem1.Text = "Draw";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
-            // 
-            // deleteToolStripMenuItem
-            // 
-            this.deleteToolStripMenuItem.Image = global::MapEditor.Properties.Resources.erase_32;
-            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
-            this.deleteToolStripMenuItem.Text = "Erase";
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
-            // 
-            // selectToolStripMenuItem
-            // 
-            this.selectToolStripMenuItem.Image = global::MapEditor.Properties.Resources.square_dashed_32;
-            this.selectToolStripMenuItem.Name = "selectToolStripMenuItem";
-            this.selectToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
-            this.selectToolStripMenuItem.Text = "Select";
-            this.selectToolStripMenuItem.Click += new System.EventHandler(this.selectToolStripMenuItem_Click);
-            // 
-            // fillToolStripMenuItem
-            // 
-            this.fillToolStripMenuItem.Image = global::MapEditor.Properties.Resources.paint_bucket_32;
-            this.fillToolStripMenuItem.Name = "fillToolStripMenuItem";
-            this.fillToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
-            this.fillToolStripMenuItem.Text = "Fill";
-            this.fillToolStripMenuItem.Click += new System.EventHandler(this.fillToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
@@ -621,54 +517,32 @@ namespace MapEditor.UI
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
             // 
-            // zoomInToolStripMenuItem
-            // 
-            this.zoomInToolStripMenuItem.Image = global::MapEditor.Properties.Resources.zoom_in_32;
-            this.zoomInToolStripMenuItem.Name = "zoomInToolStripMenuItem";
-            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
-            this.zoomInToolStripMenuItem.Text = "Zoom In";
-            this.zoomInToolStripMenuItem.Click += new System.EventHandler(this.zoomInToolStripMenuItem_Click);
-            // 
-            // zoomOutToolStripMenuItem
-            // 
-            this.zoomOutToolStripMenuItem.Image = global::MapEditor.Properties.Resources.zoom_out_32;
-            this.zoomOutToolStripMenuItem.Name = "zoomOutToolStripMenuItem";
-            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
-            this.zoomOutToolStripMenuItem.Text = "Zoom Out";
-            this.zoomOutToolStripMenuItem.Click += new System.EventHandler(this.zoomOutToolStripMenuItem_Click);
-            // 
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(126, 6);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(149, 6);
             // 
             // tilesetToolStripMenuItem
             // 
-            this.tilesetToolStripMenuItem.Checked = true;
             this.tilesetToolStripMenuItem.CheckOnClick = true;
-            this.tilesetToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.tilesetToolStripMenuItem.Name = "tilesetToolStripMenuItem";
-            this.tilesetToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.tilesetToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.tilesetToolStripMenuItem.Text = "Tileset";
             this.tilesetToolStripMenuItem.Click += new System.EventHandler(this.tilesetToolStripMenuItem_Click);
             // 
             // layersToolStripMenuItem
             // 
-            this.layersToolStripMenuItem.Checked = true;
             this.layersToolStripMenuItem.CheckOnClick = true;
-            this.layersToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.layersToolStripMenuItem.Name = "layersToolStripMenuItem";
-            this.layersToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.layersToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.layersToolStripMenuItem.Text = "Layers";
             this.layersToolStripMenuItem.Click += new System.EventHandler(this.layersToolStripMenuItem_Click);
             // 
             // minimapToolStripMenuItem
             // 
-            this.minimapToolStripMenuItem.Checked = true;
             this.minimapToolStripMenuItem.CheckOnClick = true;
-            this.minimapToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.minimapToolStripMenuItem.Name = "minimapToolStripMenuItem";
-            this.minimapToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.minimapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.minimapToolStripMenuItem.Text = "Minimap";
             this.minimapToolStripMenuItem.Click += new System.EventHandler(this.minimapToolStripMenuItem_Click);
             // 
@@ -685,21 +559,21 @@ namespace MapEditor.UI
             // resizeMapToolStripMenuItem
             // 
             this.resizeMapToolStripMenuItem.Name = "resizeMapToolStripMenuItem";
-            this.resizeMapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.resizeMapToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.resizeMapToolStripMenuItem.Text = "Resize Map";
             this.resizeMapToolStripMenuItem.Click += new System.EventHandler(this.resizeMapToolStripMenuItem_Click);
             // 
             // resizeTilesToolStripMenuItem
             // 
             this.resizeTilesToolStripMenuItem.Name = "resizeTilesToolStripMenuItem";
-            this.resizeTilesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.resizeTilesToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.resizeTilesToolStripMenuItem.Text = "Resize Tiles";
             this.resizeTilesToolStripMenuItem.Click += new System.EventHandler(this.resizeTilesToolStripMenuItem_Click);
             // 
             // offsetMapToolStripMenuItem
             // 
             this.offsetMapToolStripMenuItem.Name = "offsetMapToolStripMenuItem";
-            this.offsetMapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.offsetMapToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.offsetMapToolStripMenuItem.Text = "Offset Map";
             this.offsetMapToolStripMenuItem.Click += new System.EventHandler(this.offsetMapToolStripMenuItem_Click);
             // 
@@ -719,71 +593,15 @@ namespace MapEditor.UI
             this.layerToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.layerToolStripMenuItem.Text = "Layer";
             // 
-            // addLayerToolStripMenuItem
-            // 
-            this.addLayerToolStripMenuItem.Image = global::MapEditor.Properties.Resources.plus_32;
-            this.addLayerToolStripMenuItem.Name = "addLayerToolStripMenuItem";
-            this.addLayerToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
-            this.addLayerToolStripMenuItem.Text = "Add Layer";
-            this.addLayerToolStripMenuItem.Click += new System.EventHandler(this.addLayerToolStripMenuItem_Click);
-            // 
-            // removeLayerToolStripMenuItem
-            // 
-            this.removeLayerToolStripMenuItem.Image = global::MapEditor.Properties.Resources.x_mark_32;
-            this.removeLayerToolStripMenuItem.Name = "removeLayerToolStripMenuItem";
-            this.removeLayerToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
-            this.removeLayerToolStripMenuItem.Text = "Remove Layer";
-            this.removeLayerToolStripMenuItem.Click += new System.EventHandler(this.removeLayerToolStripMenuItem_Click);
-            // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(155, 6);
-            // 
-            // raiseLayerToolStripMenuItem
-            // 
-            this.raiseLayerToolStripMenuItem.Image = global::MapEditor.Properties.Resources.arrow_141_32;
-            this.raiseLayerToolStripMenuItem.Name = "raiseLayerToolStripMenuItem";
-            this.raiseLayerToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
-            this.raiseLayerToolStripMenuItem.Text = "Raise Layer";
-            this.raiseLayerToolStripMenuItem.Click += new System.EventHandler(this.raiseLayerToolStripMenuItem_Click);
-            // 
-            // lowerLayerToolStripMenuItem
-            // 
-            this.lowerLayerToolStripMenuItem.Image = global::MapEditor.Properties.Resources.arrow_142_32;
-            this.lowerLayerToolStripMenuItem.Name = "lowerLayerToolStripMenuItem";
-            this.lowerLayerToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
-            this.lowerLayerToolStripMenuItem.Text = "Lower Layer";
-            this.lowerLayerToolStripMenuItem.Click += new System.EventHandler(this.lowerLayerToolStripMenuItem_Click);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(166, 6);
             // 
             // toolStripSeparator10
             // 
             this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(155, 6);
-            // 
-            // duplicateLayerToolStripMenuItem
-            // 
-            this.duplicateLayerToolStripMenuItem.Image = global::MapEditor.Properties.Resources.copy_32;
-            this.duplicateLayerToolStripMenuItem.Name = "duplicateLayerToolStripMenuItem";
-            this.duplicateLayerToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
-            this.duplicateLayerToolStripMenuItem.Text = "Duplicate Layer";
-            this.duplicateLayerToolStripMenuItem.Click += new System.EventHandler(this.duplicateLayerToolStripMenuItem_Click);
-            // 
-            // toggleVisibilityToolStripMenuItem
-            // 
-            this.toggleVisibilityToolStripMenuItem.Image = global::MapEditor.Properties.Resources.visible_32;
-            this.toggleVisibilityToolStripMenuItem.Name = "toggleVisibilityToolStripMenuItem";
-            this.toggleVisibilityToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
-            this.toggleVisibilityToolStripMenuItem.Text = "Toggle Visibility";
-            this.toggleVisibilityToolStripMenuItem.Click += new System.EventHandler(this.toggleVisibilityToolStripMenuItem_Click);
-            // 
-            // renameLayerToolStripMenuItem
-            // 
-            this.renameLayerToolStripMenuItem.Image = global::MapEditor.Properties.Resources.rename_32;
-            this.renameLayerToolStripMenuItem.Name = "renameLayerToolStripMenuItem";
-            this.renameLayerToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
-            this.renameLayerToolStripMenuItem.Text = "Rename Layer";
-            this.renameLayerToolStripMenuItem.Click += new System.EventHandler(this.renameLayerToolStripMenuItem_Click);
+            this.toolStripSeparator10.Size = new System.Drawing.Size(166, 6);
             // 
             // helpToolStripMenuItem
             // 
@@ -804,15 +622,40 @@ namespace MapEditor.UI
             this.toolStripButton10,
             this.toolStripButton9,
             this.toolStripSeparator8,
-            this.toolStripButton6,
-            this.toolStripButton7,
-            this.toolStripButton8,
-            this.toolStripButton12});
+            this.toolStripButtonDraw,
+            this.toolStripButtonErase,
+            this.toolStripButtonSelect,
+            this.toolStripButtonFill});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(384, 25);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 25);
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 49);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(384, 312);
+            this.tabControl1.TabIndex = 3;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // toolStripButton1
             // 
@@ -847,11 +690,6 @@ namespace MapEditor.UI
             this.toolStripButton3.ToolTipText = "Save";
             this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
-            // 
             // toolStripButton4
             // 
             this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -873,11 +711,6 @@ namespace MapEditor.UI
             this.toolStripButton5.Text = "toolStripButton5";
             this.toolStripButton5.ToolTipText = "Redo";
             this.toolStripButton5.Click += new System.EventHandler(this.toolStripButton5_Click);
-            // 
-            // toolStripSeparator7
-            // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripButton10
             // 
@@ -901,64 +734,233 @@ namespace MapEditor.UI
             this.toolStripButton9.ToolTipText = "Copy";
             this.toolStripButton9.Click += new System.EventHandler(this.toolStripButton9_Click);
             // 
-            // toolStripSeparator8
+            // toolStripButtonDraw
             // 
-            this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 25);
+            this.toolStripButtonDraw.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonDraw.Image = global::MapEditor.Properties.Resources.pencil_32;
+            this.toolStripButtonDraw.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonDraw.Name = "toolStripButtonDraw";
+            this.toolStripButtonDraw.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonDraw.Text = "toolStripButton6";
+            this.toolStripButtonDraw.ToolTipText = "Draw";
+            this.toolStripButtonDraw.Click += new System.EventHandler(this.toolStripButton6_Click);
             // 
-            // toolStripButton6
+            // toolStripButtonErase
             // 
-            this.toolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton6.Image = global::MapEditor.Properties.Resources.pencil_32;
-            this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton6.Name = "toolStripButton6";
-            this.toolStripButton6.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton6.Text = "toolStripButton6";
-            this.toolStripButton6.ToolTipText = "Draw";
-            this.toolStripButton6.Click += new System.EventHandler(this.toolStripButton6_Click);
+            this.toolStripButtonErase.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonErase.Image = global::MapEditor.Properties.Resources.erase_32;
+            this.toolStripButtonErase.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonErase.Name = "toolStripButtonErase";
+            this.toolStripButtonErase.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonErase.Text = "toolStripButton7";
+            this.toolStripButtonErase.ToolTipText = "Erase";
+            this.toolStripButtonErase.Click += new System.EventHandler(this.toolStripButton7_Click);
             // 
-            // toolStripButton7
+            // toolStripButtonSelect
             // 
-            this.toolStripButton7.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton7.Image = global::MapEditor.Properties.Resources.erase_32;
-            this.toolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton7.Name = "toolStripButton7";
-            this.toolStripButton7.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton7.Text = "toolStripButton7";
-            this.toolStripButton7.ToolTipText = "Erase";
-            this.toolStripButton7.Click += new System.EventHandler(this.toolStripButton7_Click);
+            this.toolStripButtonSelect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonSelect.Image = global::MapEditor.Properties.Resources.square_dashed_32;
+            this.toolStripButtonSelect.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonSelect.Name = "toolStripButtonSelect";
+            this.toolStripButtonSelect.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonSelect.Text = "toolStripButton8";
+            this.toolStripButtonSelect.ToolTipText = "Select";
+            this.toolStripButtonSelect.Click += new System.EventHandler(this.toolStripButton8_Click);
             // 
-            // toolStripButton8
+            // toolStripButtonFill
             // 
-            this.toolStripButton8.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton8.Image = global::MapEditor.Properties.Resources.square_dashed_32;
-            this.toolStripButton8.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton8.Name = "toolStripButton8";
-            this.toolStripButton8.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton8.Text = "toolStripButton8";
-            this.toolStripButton8.ToolTipText = "Select";
-            this.toolStripButton8.Click += new System.EventHandler(this.toolStripButton8_Click);
+            this.toolStripButtonFill.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonFill.Image = global::MapEditor.Properties.Resources.paint_bucket_32;
+            this.toolStripButtonFill.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonFill.Name = "toolStripButtonFill";
+            this.toolStripButtonFill.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonFill.Text = "toolStripButton12";
+            this.toolStripButtonFill.ToolTipText = "Fill";
+            this.toolStripButtonFill.Click += new System.EventHandler(this.toolStripButton12_Click);
             // 
-            // toolStripButton12
+            // newToolStripMenuItem
             // 
-            this.toolStripButton12.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton12.Image = global::MapEditor.Properties.Resources.paint_bucket_32;
-            this.toolStripButton12.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton12.Name = "toolStripButton12";
-            this.toolStripButton12.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton12.Text = "toolStripButton12";
-            this.toolStripButton12.ToolTipText = "Fill";
-            this.toolStripButton12.Click += new System.EventHandler(this.toolStripButton12_Click);
+            this.newToolStripMenuItem.Image = global::MapEditor.Properties.Resources.add_file_32;
+            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.newToolStripMenuItem.Text = "New...";
+            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
-            // tabControl1
+            // openToolStripMenuItem
             // 
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 49);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(384, 312);
-            this.tabControl1.TabIndex = 3;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+            this.openToolStripMenuItem.Image = global::MapEditor.Properties.Resources.folder_3_32;
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.openToolStripMenuItem.Text = "Open...";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Image = global::MapEditor.Properties.Resources.save_32;
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            this.saveAsToolStripMenuItem.Image = global::MapEditor.Properties.Resources.save_as_32;
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.saveAsToolStripMenuItem.Text = "Save As...";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.Image = global::MapEditor.Properties.Resources.x_mark_32;
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.closeToolStripMenuItem.Text = "Close";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Image = global::MapEditor.Properties.Resources.exit_2_32;
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // undoToolStripMenuItem
+            // 
+            this.undoToolStripMenuItem.Image = global::MapEditor.Properties.Resources.undo_4_32;
+            this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
+            this.undoToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
+            this.undoToolStripMenuItem.Text = "Undo";
+            this.undoToolStripMenuItem.Click += new System.EventHandler(this.undoToolStripMenuItem_Click);
+            // 
+            // redoToolStripMenuItem
+            // 
+            this.redoToolStripMenuItem.Image = global::MapEditor.Properties.Resources.redo_4_32;
+            this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
+            this.redoToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
+            this.redoToolStripMenuItem.Text = "Redo";
+            this.redoToolStripMenuItem.Click += new System.EventHandler(this.redoToolStripMenuItem_Click);
+            // 
+            // cutToolStripMenuItem
+            // 
+            this.cutToolStripMenuItem.Image = global::MapEditor.Properties.Resources.cut_32;
+            this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
+            this.cutToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
+            this.cutToolStripMenuItem.Text = "Cut";
+            this.cutToolStripMenuItem.Click += new System.EventHandler(this.cutToolStripMenuItem_Click);
+            // 
+            // copyToolStripMenuItem
+            // 
+            this.copyToolStripMenuItem.Image = global::MapEditor.Properties.Resources.copy_32;
+            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
+            this.copyToolStripMenuItem.Text = "Copy";
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Image = global::MapEditor.Properties.Resources.pencil_32;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(105, 22);
+            this.toolStripMenuItem1.Text = "Draw";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Image = global::MapEditor.Properties.Resources.erase_32;
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
+            this.deleteToolStripMenuItem.Text = "Erase";
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            // 
+            // selectToolStripMenuItem
+            // 
+            this.selectToolStripMenuItem.Image = global::MapEditor.Properties.Resources.square_dashed_32;
+            this.selectToolStripMenuItem.Name = "selectToolStripMenuItem";
+            this.selectToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
+            this.selectToolStripMenuItem.Text = "Select";
+            this.selectToolStripMenuItem.Click += new System.EventHandler(this.selectToolStripMenuItem_Click);
+            // 
+            // fillToolStripMenuItem
+            // 
+            this.fillToolStripMenuItem.Image = global::MapEditor.Properties.Resources.paint_bucket_32;
+            this.fillToolStripMenuItem.Name = "fillToolStripMenuItem";
+            this.fillToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
+            this.fillToolStripMenuItem.Text = "Fill";
+            this.fillToolStripMenuItem.Click += new System.EventHandler(this.fillToolStripMenuItem_Click);
+            // 
+            // zoomInToolStripMenuItem
+            // 
+            this.zoomInToolStripMenuItem.Image = global::MapEditor.Properties.Resources.zoom_in_32;
+            this.zoomInToolStripMenuItem.Name = "zoomInToolStripMenuItem";
+            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.zoomInToolStripMenuItem.Text = "Zoom In";
+            this.zoomInToolStripMenuItem.Click += new System.EventHandler(this.zoomInToolStripMenuItem_Click);
+            // 
+            // zoomOutToolStripMenuItem
+            // 
+            this.zoomOutToolStripMenuItem.Image = global::MapEditor.Properties.Resources.zoom_out_32;
+            this.zoomOutToolStripMenuItem.Name = "zoomOutToolStripMenuItem";
+            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.zoomOutToolStripMenuItem.Text = "Zoom Out";
+            this.zoomOutToolStripMenuItem.Click += new System.EventHandler(this.zoomOutToolStripMenuItem_Click);
+            // 
+            // addLayerToolStripMenuItem
+            // 
+            this.addLayerToolStripMenuItem.Image = global::MapEditor.Properties.Resources.plus_32;
+            this.addLayerToolStripMenuItem.Name = "addLayerToolStripMenuItem";
+            this.addLayerToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.addLayerToolStripMenuItem.Text = "Add Layer";
+            this.addLayerToolStripMenuItem.Click += new System.EventHandler(this.addLayerToolStripMenuItem_Click);
+            // 
+            // removeLayerToolStripMenuItem
+            // 
+            this.removeLayerToolStripMenuItem.Image = global::MapEditor.Properties.Resources.x_mark_32;
+            this.removeLayerToolStripMenuItem.Name = "removeLayerToolStripMenuItem";
+            this.removeLayerToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.removeLayerToolStripMenuItem.Text = "Remove Layer";
+            this.removeLayerToolStripMenuItem.Click += new System.EventHandler(this.removeLayerToolStripMenuItem_Click);
+            // 
+            // raiseLayerToolStripMenuItem
+            // 
+            this.raiseLayerToolStripMenuItem.Image = global::MapEditor.Properties.Resources.arrow_141_32;
+            this.raiseLayerToolStripMenuItem.Name = "raiseLayerToolStripMenuItem";
+            this.raiseLayerToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.raiseLayerToolStripMenuItem.Text = "Move Layer Up";
+            this.raiseLayerToolStripMenuItem.Click += new System.EventHandler(this.raiseLayerToolStripMenuItem_Click);
+            // 
+            // lowerLayerToolStripMenuItem
+            // 
+            this.lowerLayerToolStripMenuItem.Image = global::MapEditor.Properties.Resources.arrow_142_32;
+            this.lowerLayerToolStripMenuItem.Name = "lowerLayerToolStripMenuItem";
+            this.lowerLayerToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.lowerLayerToolStripMenuItem.Text = "Move Layer Down";
+            this.lowerLayerToolStripMenuItem.Click += new System.EventHandler(this.lowerLayerToolStripMenuItem_Click);
+            // 
+            // duplicateLayerToolStripMenuItem
+            // 
+            this.duplicateLayerToolStripMenuItem.Image = global::MapEditor.Properties.Resources.copy_32;
+            this.duplicateLayerToolStripMenuItem.Name = "duplicateLayerToolStripMenuItem";
+            this.duplicateLayerToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.duplicateLayerToolStripMenuItem.Text = "Duplicate Layer";
+            this.duplicateLayerToolStripMenuItem.Click += new System.EventHandler(this.duplicateLayerToolStripMenuItem_Click);
+            // 
+            // toggleVisibilityToolStripMenuItem
+            // 
+            this.toggleVisibilityToolStripMenuItem.Image = global::MapEditor.Properties.Resources.visible_32;
+            this.toggleVisibilityToolStripMenuItem.Name = "toggleVisibilityToolStripMenuItem";
+            this.toggleVisibilityToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.toggleVisibilityToolStripMenuItem.Text = "Toggle Visibility";
+            this.toggleVisibilityToolStripMenuItem.Click += new System.EventHandler(this.toggleVisibilityToolStripMenuItem_Click);
+            // 
+            // renameLayerToolStripMenuItem
+            // 
+            this.renameLayerToolStripMenuItem.Image = global::MapEditor.Properties.Resources.rename_32;
+            this.renameLayerToolStripMenuItem.Name = "renameLayerToolStripMenuItem";
+            this.renameLayerToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.renameLayerToolStripMenuItem.Text = "Rename Layer";
+            this.renameLayerToolStripMenuItem.Click += new System.EventHandler(this.renameLayerToolStripMenuItem_Click);
             // 
             // MainView
             // 
@@ -1023,8 +1025,10 @@ namespace MapEditor.UI
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Close();
+            /*
             if (OnFileExit != null)
-                OnFileExit();
+                OnFileExit();*/
         }
 
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1311,6 +1315,42 @@ namespace MapEditor.UI
         {
             MessageBox.Show(text, caption, buttons, icon);
         }
+
+        public void SetDrawImage(Image image)
+        {
+            toolStripButtonDraw.Image = image;
+        }
+
+        public void SetEraseImage(Image image)
+        {
+            toolStripButtonErase.Image = image;
+        }
+
+        public void SetSelectImage(Image image)
+        {
+            toolStripButtonSelect.Image = image;
+        }
+
+        public void SetFillImage(Image image)
+        {
+            toolStripButtonFill.Image = image;
+        }
+
+        public void SetLayerChecked(bool isChecked)
+        {
+            layersToolStripMenuItem.Checked = isChecked;
+        }
+
+        public void SetTilesetChecked(bool isChecked)
+        {
+            tilesetToolStripMenuItem.Checked = isChecked;
+        }
+
+        public void SetMinimapChecked(bool isChecked)
+        {
+            minimapToolStripMenuItem.Checked = isChecked;
+        }
+
         #endregion       
 
        

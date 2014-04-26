@@ -47,6 +47,8 @@ namespace MapEditor.Models
         /// </summary>
         public event LayerEventHandler OnLayerChanged;
 
+        public event Action<PaintTool> OnStateChanged;
+
         /// <summary>
         /// Occurs when when map is changed
         /// </summary>
@@ -201,11 +203,11 @@ namespace MapEditor.Models
 
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
                 isMouseLeftPressed = true;
-            else if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            /*else if (e.Button == System.Windows.Forms.MouseButtons.Right)
             {
                 if (paintTool != PaintTool.Erase)
                     SetPaintTool(PaintTool.Select);
-            }
+            }*/
             else if (e.Button == System.Windows.Forms.MouseButtons.Middle)
             {
                 isMouseMiddlePressed = true;
@@ -350,11 +352,18 @@ namespace MapEditor.Models
                     paintTool = PaintTool.Select;
                     break;
             }
+
             this.paintTool = paintTool;
+
+            if (OnStateChanged != null)
+                OnStateChanged(paintTool);
         }
 
         public void CopySelection()
         {
+            if (LayerIndex < 0)
+                return;
+
             if (paintTool == PaintTool.Select)
             {
                 if (!SelectionBox.IsEmpty)
@@ -380,6 +389,9 @@ namespace MapEditor.Models
         /// </summary>
         public void CutSelection()
         {
+            if (LayerIndex < 0)
+                return;
+
             if (paintTool == PaintTool.Select)
             {
                 if (!SelectionBox.IsEmpty)
@@ -405,6 +417,9 @@ namespace MapEditor.Models
 
         public void Fill(TileBrush tileBrush, int target)
         {
+            if (LayerIndex < 0)
+                return;
+
             if (paintTool == PaintTool.Fill)
             {
                 if (TileBrushValues != null)
@@ -625,6 +640,8 @@ namespace MapEditor.Models
 
             LayerIndex = -1;
 
+            ClearSelectionBox();
+
             if (OnLayerChanged != null)
                 OnLayerChanged(new LayerEventArgs(LayerIndex));
 
@@ -640,6 +657,8 @@ namespace MapEditor.Models
             commandManager.Redo();
 
             LayerIndex = -1;
+
+            ClearSelectionBox();
 
             if (OnLayerChanged != null)
                 OnLayerChanged(new LayerEventArgs(LayerIndex));

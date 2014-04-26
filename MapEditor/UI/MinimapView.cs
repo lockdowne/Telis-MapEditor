@@ -63,12 +63,22 @@ namespace MapEditor.UI
         public event MouseEventHandler OnXnaWheel;
 
         /// <summary>
+        /// Occurs when hide is called
+        /// </summary>
+        public event Action OnHiding;
+
+        /// <summary>
+        /// Occurs when show is called
+        /// </summary>
+        public event Action OnShowing;
+
+        /// <summary>
         /// Gets graphic device
         /// </summary>
         public GraphicsDevice GraphicsDevice
         {
             get { return xnaRender1.GraphicsDevice; }
-        }
+        }        
 
         /// <summary>
         /// Gets the width of control
@@ -100,6 +110,9 @@ namespace MapEditor.UI
             {
                 Hide();
                 e.Cancel = true;
+
+                if (OnHiding != null)
+                    OnHiding();
             };
         }
 
@@ -212,6 +225,9 @@ namespace MapEditor.UI
                 Show((Form)parent);
 
                 this.Location = new System.Drawing.Point(((Form)parent).Width - this.Width - 25, 80);
+
+                if (OnShowing != null)
+                    OnShowing();
             }
         }
 
@@ -221,7 +237,12 @@ namespace MapEditor.UI
         public void HideWindow()
         {
             if (Visible)
+            {
                 Hide();
+
+                if (OnHiding != null)
+                    OnHiding();
+            }
         }
 
 

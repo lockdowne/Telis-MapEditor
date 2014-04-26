@@ -81,6 +81,16 @@ namespace MapEditor.UI
         public event LayerEventHandler OnLayerIndexChanged;
 
         /// <summary>
+        /// Occurs when hide is called
+        /// </summary>
+        public event Action OnHiding;
+
+        /// <summary>
+        /// Occurs when show is called
+        /// </summary>
+        public event Action OnShowing;
+
+        /// <summary>
         /// Sets the index of the listBox control
         /// </summary>
         public int SelectedIndex
@@ -109,6 +119,9 @@ namespace MapEditor.UI
                 {
                     this.Hide();
                     e.Cancel = true;
+
+                    if (OnHiding != null)
+                        OnHiding();
                 };
 
             stickyWindow = new Blue.Windows.StickyWindow(this);
@@ -350,6 +363,9 @@ namespace MapEditor.UI
                 Show((Form)parent);
 
             this.Location = new System.Drawing.Point(((Form)parent).Width - this.Width - 25, 80 + 300 * 2);
+
+            if (OnShowing != null)
+                OnShowing();
         }
 
         /// <summary>
@@ -358,7 +374,12 @@ namespace MapEditor.UI
         public void HideWindow()
         {
             if (Visible)
+            {
                 Hide();
+
+                if (OnHiding != null)
+                    OnHiding();
+            }
         }
 
         /// <summary>

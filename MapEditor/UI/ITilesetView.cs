@@ -15,6 +15,8 @@ namespace MapEditor.UI
         event MouseEventHandler OnXnaUp;
         event MouseEventHandler OnXnaMove;
         event MouseEventHandler OnXnaWheel;
+        event Action OnHiding;
+        event Action OnShowing;
 
         GraphicsDevice GraphicsDevice { get; }
 

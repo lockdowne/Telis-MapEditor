@@ -44,9 +44,9 @@ namespace MapEditor.Core.Commands
                     Layer tempLayer = new Layer();
                     tempLayer.Initialize(layer.LayerName, mapWidth, mapHeight);
 
-                    for (int y = 0; y < mapHeight; y++)
+                    for (int y = 0; y < layer.LayerHeight; y++)
                     {
-                        for (int x = 0; x < mapWidth; x++)
+                        for (int x = 0; x < layer.LayerWidth; x++)
                         {
                             tempLayer.Rows[y].Columns[x].TileID = layer.Rows[y].Columns[x].TileID;
                         }

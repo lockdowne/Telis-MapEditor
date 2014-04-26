@@ -16,6 +16,8 @@ namespace MapEditor.UI
         event LayerEventHandler OnLayerVisibilityChanged;
         event LayerEventHandler OnRenameLayer;
         event LayerEventHandler OnLayerIndexChanged;
+        event Action OnHiding;
+        event Action OnShowing;
 
         int SelectedIndex { set; }
 

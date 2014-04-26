@@ -133,6 +133,16 @@ namespace MapEditor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap erase_32_red {
+            get {
+                object obj = ResourceManager.GetObject("erase_32_red", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap exit_2_32 {
             get {
                 object obj = ResourceManager.GetObject("exit_2_32", resourceCulture);
@@ -173,9 +183,29 @@ namespace MapEditor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap paint_bucket_32_red {
+            get {
+                object obj = ResourceManager.GetObject("paint_bucket_32_red", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap pencil_32 {
             get {
                 object obj = ResourceManager.GetObject("pencil_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pencil_32_red {
+            get {
+                object obj = ResourceManager.GetObject("pencil_32_red", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -256,6 +286,16 @@ namespace MapEditor.Properties {
         internal static System.Drawing.Bitmap square_dashed_32 {
             get {
                 object obj = ResourceManager.GetObject("square_dashed_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap square_dashed_32_red {
+            get {
+                object obj = ResourceManager.GetObject("square_dashed_32_red", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
