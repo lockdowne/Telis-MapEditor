@@ -1,0 +1,791 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MapEditor.Core.Commands.CommandManager">
+    <Position X="38.25" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQABQABAEAACBAhAAABABAABEIAQoiAAIQAIAAAAAAA=</HashCode>
+      <FileName>Core\Commands\CommandManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Core.Commands.EditCopyCommand" BaseTypeListCollapsed="true">
+    <Position X="27.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAggAAEAAAAAQAAAAAAAAAAAAgAAAAAAAABAAAAAE=</HashCode>
+      <FileName>Core\Commands\EditCopyCommand.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="layer" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Core.Commands.EditCutCommand" BaseTypeListCollapsed="true">
+    <Position X="23.75" Y="24.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAggAAEAAAAAQAAAAAAAAAAAAgAAAAAAAAFAAAAAE=</HashCode>
+      <FileName>Core\Commands\EditCutCommand.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="layer" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Core.Commands.EditDrawCommand" BaseTypeListCollapsed="true">
+    <Position X="32.75" Y="21.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAACAAAAAAQAAAAAEAAAAAAAAAAAQAAABAAAAAA=</HashCode>
+      <FileName>Core\Commands\EditDrawCommand.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="layer" />
+      <Field Name="previousLayer" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Core.Commands.EditFillCommand" BaseTypeListCollapsed="true">
+    <Position X="26.75" Y="24.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAACAAAAAAQAIAAAAAAAAAAAAAAAIAAAAAAABAA=</HashCode>
+      <FileName>Core\Commands\EditFillCommand.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="tileBrush" />
+      <Field Name="currentLayer" />
+      <Field Name="previousLayer" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Core.Commands.EditRemoveCommand" BaseTypeListCollapsed="true">
+    <Position X="32.75" Y="17.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAggAAAAAAAAQAAAAAAAAAAAAgAAAAAAAAFAAAAAE=</HashCode>
+      <FileName>Core\Commands\EditRemoveCommand.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="layer" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Core.Commands.LayerAddCommand" BaseTypeListCollapsed="true">
+    <Position X="30.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Core\Commands\LayerAddCommand.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="layer" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Core.Commands.LayerCloneCommand" BaseTypeListCollapsed="true">
+    <Position X="27.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Core\Commands\LayerCloneCommand.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="layer" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Core.Commands.LayerLowerCommand" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="53.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAQAAAAAAAAQAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Core\Commands\LayerLowerCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Core.Commands.LayerRaiseCommand" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="46.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAQAAAAAAAAQAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Core\Commands\LayerRaiseCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Core.Commands.LayerRemoveCommand" BaseTypeListCollapsed="true">
+    <Position X="29.75" Y="21.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAQAAAAAAAAQAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Core\Commands\LayerRemoveCommand.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="layer" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Core.Commands.LayerRenameCommand" BaseTypeListCollapsed="true">
+    <Position X="23.75" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAgAAAAAAAAAQAAAAAAAAAAAAAAAAgAAAABAAAAAA=</HashCode>
+      <FileName>Core\Commands\LayerRenameCommand.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="layer" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Core.Commands.LayerVisibilityCommand" BaseTypeListCollapsed="true">
+    <Position X="26.75" Y="22" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Core\Commands\LayerVisibilityCommand.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="layer" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Core.Commands.MapAddTilesetCommand" BaseTypeListCollapsed="true">
+    <Position X="35.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAggAAAAAIAAAQAAAAAAAAAAAAiAAQAIAAAAAAAABE=</HashCode>
+      <FileName>Core\Commands\MapAddTilesetCommand.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="tileset" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Core.Commands.MapOffsetCommand" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="48.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAATAAAAAAAAAAAAAAQAAAAQAAAAAAAA=</HashCode>
+      <FileName>Core\Commands\MapOffsetCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Core.Commands.MapRemoveTilesetCommand" Collapsed="true">
+    <Position X="50.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Commands\MapRemoveTilesetCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Core.Commands.MapResizeCommand" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="52" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQgAAAAAAAAAQAAAAAAAAAAAAAAQAAAAQAEAAAAAA=</HashCode>
+      <FileName>Core\Commands\MapResizeCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Core.Commands.TileResizeCommand" BaseTypeListCollapsed="true">
+    <Position X="38.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAQAACAAAAAAAAAAAAAQJAAAAAAAEAA=</HashCode>
+      <FileName>Core\Commands\TileResizeCommand.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="tileset" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Core.Commands.ViewToggleGridCommand" Collapsed="true">
+    <Position X="48.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Commands\ViewToggleGridCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Core.Commands.ViewZoomInCommand" Collapsed="true">
+    <Position X="50.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Commands\ViewZoomInCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Core.Commands.ViewZoomOutCommand" Collapsed="true">
+    <Position X="52" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Commands\ViewZoomOutCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Core.Controls.ClosableTabControl" Collapsed="true">
+    <Position X="48.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Core\Controls\ClosableTabControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Core.Controls.GraphicsDeviceControl">
+    <Position X="21.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gQCAoAAAACAAAwAAAAABAAAAAAAAAAAAAAAEAIQABAA=</HashCode>
+      <FileName>Core\Controls\GraphicsDeviceControl.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="services" />
+      <Property Name="Services" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MapEditor.Core.Controls.NumericUpDownEx">
+    <Position X="30.75" Y="27.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Controls\NumericUpDownExControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Core.Controls.XnaRender">
+    <Position X="21.5" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACABEAAAAAAAwAAAABgABAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Controls\XnaRender.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blue.Private.Win32Imports.Win32" Collapsed="true">
+    <Position X="53.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Core\Controls\StickyWindow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blue.Windows.StickyWindow">
+    <Position X="7" Y="10" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="Blue.Windows.StickyWindow.ResizeDir" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Core\Controls\StickyWindow.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Delegate Name="Blue.Windows.StickyWindow.ProcessMessage" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Core\Controls\StickyWindow.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>UAAAQICAQOCALABBQgQAUAAABEECiAACWEcATANEAAQ=</HashCode>
+      <FileName>Core\Controls\StickyWindow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Core.EventsArgs.CameraEventArgs" Collapsed="true">
+    <Position X="46.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\EventsArgs\CameraEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Core.EventsArgs.LayerEventArgs" Collapsed="true">
+    <Position X="52" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\EventsArgs\LayerEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Core.EventsArgs.NewMapEventArgs" Collapsed="true">
+    <Position X="53.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAACAAABAAAAAAAAAAAQAAEBA=</HashCode>
+      <FileName>Core\EventsArgs\NewMapEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Core.EventsArgs.OffsetEventArgs" Collapsed="true">
+    <Position X="46.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Core\EventsArgs\OffsetEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Core.EventsArgs.RenameEventArgs" Collapsed="true">
+    <Position X="50.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\EventsArgs\RenameEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Core.EventsArgs.ResizeMapEventArgs" Collapsed="true">
+    <Position X="53.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBA=</HashCode>
+      <FileName>Core\EventsArgs\ResizeMapEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Core.EventsArgs.ResizeTileEventArgs" Collapsed="true">
+    <Position X="46.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Core\EventsArgs\ResizeTileEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Core.EventsArgs.TilePropertyEventsArgs" Collapsed="true">
+    <Position X="53.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\EventsArgs\TilePropertyEventsArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Core.EventsArgs.TilesetEventArgs" Collapsed="true">
+    <Position X="46.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Core\EventsArgs\TilesetEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Core.Helpers.ServiceContainer" BaseTypeListCollapsed="true">
+    <Position X="24.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKAAAEA=</HashCode>
+      <FileName>Core\Helpers\ServiceContainer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Core.PaintTools.DrawPaintTool" BaseTypeListCollapsed="true">
+    <Position X="35.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEIAAAAAAEkAAAAAAAAAAAAAAEAAAAAEAAACAQAA=</HashCode>
+      <FileName>Core\PaintTools\DrawPaintTool.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="map" />
+      <Field Name="tileBrushes" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Core.PaintTools.ErasePaintTool" BaseTypeListCollapsed="true">
+    <Position X="39.25" Y="23.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAADQABAAkAAAAAAAAAAAAAAEAAAAAAAAACAAAA=</HashCode>
+      <FileName>Core\PaintTools\ErasePaintTool.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="map" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Core.PaintTools.FillPaintTool" BaseTypeListCollapsed="true">
+    <Position X="29.75" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAEAAAAAAAAkAAAAIAAAAAQAAAEAAIAAAAAACAAAA=</HashCode>
+      <FileName>Core\PaintTools\FillPaintTool.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="map" />
+      <Field Name="tempLayer" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Core.PaintTools.SelectPaintTool" BaseTypeListCollapsed="true">
+    <Position X="32.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAADQABAAkAAAAAAAAAAAAAAEAAAAAAAAACAAAA=</HashCode>
+      <FileName>Core\PaintTools\SelectPaintTool.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="map" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Core.Program" Collapsed="true">
+    <Position X="48.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Core\Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Models.DrawingTool" Collapsed="true">
+    <Position X="50.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Models\DrawingTool.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Models.Row" Collapsed="true">
+    <Position X="50.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Models\Layer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Models.Layer">
+    <Position X="26.75" Y="18" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAEUAAAAAAAAAAAAAAABAAAAAAAAABAAA=</HashCode>
+      <FileName>Models\Layer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Models.Map">
+    <Position X="35.25" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AGQCAIIARBAhH1UUAABCCiCDAFBimEyEkoGAwRKBEBA=</HashCode>
+      <FileName>Models\Map.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="commandManager" />
+      <Field Name="paintTools" />
+      <Field Name="paintTool" />
+      <Property Name="Tileset" />
+      <Property Name="CurrentLayer" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MapEditor.Models.Minimap">
+    <Position X="25.75" Y="34.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAADAAEAAA0EAAAAACQgAAAACEQQAAAEAAACAAgI=</HashCode>
+      <FileName>Models\Minimap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Models.Tile" Collapsed="true">
+    <Position X="52" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Models\Tile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Models.TileBrush">
+    <Position X="29.75" Y="25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\TileBrush.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Models.TileBrushCollection">
+    <Position X="32.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABQAAAAACAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Models\TileBrushCollection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Models.Tileset">
+    <Position X="38.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAEAAAAAEAAAAIAAQAAIAA=</HashCode>
+      <FileName>Models\Tileset.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.Presenters.MainPresenter">
+    <Position X="15.5" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQSkEBAIEQAAwJAhMAAQAAEAiAACAAAAAAAEgACAEAA=</HashCode>
+      <FileName>Presenters\MainPresenter.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mainView" />
+      <Field Name="layerView" />
+      <Field Name="newMapView" />
+      <Field Name="offsetView" />
+      <Field Name="resizeMapView" />
+      <Field Name="resizeTileView" />
+      <Field Name="tilesetPresenter" />
+      <Field Name="minimapPresenter" />
+      <Field Name="renameView" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MapEditor.Presenters.MinimapPresenter" BaseTypeListCollapsed="true">
+    <Position X="22.75" Y="30.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAACAACAAAAABAAAABAACQgAAAAAAQAAAQgABABAAgI=</HashCode>
+      <FileName>Presenters\MinimapPresenter.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="view" />
+      <Field Name="minimap" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Presenters.TilesetPresenter" BaseTypeListCollapsed="true">
+    <Position X="41.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAIADQhAEGQEAABAAAkAAABACAAAEIQkABABBAAA=</HashCode>
+      <FileName>Presenters\TilesetPresenter.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="view" />
+      <Field Name="tileset" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.Properties.Resources" Collapsed="true">
+    <Position X="48.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABEAAAAEFERBAAAIAAApEAoEUwEBAUAgAAAgAAEAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.UI.LayerView" BaseTypeListCollapsed="true">
+    <Position X="2" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>GBAAAgkJACCQAAQAAVCAiAAiQBAAAABAHNjQQAJAIAA=</HashCode>
+      <FileName>UI\LayerView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="stickyWindow" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.UI.MainView" BaseTypeListCollapsed="true">
+    <Position X="18.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>bxSGH/0kSCAFMf1KqP+B9F9D2JizwJhYJ3IrXjC4h4o=</HashCode>
+      <FileName>UI\MainView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="SelectedXnaTab" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.UI.MinimapView" BaseTypeListCollapsed="true">
+    <Position X="16.25" Y="23" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>DACABAAAAiAACAQAIjCgABoCAAAAAAQAAEgEAABAABA=</HashCode>
+      <FileName>UI\MinimapView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="xnaRender1" />
+      <Field Name="stickyWindow" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.UI.NewMapView" BaseTypeListCollapsed="true">
+    <Position X="36.75" Y="26" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAIBkCAAACAABBEEADCAJAACEGAACAAMQWAAggFBACA=</HashCode>
+      <FileName>UI\NewMapView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="numericTileHeight" />
+      <Field Name="numericTileWidth" />
+      <Field Name="numericMapHeight" />
+      <Field Name="numericMapWidth" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.UI.OffsetView" BaseTypeListCollapsed="true">
+    <Position X="30.75" Y="31" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAgCAAEiAAABAAAACABAACEAAAAADAACAAAIBBAAA=</HashCode>
+      <FileName>UI\OffsetView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="numericY" />
+      <Field Name="numericX" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.UI.RenameView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="52" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAgCAAACAAAAAAAACABBACEAAAAAAAEAAAAIBBAAA=</HashCode>
+      <FileName>UI\RenameView.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.UI.ResizeMapView" BaseTypeListCollapsed="true">
+    <Position X="27.75" Y="28" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAgCAAACAAABAAAECABAACEAAAAAAAAKAAAIBBEBA=</HashCode>
+      <FileName>UI\ResizeMapView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="numericWidth" />
+      <Field Name="numericHeight" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.UI.ResizeTileView" BaseTypeListCollapsed="true">
+    <Position X="33.75" Y="26" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAgCAAACAAABAAAECABCACEAAAAAAAAKAAAYBBAAA=</HashCode>
+      <FileName>UI\ResizeTileView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="numericHeight" />
+      <Field Name="numericWidth" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MapEditor.UI.TilePropertiesView">
+    <Position X="43.75" Y="28.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAFAAAEAECAAgAAAAAmAAoACAAAAgAAAACIAAABBBAA=</HashCode>
+      <FileName>UI\TilePropertiesView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="tileWindow" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MapEditor.UI.TilePropertyView">
+    <Position X="40.75" Y="29.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAgCAAACAAAAAAAAiABgACEAAAAAAAEAAAAABAAAA=</HashCode>
+      <FileName>UI\TilePropertyView.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapEditor.UI.TilesetView" BaseTypeListCollapsed="true">
+    <Position X="13.25" Y="22" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>DACABAAAAiAACAQAIjCgABgCAAAAAAAAAEgEAABAABA=</HashCode>
+      <FileName>UI\TilesetView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="xnaRender1" />
+      <Field Name="stickyWindow" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="MapEditor.Core.Commands.ICommand" Collapsed="true">
+    <Position X="46.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Commands\ICommand.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MapEditor.Core.PaintTools.IPaintTool">
+    <Position X="38.25" Y="20" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAkAAAAAAAAAAAAAAEAAAAAAAAACAAAA=</HashCode>
+      <FileName>Core\PaintTools\IPaintTool.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MapEditor.Presenters.IMinimapPresenter">
+    <Position X="12.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAACAACAAAAAAAAAABAACQgAAAAAAQAAAAgAAABAAgI=</HashCode>
+      <FileName>Presenters\IMinimapPresenter.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MapEditor.Presenters.ITilesetPresenter">
+    <Position X="15.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAACQAAABAAAkAAAAAAAAAAAAgAAABAAAA=</HashCode>
+      <FileName>Presenters\ITilesetPresenter.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MapEditor.UI.ILayerView">
+    <Position X="9.5" Y="18.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>GBAAAAAIAAAAAAAAAVAACAAAAAAAAAAABJiAAABAIAA=</HashCode>
+      <FileName>UI\ILayerView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MapEditor.UI.IMainView">
+    <Position X="24.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AhQADAAESAAEMHkAAAsBMAYAiAATAJAIAQIKXgAYgwA=</HashCode>
+      <FileName>UI\IMainView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="SelectedXnaTab" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="MapEditor.UI.IMinimapView">
+    <Position X="19.75" Y="35" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>DACABAAAAAAAAAAAADAgABIAAAAAAAQAAAgEAABAAAA=</HashCode>
+      <FileName>UI\IMinimapView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MapEditor.UI.INewMapView">
+    <Position X="9.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAIBgCAAAAAABAEAABAAIAAAAAAAAAAAAAAAAgBAAAA=</HashCode>
+      <FileName>UI\INewMapView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MapEditor.UI.IOffsetView">
+    <Position X="9.5" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAgCAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAABAAAA=</HashCode>
+      <FileName>UI\IOffsetView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MapEditor.UI.IRenameView">
+    <Position X="12.5" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAgCAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>UI\IRenameView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MapEditor.UI.IResizeMapView">
+    <Position X="12.5" Y="18.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAgCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAEBA=</HashCode>
+      <FileName>UI\IResizeMapView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MapEditor.UI.IResizeTileView">
+    <Position X="15.5" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAgCAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAQBAAAA=</HashCode>
+      <FileName>UI\IResizeTileView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MapEditor.UI.ITilesetView">
+    <Position X="44.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>DACABAAAAAAAAAAAADAgABAAAAAAAAAAAAgEAABAAAA=</HashCode>
+      <FileName>UI\ITilesetView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="MapEditor.Core.PaintTools.PaintTool">
+    <Position X="38.25" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAACAAACAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Core\PaintTools\IPaintTool.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="MapEditor.Core.EventsArgs.CameraEventHandler" Collapsed="true">
+    <Position X="46.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>Core\EventsArgs\CameraEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="MapEditor.Core.EventsArgs.LayerEventHandler" Collapsed="true">
+    <Position X="48.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\EventsArgs\LayerEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="MapEditor.Core.EventsArgs.NewMapEventHandler" Collapsed="true">
+    <Position X="50.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\EventsArgs\NewMapEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="MapEditor.Core.EventsArgs.OffsetEventHandler" Collapsed="true">
+    <Position X="52" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Core\EventsArgs\OffsetEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="MapEditor.Core.EventsArgs.RenameEventHandler" Collapsed="true">
+    <Position X="53.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\EventsArgs\RenameEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="MapEditor.Core.EventsArgs.ResizeMapEventHandler" Collapsed="true">
+    <Position X="46.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\EventsArgs\ResizeMapEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="MapEditor.Core.EventsArgs.ResizeTileEventHandler" Collapsed="true">
+    <Position X="48.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\EventsArgs\ResizeTileEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="MapEditor.Core.EventsArgs.TilePropertyEventHandler" Collapsed="true">
+    <Position X="50.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Core\EventsArgs\TilePropertyEventsArgs.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="MapEditor.Core.EventsArgs.TilesetEventHandler" Collapsed="true">
+    <Position X="52" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\EventsArgs\TilesetEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

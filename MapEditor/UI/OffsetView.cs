@@ -129,7 +129,7 @@ namespace MapEditor.UI
             // 
             this.numericY.Location = new System.Drawing.Point(107, 19);
             this.numericY.Maximum = new decimal(new int[] {
-            999,
+            1024,
             0,
             0,
             0});
@@ -142,7 +142,7 @@ namespace MapEditor.UI
             // 
             this.numericX.Location = new System.Drawing.Point(31, 19);
             this.numericX.Maximum = new decimal(new int[] {
-            999,
+            1024,
             0,
             0,
             0});

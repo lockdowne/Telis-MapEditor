@@ -136,7 +136,7 @@ namespace MapEditor.UI
             // 
             this.numericWidth.Location = new System.Drawing.Point(52, 21);
             this.numericWidth.Maximum = new decimal(new int[] {
-            500,
+            1024,
             0,
             0,
             0});
@@ -159,7 +159,7 @@ namespace MapEditor.UI
             // 
             this.numericHeight.Location = new System.Drawing.Point(170, 21);
             this.numericHeight.Maximum = new decimal(new int[] {
-            500,
+            1024,
             0,
             0,
             0});

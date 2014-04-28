@@ -172,7 +172,7 @@ namespace MapEditor.UI
             // 
             this.numericTileHeight.Location = new System.Drawing.Point(58, 45);
             this.numericTileHeight.Maximum = new decimal(new int[] {
-            999,
+            256,
             0,
             0,
             0});
@@ -196,7 +196,7 @@ namespace MapEditor.UI
             // 
             this.numericTileWidth.Location = new System.Drawing.Point(58, 19);
             this.numericTileWidth.Maximum = new decimal(new int[] {
-            999,
+            256,
             0,
             0,
             0});
@@ -252,7 +252,7 @@ namespace MapEditor.UI
             // 
             this.numericMapHeight.Location = new System.Drawing.Point(61, 46);
             this.numericMapHeight.Maximum = new decimal(new int[] {
-            500,
+            1024,
             0,
             0,
             0});
@@ -276,7 +276,7 @@ namespace MapEditor.UI
             // 
             this.numericMapWidth.Location = new System.Drawing.Point(61, 20);
             this.numericMapWidth.Maximum = new decimal(new int[] {
-            500,
+            1024,
             0,
             0,
             0});

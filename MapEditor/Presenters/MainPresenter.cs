@@ -392,7 +392,15 @@ namespace MapEditor.Presenters
                     if(resizeMapView == null)
                         return;
 
-                    Maps[mainView.SelectedTabName].AddLayer(resizeMapView.MapWidth, resizeMapView.MapHeight);
+                    try
+                    {
+
+                        Maps[mainView.SelectedTabName].AddLayer(resizeMapView.MapWidth, resizeMapView.MapHeight);
+                    }
+                    catch (Exception exception)
+                    {
+                        mainView.DisplayMessage(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 };
 
             layerView.OnDuplicateLayer += (layer) =>
@@ -707,6 +715,12 @@ namespace MapEditor.Presenters
                     if (mainView.SelectedTabName == string.Empty)
                         return;
 
+                    if (string.IsNullOrEmpty(name.Name))
+                    {
+                        mainView.DisplayMessage("Enter a name for the layer", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
                     Maps[mainView.SelectedTabName].RenameLayer(name.Name);
 
                     renameView.ClearTextBox();
@@ -977,6 +991,40 @@ namespace MapEditor.Presenters
 
                         layerView.SelectedIndex = index.LayerIndex;
                     };
+
+                map.OnStateChanged += (state) =>
+                {
+                    if (mainView == null)
+                        return;
+
+                    switch (state)
+                    {
+                        case PaintTool.Draw:
+                            mainView.SetDrawImage(MapEditor.Properties.Resources.pencil_32_red);
+                            mainView.SetEraseImage(MapEditor.Properties.Resources.erase_32);
+                            mainView.SetFillImage(MapEditor.Properties.Resources.paint_bucket_32);
+                            mainView.SetSelectImage(MapEditor.Properties.Resources.square_dashed_32);
+                            break;
+                        case PaintTool.Erase:
+                            mainView.SetDrawImage(MapEditor.Properties.Resources.pencil_32);
+                            mainView.SetEraseImage(MapEditor.Properties.Resources.erase_32_red);
+                            mainView.SetFillImage(MapEditor.Properties.Resources.paint_bucket_32);
+                            mainView.SetSelectImage(MapEditor.Properties.Resources.square_dashed_32);
+                            break;
+                        case PaintTool.Fill:
+                            mainView.SetDrawImage(MapEditor.Properties.Resources.pencil_32);
+                            mainView.SetEraseImage(MapEditor.Properties.Resources.erase_32);
+                            mainView.SetFillImage(MapEditor.Properties.Resources.paint_bucket_32_red);
+                            mainView.SetSelectImage(MapEditor.Properties.Resources.square_dashed_32);
+                            break;
+                        case PaintTool.Select:
+                            mainView.SetDrawImage(MapEditor.Properties.Resources.pencil_32);
+                            mainView.SetEraseImage(MapEditor.Properties.Resources.erase_32);
+                            mainView.SetFillImage(MapEditor.Properties.Resources.paint_bucket_32);
+                            mainView.SetSelectImage(MapEditor.Properties.Resources.square_dashed_32_red);
+                            break;
+                    }
+                };
 
                 map.OnMapChanged += () =>
                     {

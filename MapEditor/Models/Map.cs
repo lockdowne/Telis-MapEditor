@@ -17,7 +17,9 @@ namespace MapEditor.Models
     public class Map
     {
         #region Fields
-        
+
+        private const int MAX_LAYERS = 32;
+
         private Vector2 cameraPosition;
         private Vector2 currentMousePosition;
         private Vector2 previousMousePosition;
@@ -441,6 +443,9 @@ namespace MapEditor.Models
         /// <param name="checkedListBox"></param>
         public void AddLayer(int layerWidth, int layerHeight)
         {
+            if (Layers.Count > MAX_LAYERS)
+                throw new Exception("Max number of layers reached");
+
             commandManager.ExecuteLayerAddCommand(Layers, "Layer", layerWidth, layerHeight);
 
             LayerIndex = Layers.Count - 1;

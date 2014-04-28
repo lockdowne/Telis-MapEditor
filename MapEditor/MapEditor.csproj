@@ -202,6 +202,7 @@
     <EmbeddedResource Include="UI\TilesetView.resx">
       <DependentUpon>TilesetView.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Documentation\ClassDiagram.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -213,7 +214,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Documentation\" />
     <Folder Include="Tests\" />
   </ItemGroup>
   <ItemGroup>
