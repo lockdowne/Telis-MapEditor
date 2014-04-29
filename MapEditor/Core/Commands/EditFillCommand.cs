@@ -111,9 +111,9 @@ namespace MapEditor.Core.Commands
 
         public void UnExecute()
         {
-            for (int y = 0; y < previousLayer.LayerHeight - 1; y++)
+            for (int y = 0; y < previousLayer.LayerHeight; y++)
             {
-                for (int x = 0; x < previousLayer.LayerWidth - 1; x++)
+                for (int x = 0; x < previousLayer.LayerWidth; x++)
                 {
                     currentLayer.Rows[y].Columns[x].TileID = previousLayer.Rows[y].Columns[x].TileID;
                 }

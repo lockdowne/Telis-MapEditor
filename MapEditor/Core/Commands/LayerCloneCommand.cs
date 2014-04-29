@@ -15,6 +15,8 @@ namespace MapEditor.Core.Commands
 
         private Layer layer;
 
+        private int layerIndex;
+
         #endregion 
 
         #region Initialize
@@ -23,10 +25,7 @@ namespace MapEditor.Core.Commands
         {
             this.layers = layers;
 
-            Layer newLayer = new Layer();
-            newLayer.Initialize(layers[layerIndex].LayerName, layers[layerIndex].LayerWidth, layers[layerIndex].LayerHeight);
-
-            this.layer = newLayer;
+            this.layerIndex = layerIndex;
         }
 
         #endregion
@@ -38,6 +37,19 @@ namespace MapEditor.Core.Commands
         /// </summary>
         public void Execute()
         {            
+            Layer newLayer = new Layer();
+            newLayer.Initialize(layers[layerIndex].LayerName, layers[layerIndex].LayerWidth, layers[layerIndex].LayerHeight);
+
+            for (int y = 0; y < layers[layerIndex].LayerHeight; y++)
+            {
+                for (int x = 0; x < layers[layerIndex].LayerWidth; x++)
+                {
+                    newLayer.Rows[y].Columns[x].TileID = layers[layerIndex].Rows[y].Columns[x].TileID;
+                }
+            }
+
+            this.layer = newLayer;
+
             layers.Add(layer);
         }
 

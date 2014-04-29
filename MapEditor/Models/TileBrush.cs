@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-
 namespace MapEditor.Models
 {
     public class TileBrush

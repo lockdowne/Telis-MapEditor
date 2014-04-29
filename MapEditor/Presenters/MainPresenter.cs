@@ -938,6 +938,10 @@ namespace MapEditor.Presenters
             }
             catch (Exception exception)
             {
+                Maps.Remove(mapObj.MapName);
+                mainView.RemoveTab(mapObj.MapName);
+                layerView.ClearAllListItems();
+
                 MessageBox.Show(exception.Message);
             }
         }

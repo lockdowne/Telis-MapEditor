@@ -173,6 +173,9 @@ namespace MapEditor.Presenters
 
         public void ClearMinimap()
         {
+            if (minimap == null)
+                return;
+
             minimap.ClearMinimap();
         }
 
